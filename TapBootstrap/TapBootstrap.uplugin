@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "2.1.0",
+	"FriendlyName": "TapBootstrap",
+	"Description": "TapTap Bootstrap",
+	"Category": "TapTap Bootstrap",
+	"CreatedBy": "xiaoyi",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "TapBootstrap",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		},{
+			"Name": "TapBootstrapEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

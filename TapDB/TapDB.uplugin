@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "2.1.0",
+	"FriendlyName": "TapDB",
+	"Description": "TapTap TapDB",
+	"Category": "TapTap TapDB",
+	"CreatedBy": "xiaoyi",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "TapDB",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		},{
+			"Name": "TapDBEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
