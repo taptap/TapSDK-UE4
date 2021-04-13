@@ -73,7 +73,7 @@ public class TapCommon : ModuleRules
                 new Framework(
                     "TapCommonSDK",
                     "../TapCommon/ios/framework/TapCommonSDK.embeddedframework.zip",
-                    "TapCommonResource.bundle"
+                    "Resource/TapCommonResource.bundle"
                 )
             );
         }
@@ -88,7 +88,7 @@ public class TapCommon : ModuleRules
             );
             AdditionalPropertiesForReceipt.Add(
                 "AndroidPlugin",
-                Path.Combine(ModuleDirectory, "TAPCOMMON_ANDROID_UPL.xml")
+                Path.Combine(ModuleDirectory, "TapCommon_Android_UPL.xml")
             );
         }
 

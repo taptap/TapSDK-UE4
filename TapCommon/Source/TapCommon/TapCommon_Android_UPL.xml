@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- init section is always evaluated once per architecture -->
+    <init>
+        <log text="TDSPlugin Android Build init"/>
+    </init>
+
+    <!-- optional additions to proguard -->
+    <proguardAdditions>
+        <insert>
+-keep public class com.tds.common.** {*;}
+        </insert>
+    </proguardAdditions>
+
+    <!-- optional files or directories to copy to Intermediate/Android/APK -->
+    <resourceCopies>
+        <copyDir src="$S(PluginDir)/../../Source/TapCommon/android/libs/" dst="$S(BuildDir)/libs/" />
+    </resourceCopies>
+
+    <buildGradleAdditions>
+        <insert>
+        repositories {
+            flatDir{ dirs 'src/main/libs/' }
+        }
+        dependencies{
+            implementation fileTree(dir: 'src/main/libs/', include: ['*.aar'])
+        }
+        </insert>
+    </buildGradleAdditions>
+</root>
