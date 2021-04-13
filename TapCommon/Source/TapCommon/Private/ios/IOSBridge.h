@@ -3,6 +3,7 @@
 #include "TapBridge.h"
 #include "IOSAppDelegate.h"
 
+#import <TapCommonSDK/TapCommonSDK.h>
 #import <TapCommonSDK/TDSBridge.h>
 
 class IOSBridge:public IBridge{
