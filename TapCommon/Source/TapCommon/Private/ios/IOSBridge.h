@@ -1,6 +1,10 @@
 #pragma once
+#pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
+#pragma clang diagnostic ignored "-Wundef"
+
 #include "Core.h"
 #include "TapBridge.h"
+
 #include "IOSAppDelegate.h"
 
 #import <TapCommonSDK/TDSBridge.h>
