@@ -19,10 +19,6 @@
 			"Name": "TapDB",
 			"Type": "Runtime",
 			"LoadingPhase": "PreLoadingScreen"
-		},{
-			"Name": "TapDBEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
 		}
 	]
 }

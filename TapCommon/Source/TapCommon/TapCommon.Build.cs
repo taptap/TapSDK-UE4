@@ -32,8 +32,8 @@ public class TapCommon : ModuleRules
             {
                 "Core",
 				// ... add other public dependencies that you statically link with here ...
-				"Json",
-                "JsonUtilities"
+                "Json",
+				"JsonUtilities",
 			}
             );
 
@@ -72,7 +72,7 @@ public class TapCommon : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapCommonSDK",
-                    "../TapCommon/ios/framework/TapCommonSDK.embeddedframework.zip",
+                    "../TapCommon/ios/TapCommonSDK.embeddedframework.zip",
                     "Resource/TapCommonResource.bundle"
                 )
             );

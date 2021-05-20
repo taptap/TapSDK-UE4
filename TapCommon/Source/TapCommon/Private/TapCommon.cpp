@@ -22,5 +22,10 @@ void FTapCommonModule::ShutdownModule()
 IMPLEMENT_MODULE(FTapCommonModule, TapCommon)
 
 FTapCommonModule::FBridgeCallback FTapCommonModule::OnBridgeCallback;
-
 FTapCommonModule::FGetRegionCode FTapCommonModule::OnRegionCode;
+FTapCommonModule::FIsTapTapInstalled FTapCommonModule::OnTapTapInstalled;
+FTapCommonModule::FIsTapGlobalInstalled FTapCommonModule::OnTapGlobalInstalled;
+FTapCommonModule::FUpdateGameInTapTap FTapCommonModule::OnUpdateGameInTapTap;
+FTapCommonModule::FUpdateGameInTapGlobal FTapCommonModule::OnUpdateGameInTapGlobal;
+FTapCommonModule::FOpenReviewInTapGlobal FTapCommonModule::OnOpenReviewInTapGlobal;
+FTapCommonModule::FOpenReviewInTapTap FTapCommonModule::OnOpenReviewInTapTap;

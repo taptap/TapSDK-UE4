@@ -20,14 +20,18 @@ FString TapJson::ToJSON(TSharedPtr<FJsonObject> jsonObject)
 
 FString TapJson::ConstructorCommand(FString serviceName, FString method, FString args, bool callback, FString callbackId,bool onceTime)
 {
-    TSharedPtr<FJsonObject> commandJson = MakeShareable(new FJsonObject);
-    commandJson->SetStringField("service", serviceName);
-    commandJson->SetStringField("method", method);
-    commandJson->SetStringField("args", args);
-    commandJson->SetBoolField("callback", callback);
-    commandJson->SetStringField("callbackId", callbackId);
-    commandJson->SetBoolField("onceTime",onceTime);
-    return TapJson::ToJSON(commandJson);
+    FString JsonOutString;
+    TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
+    Writer->WriteObjectStart();
+    Writer->WriteValue(TEXT("service"), serviceName);
+    Writer->WriteValue(TEXT("method"), method);
+    Writer->WriteValue(TEXT("args"), args);
+    Writer->WriteValue(TEXT("callback"), callback);
+    Writer->WriteValue(TEXT("callbackId"), callbackId);
+    Writer->WriteValue(TEXT("onceTime"), onceTime);
+    Writer->WriteObjectEnd();
+    Writer->Close();
+    return JsonOutString;
 }
 
 #endif

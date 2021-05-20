@@ -27,6 +27,33 @@ class UTapMomentBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "TapMoment sample test testing"), Category = "TapMomentTesting")
-	static float TapMomentSampleFunction(float Param);
+	UFUNCTION(BlueprintCallable, Category = "TapMoment")
+	static void SetCallback();
+
+	UFUNCTION(BlueprintCallable, Category = "TapMoment")
+	static void FetchNotification();
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment"),Category = "TapMoment")
+	static void Open(int config);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment With ImagePath"),Category = "TapMoment")
+	static void OpenWithImagePath(int config,TArray<FString> imagePath,FString content);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment With VideoPath"),Category = "TapMoment")
+	static void OpenWithVidePath(int config,TArray<FString> videPath,FString title ,FString content);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment With ImagePath and VideoPath"),Category = "TapMoment")
+	static void OpenWithMedia(int config,TArray<FString> imagePath,TArray<FString> videPath,FString title ,FString content);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment with extras"))
+	static void DirectlyOpen(int config,FString page,FString extras);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Close Moment"),Category = "TapMoment")
+	static void Close();
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Close Moment with params"),Category = "TapMoment")
+	static void CloseWithParams(FString title,FString content);
+
+	void OnBridgeCallback(const FString &result);
+
 };

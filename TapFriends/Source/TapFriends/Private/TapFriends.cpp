@@ -20,3 +20,34 @@ void FTapFriendsModule::ShutdownModule()
 #undef LOCTEXT_NAMESPACE
 	
 IMPLEMENT_MODULE(FTapFriendsModule, TapFriends)
+
+FTapFriendsModule::FAddFriend FTapFriendsModule::OnAddFriendCallback;
+FTapFriendsModule::FAddFriendError FTapFriendsModule::OnAddFriendError;
+
+FTapFriendsModule::FDeleteFriend FTapFriendsModule::OnDeleteFriendCallback;
+FTapFriendsModule::FDeleteFriendError FTapFriendsModule::OnDeleteFriendError;
+
+FTapFriendsModule::FGetFollowingList FTapFriendsModule::OnGetFollowingListSuccess;
+FTapFriendsModule::FGetFollowingListError FTapFriendsModule::OnGetFollowingListError;
+
+FTapFriendsModule::FGetFollowerList FTapFriendsModule::OnGetFollowerListSuccess;
+FTapFriendsModule::FGetFollowerListError FTapFriendsModule::OnGetFollowerListError;
+
+FTapFriendsModule::FBlockUser FTapFriendsModule::OnBlockUserCallback;
+FTapFriendsModule::FBlockUserError FTapFriendsModule::OnBlockUserError;
+
+FTapFriendsModule::FUnBlockUser FTapFriendsModule::OnUnBlockUserCallback;
+FTapFriendsModule::FUnBlockUserError FTapFriendsModule::OnUnBlockUserError;
+
+FTapFriendsModule::FGetBlockUserList FTapFriendsModule::OnBlockUserListCallback;
+FTapFriendsModule::FGetBlockUserListError FTapFriendsModule::OnGetBlockUserListError;
+
+FTapFriendsModule::FSearchUser FTapFriendsModule::OnSearchCallback;
+FTapFriendsModule::FSearchUserError FTapFriendsModule::OnSearchError;
+
+FTapFriendsModule::FGenerateFriendInvitation FTapFriendsModule::OnGenerateFriendInvitationCallback;
+FTapFriendsModule::FRegisterMessageListener FTapFriendsModule::OnMessage;
+FTapFriendsModule::FSendFriendInvitation FTapFriendsModule::OnSendFriendInvitationCallback;
+
+
+

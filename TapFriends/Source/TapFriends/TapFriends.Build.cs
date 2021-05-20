@@ -1,6 +1,8 @@
 // Some copyright should be here...
 
 using UnrealBuildTool;
+using System.IO;
+using System;
 
 public class TapFriends : ModuleRules
 {
@@ -8,6 +10,10 @@ public class TapFriends : ModuleRules
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
+
+        PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public")));
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
@@ -27,6 +33,9 @@ public class TapFriends : ModuleRules
 			{
 				"Core",
 				// ... add other public dependencies that you statically link with here ...
+				"TapCommon",
+                "Json",
+				"JsonUtilities",
 			}
 			);
 			
@@ -49,5 +58,30 @@ public class TapFriends : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
+
+		if (Target.Platform == UnrealTargetPlatform.IOS)
+        {
+            // PublicAdditionalFrameworks.Add(
+            //     new Framework(
+            //         "TapFriendsSDK",
+            //         "../TapFriends/ios/framework/TapFriendsSDK.embeddedframework.zip",
+            //         "Resource/TapFriendsResource.bundle"
+            //     )
+            // );
+        }
+
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            PrivateDependencyModuleNames.AddRange(
+                new string[]
+                {
+                        "Launch"
+                }
+            );
+            AdditionalPropertiesForReceipt.Add(
+                "AndroidPlugin",
+                Path.Combine(ModuleDirectory, "TapFriends_Android_UPL.xml")
+            );
+        }
 	}
 }

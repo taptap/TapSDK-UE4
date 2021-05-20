@@ -13,10 +13,28 @@ class TAPBOOTSTRAP_API UTapBootstrapSettings : public UObject
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, config, Category = "Bootstrap")
-    FString ClientId;
+    UTapBootstrapSettings(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer), clientID(""), clientSecret(""), bIsCN(true), bTapDBEnable(false), gameVersion(""), gameChannel("")
+    {
+    }
 
-    UPROPERTY(EditAnywhere, config, Category = "Bootstrap")
-    bool IsCN;
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "TapTap clientID"), Category = "Bootstrap Config")
+    FString clientID;
 
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "TapTap Secret"), Category = "Bootstrap Config")
+    FString clientSecret;
+
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "China Mainland"), Category = "Bootstrap Config")
+    bool bIsCN;
+
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "Open TapDB"), Category = "TapDB Config")
+    bool bTapDBEnable;
+
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "iOS 14 Open IDFA",EditCondition = "bTapDBEnable"), Category = "TapDB Config")
+    bool bAdvertiserIDCollectionEnabled;
+
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "Game Version",EditCondition = "bTapDBEnable"), Category = "TapDB Config" )
+    FString gameVersion;
+
+    UPROPERTY(EditAnywhere, config, meta = (DisplayName = "Game Channel",EditCondition = "bTapDBEnable"), Category = "TapDB Config")
+    FString gameChannel;
 };

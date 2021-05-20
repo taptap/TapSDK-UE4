@@ -3,6 +3,8 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "TapError.h"
+#include "TapResult.h"
 #include "TapCommonBPLibrary.generated.h"
 
 /* 
@@ -35,7 +37,27 @@ class UTapCommonBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category="TapCommon")
 	static void GetRegionCode();
-	
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static void IsTapTapInstalled();
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static void IsTapGlobalInstalled();
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static void UpdateGameInTapTap(FString appId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static void UpdateGameInTapGlobal(FString appId);
+
+	UFUNCTION(BlueprintCallable, Category = "TapCommon")
+	static void OpenReviewInTapTap(FString appId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static void OpenReviewInTapGlobal(FString appId);
+
+	static bool CheckResult(const FTapResult result);
+
 	void OnBridgeCallback(const FString &result);
 	
 };
@@ -48,18 +70,5 @@ struct FTapCommonRegionCode
 	
 	UPROPERTY()
 	bool isMainland;
-
-};
-
-USTRUCT()
-struct FTapError
-{
-    GENERATED_BODY()
-	
-	UPROPERTY()
-	int code;
-
-	UPROPERTY()
-	FString error_description;
 
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "TapLanguage.h"
 #include "TapBootstrapBPLibrary.generated.h"
 
 /* 
@@ -27,6 +28,39 @@ class TAPBOOTSTRAP_API UTapBootstrapBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
-	// UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "TapBootstrap sample test testing"), Category = "TapBootstrapTesting")
-	static float TapBootstrapSampleFunction(float Param);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Login by TapTap"), Category = "TapBootstrap")
+	static void Login(TArray<FString> permissions);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Register UserStatus Listener"), Category = "TapBootstrap")
+	static void RegisterUserStatusChangedListener();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Register Login Result Listener"), Category = "TapBootstrap")
+	static void RegisterLoginResultListener();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get TapTap Userinfo"), Category = "TapBootstrap")
+	static void GetUser();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get TapTap Detail Userinfo"), Category = "TapBootstrap")
+	static void GetDetailUser();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get TapTap AccessToken"), Category = "TapBootstrap")
+	static void GetAccessToken();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Open User Center"), Category = "TapBootstrap")
+	static void OpenUserCenter();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TapTap Logout"), Category = "TapBootstrap")
+	static void Logout();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TapTap Language config"), Category = "TapBootstrap")
+	static void SetPreferLanguage(FTapLanguage language);
+
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "TapTap Test Qualification"), Category = "TapBootstrap")
+	static void GetTestQualification();
+
+	void OnBridgeCallback(const FString &result);
+
 };
+
+
+

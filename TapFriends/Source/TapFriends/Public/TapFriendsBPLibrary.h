@@ -27,6 +27,38 @@ class UTapFriendsBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "TapFriends sample test testing"), Category = "TapFriendsTesting")
-	static float TapFriendsSampleFunction(float Param);
+	UFUNCTION(BlueprintCallable,Category = "TapFriends")
+	static void AddFriends(FString userId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapFriends")
+	static void DeleteFriends(FString userId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapFriends")
+	static void GetFollowingList(int from,bool mutualAttentation,int limit);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void GetFollowerList(int from,int limit);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void BlockUser(FString userId);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void UnblockUser(FString userId);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void GetBlockUserList(int from,int limit);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void SearchUser(FString userId);
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void RegisterMessageListener();
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void GenerateFriendInvitation();
+
+	UFUNCTION(BlueprintCallable ,Category = "TapFriends")
+	static void SendFriendInvitation();
+
+	void OnBridgeCallback(const FString &result);
 };

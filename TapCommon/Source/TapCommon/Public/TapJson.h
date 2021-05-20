@@ -11,7 +11,6 @@
 class TapJson
 {
 
-
 public:
     static TSharedPtr<FJsonObject> Parse(FString json);
 
@@ -20,7 +19,6 @@ public:
 
 public:
     static FString ConstructorCommand(FString serviceName, FString method, FString args, bool callback, FString callbackId,bool onceTime);
-
 
 };
 
