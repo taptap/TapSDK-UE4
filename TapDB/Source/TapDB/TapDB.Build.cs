@@ -1,13 +1,18 @@
 // Some copyright should be here...
 
 using UnrealBuildTool;
+using System.IO;
+using System;
 
 public class TapDB : ModuleRules
 {
 	public TapDB(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+
+        PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public")));
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
@@ -26,6 +31,10 @@ public class TapDB : ModuleRules
 			new string[]
 			{
 				"Core",
+				"TapCommon",
+                "Json",
+			    "ApplicationCore",
+				"JsonUtilities",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -49,5 +58,31 @@ public class TapDB : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
+
+		if (Target.Platform == UnrealTargetPlatform.IOS)
+        {
+			PublicFrameworks.AddRange(
+                new string[]{
+                    "AdSupport",
+                    "CoreMotion",
+                    "Security",
+                    "AppTrackingTransparency"
+                });
+
+            PublicAdditionalFrameworks.Add(
+                new Framework(
+                    "TapDB",
+                    "../TapDB/ios/framework/TapDB.embeddedframework.zip"
+                )
+            );
+        }
+
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            AdditionalPropertiesForReceipt.Add(
+                "AndroidPlugin",
+                Path.Combine(ModuleDirectory, "TapDB_Android_UPL.xml")
+            );
+        }
 	}
 }

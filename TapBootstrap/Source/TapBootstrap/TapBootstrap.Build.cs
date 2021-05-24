@@ -28,14 +28,26 @@ public class TapBootstrap : ModuleRules
             );
 
 
+        PublicIncludePaths.AddRange(
+            new string[] {
+				// ... add public include paths required here ...
+			}
+            );
+
+
+        PrivateIncludePaths.AddRange(
+            new string[] {
+				// ... add other private include paths required here ...
+			}
+            );
+
+
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
                 "Core",
+                "ApplicationCore"
 				// ... add other public dependencies that you statically link with here ...
-				"TapCommon",
-                "Json",
-				"JsonUtilities",
 			}
             );
 
@@ -59,15 +71,33 @@ public class TapBootstrap : ModuleRules
 			}
             );
 
+        PublicDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "Analytics",
+                    "Engine",
+                    "RenderCore",
+                    "RHI",
+                    "Core",
+                    "CoreUObject",
+                    "Slate",
+                    "SlateCore",
+                    "UMG",
+                    "Json",
+                    "JsonUtilities",
+                    "TapCommon"
+                }
+            );
+
         if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-            // PublicAdditionalFrameworks.Add(
-            //     new Framework(
-            //         "TapBootstrapSDK",
-            //         "../TapBootstrap/ios/TapBoostrapSDK.embeddedframework.zip",
-            //         "Resource/TapBootstrapResource.bundle"
-            //     )
-            // );
+            PublicAdditionalFrameworks.Add(
+                new Framework(
+                    "TapBootstrapSDK",
+                    "../TapBootstrap/ios/framework/TapBootstrapSDK.embeddedframework.zip",
+                    "Resource/TapBootstrapResource.bundle"
+                )
+            );
         }
 
         if (Target.Platform == UnrealTargetPlatform.Android)

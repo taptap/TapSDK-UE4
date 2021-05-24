@@ -31,9 +31,8 @@ public class TapCommon : ModuleRules
             new string[]
             {
                 "Core",
+                "ApplicationCore"
 				// ... add other public dependencies that you statically link with here ...
-                "Json",
-				"JsonUtilities",
 			}
             );
 
@@ -57,6 +56,23 @@ public class TapCommon : ModuleRules
 			}
             );
 
+        PublicDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "Analytics",
+                    "Engine",
+                    "RenderCore",
+                    "RHI",
+                    "Core",
+                    "CoreUObject",
+                    "Slate",
+                    "SlateCore",
+                    "UMG",
+                    "Json",
+                    "JsonUtilities"
+                }
+            );
+
         if (Target.Platform == UnrealTargetPlatform.IOS)
         {
             PublicFrameworks.AddRange(
@@ -72,7 +88,7 @@ public class TapCommon : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapCommonSDK",
-                    "../TapCommon/ios/TapCommonSDK.embeddedframework.zip",
+                    "../TapCommon/ios/framework/TapCommonSDK.embeddedframework.zip",
                     "Resource/TapCommonResource.bundle"
                 )
             );

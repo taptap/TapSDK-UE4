@@ -1,0 +1,36 @@
+{
+    "zh_hans":{
+        "add_friend_content_head_not_follow":"关注或拉黑该用户，",
+        "add_friend_content_head_followed":"取关或拉黑该用户，",
+        "add_friend_content_head_remove_black":"将该用户移出黑名单后，",
+        "add_friend_content_center":"TapTap内以及其他使用Tap好友关系的游戏会 同步生效。",
+        "add_friend_content_foot":"同步生效",
+        "add_friend_action_follow":"立即关注",
+        "add_friend_action_followed":"已关注",
+        "add_friend_action_unblock":"移出黑名单",
+        "add_friend_action_block":"移入黑名单",
+        "add_friend_toast_followed":"已关注%s",
+        "add_friend_toast_unfollowed":"已取消关注%s",
+        "add_friend_toast_blocked":"已将%s加入黑名单",
+        "add_friend_toast_unblocked":"已将%s移出黑名单",
+        "add_friend_toast_user_not_found":"该用户不存在",
+        "add_friend_toast_action_failed":"操作失败"
+    },
+    "en":{
+        "add_friend_content_head_not_follow":"When you follow or block this user, ",
+        "add_friend_content_head_followed":"When you unfollow or block this user, ",
+        "add_friend_content_head_remove_black":"When you remove this user from the blacklist, ",
+        "add_friend_content_center":"this will be a synchronised action applied to TapTap and other games that use Tap Friends List.",
+        "add_friend_content_foot":"synchronised action",
+        "add_friend_action_follow":"Follow",
+        "add_friend_action_followed":"Following",
+        "add_friend_action_unblock":"Remove from Blacklist",
+        "add_friend_action_block":"Add to Blacklist",
+        "add_friend_toast_followed":"You are following %s",
+        "add_friend_toast_unfollowed":"You are no longer following %s",
+        "add_friend_toast_blocked":"You have blocked %s",
+        "add_friend_toast_unblocked":"You have unblocked %s",
+        "add_friend_toast_user_not_found":"User Not Found",
+        "add_friend_toast_action_failed":"Failed"
+    }
+}

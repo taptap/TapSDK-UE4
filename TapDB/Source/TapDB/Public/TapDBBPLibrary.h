@@ -3,6 +3,8 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "CoreMinimal.h"
+#include "TapDBDynamicProperties.h"
 #include "TapDBBPLibrary.generated.h"
 
 /* 
@@ -22,11 +24,79 @@
 *	For more info on custom blueprint nodes visit documentation:
 *	https://wiki.unrealengine.com/Custom_Blueprint_Node_Creation
 */
+
+
 UCLASS()
 class UTapDBBPLibrary : public UBlueprintFunctionLibrary
 {
-	GENERATED_UCLASS_BODY()
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "TapDB sample test testing"), Category = "TapDBTesting")
-	static float TapDBSampleFunction(float Param);
+public:
+	
+	GENERATED_UCLASS_BODY()	
+
+	static TapDBDynamicProperties* dbDynamicProperties;
+	
+	static void RegisterDynamicProperties(TapDBDynamicProperties* properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void Init(FString clientID,FString channel,FString gameVersion,bool isCN);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void SetUser(FString userId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void SetUserWithLoginType(FString userId,FString loginType);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void SetName(FString name);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void SetLevel(int level);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void SetServer(FString server);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void OnCharge(FString orderId,FString product,int32 amount,FString currencyType,FString payment);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void TrackEvent(FString eventName,FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void RegisterStaticProperties(FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void UnregisterStaticProperty(FString key);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void ClearStaticProperties();
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void DeviceInitialize(FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void DeviceUpdate(FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void DeviceAdd(FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void UserInitialize(FString properties);
+	
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void UserUpdate(FString properties);
+	
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+ 	static void UserAdd(FString properties);
+
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+ 	static void ClearUser();
+	
+	UFUNCTION(BlueprintCallable,Category = "TapDB")
+	static void AdvertiserIDCollectionEnabled(bool enable);
+
+
+
 };
+
+

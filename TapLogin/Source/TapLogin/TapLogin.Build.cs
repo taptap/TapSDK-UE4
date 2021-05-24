@@ -52,6 +52,17 @@ public class TapLogin : ModuleRules
 			}
 			);
 
+		if (Target.Platform == UnrealTargetPlatform.IOS)
+        {
+			
+            PublicAdditionalFrameworks.Add(
+                new Framework(
+                    "TapLoginSDK",
+                    "../TapLogin/ios/framework/TapLoginSDK.embeddedframework.zip"
+                )
+            );
+        }
+
 		if (Target.Platform == UnrealTargetPlatform.Android)
         {
             PrivateDependencyModuleNames.AddRange(

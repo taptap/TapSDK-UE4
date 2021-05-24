@@ -4,7 +4,6 @@
 
 #include "Core.h"
 #include "TapBridge.h"
-
 #include "IOSAppDelegate.h"
 
 #import <TapCommonSDK/TDSBridge.h>

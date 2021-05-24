@@ -4,7 +4,7 @@
 	"VersionName": "2.1.0",
 	"FriendlyName": "TapBootstrap",
 	"Description": "TapTap Bootstrap",
-	"Category": "TapTap Bootstrap",
+	"Category": "TapTap",
 	"CreatedBy": "xiaoyi",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -18,7 +18,7 @@
 		{
 			"Name": "TapBootstrap",
 			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
+			"LoadingPhase": "Default"
 		},{
 			"Name": "TapBootstrapEditor",
 			"Type": "Editor",

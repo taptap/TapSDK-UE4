@@ -61,13 +61,12 @@ public class TapFriends : ModuleRules
 
 		if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-            // PublicAdditionalFrameworks.Add(
-            //     new Framework(
-            //         "TapFriendsSDK",
-            //         "../TapFriends/ios/framework/TapFriendsSDK.embeddedframework.zip",
-            //         "Resource/TapFriendsResource.bundle"
-            //     )
-            // );
+            PublicAdditionalFrameworks.Add(
+                new Framework(
+                    "TapFriendSDK",
+                    "../TapFriends/ios/framework/TapFriendsSDK.embeddedframework.zip"
+                )
+            );
         }
 
         if (Target.Platform == UnrealTargetPlatform.Android)

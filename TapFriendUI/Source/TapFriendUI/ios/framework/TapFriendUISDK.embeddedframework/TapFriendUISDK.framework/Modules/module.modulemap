@@ -1,0 +1,6 @@
+framework module TapFriendUISDK {
+  umbrella header "TapFriendUISDK.h"
+
+  export *
+  module * { export * }
+}

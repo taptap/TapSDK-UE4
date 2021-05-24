@@ -4,7 +4,7 @@
 	"VersionName": "2.1.0",
 	"FriendlyName": "TapDB",
 	"Description": "TapTap TapDB",
-	"Category": "TapTap TapDB",
+	"Category": "TapTap",
 	"CreatedBy": "xiaoyi",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -20,5 +20,11 @@
 			"Type": "Runtime",
 			"LoadingPhase": "PreLoadingScreen"
 		}
+	],
+	"Plugins": [
+    	{
+    		"Name": "TapCommon",
+       		"Enabled": true
+   	 	}
 	]
 }

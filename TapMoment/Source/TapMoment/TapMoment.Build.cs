@@ -61,13 +61,24 @@ public class TapMoment : ModuleRules
 
 		if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-            // PublicAdditionalFrameworks.Add(
-            //     new Framework(
-            //         "TapMomentSDK",
-            //         "../TapMoment/ios/framework/TapMomentSDK.embeddedframework.zip",
-            //         "Resource/TapMomentResource.bundle"
-            //     )
-            // );
+			PublicFrameworks.AddRange(
+                new string[]{
+                    "AVFoundation",
+                    "WebKit",
+                    "SystemConfiguration",
+                    "CoreTelephony",
+                    "MobileCoreServices",
+                    "Security",
+					"Photos"
+                });
+			
+            PublicAdditionalFrameworks.Add(
+                new Framework(
+                    "TapMomentSDK",
+                    "../TapMoment/ios/framework/TapMomentSDK.embeddedframework.zip",
+                    "Resource/TapMomentResource.bundle"
+                )
+            );
         }
 
         if (Target.Platform == UnrealTargetPlatform.Android)

@@ -6,6 +6,35 @@
 #include "TapBridge.h"
 #include "TapBootstrapBPLibrary.h"
 
+#if PLATFORM_IOS
+
+#pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
+#pragma clang diagnostic ignored "-Wundef"
+
+#include "IOSAppDelegate.h"
+
+#import <TapBootstrapSDK/TapBootstrapSDK.h>
+#import <TapBootstrapSDK/TapBootstrap.h>
+
+#pragma mark - AppDelegate
+@interface IOSAppDelegate (TapBootstrap)
+
+@end
+
+@implementation IOSAppDelegate (TapBootstrap)
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+   return [TapBootstrap handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+   return [TapBootstrap handleOpenURL:url];
+}
+
+@end
+
+#endif
+
 #define LOCTEXT_NAMESPACE "FTapBootstrapModule"
 
 void FTapBootstrapModule::StartupModule()

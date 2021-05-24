@@ -4,7 +4,7 @@
 	"VersionName": "1.0",
 	"FriendlyName": "TapLogin",
 	"Description": "TapTap Login",
-	"Category": "TapTap Login",
+	"Category": "TapTap",
 	"CreatedBy": "xiaoyi",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -20,5 +20,11 @@
 			"Type": "Runtime",
 			"LoadingPhase": "PreLoadingScreen"
 		}
+	],
+	"Plugins": [
+    	{
+    		"Name": "TapCommon",
+       		"Enabled": true
+   	 	}
 	]
 }
