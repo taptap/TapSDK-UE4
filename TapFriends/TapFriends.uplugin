@@ -25,6 +25,9 @@
     	{
     		"Name": "TapCommon",
        		"Enabled": true
+   	 	},{
+    		"Name": "TapBootstrap",
+       		"Enabled": true
    	 	}
 	]
 }
