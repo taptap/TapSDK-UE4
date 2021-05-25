@@ -6,68 +6,73 @@ using System;
 
 public class TapDB : ModuleRules
 {
-	public TapDB(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+    public TapDB(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
         PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public")));
 
-		PublicIncludePaths.AddRange(
-			new string[] {
+        PublicIncludePaths.AddRange(
+            new string[] {
 				// ... add public include paths required here ...
 			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
+            );
+
+
+        PrivateIncludePaths.AddRange(
+            new string[] {
 				// ... add other private include paths required here ...
 			}
-			);
-			
-		
-		PublicDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"Core",
-				"TapCommon",
+            );
+
+
+        PublicDependencyModuleNames.AddRange(
+            new string[]
+            {
+                "Core",
+                "TapCommon",
                 "Json",
-			    "ApplicationCore",
-				"JsonUtilities",
+                "ApplicationCore",
+                "JsonUtilities",
 				// ... add other public dependencies that you statically link with here ...
 			}
-			);
-			
-		
-		PrivateDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
+            );
+
+
+        PrivateDependencyModuleNames.AddRange(
+            new string[]
+            {
+                "CoreUObject",
+                "Engine",
+                "Slate",
+                "SlateCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
-			);
-		
-		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
+            );
+
+
+        DynamicallyLoadedModuleNames.AddRange(
+            new string[]
+            {
 				// ... add any modules that your module loads dynamically here ...
 			}
-			);
+            );
 
-		if (Target.Platform == UnrealTargetPlatform.IOS)
+        if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-			PublicFrameworks.AddRange(
+            PublicFrameworks.AddRange(
                 new string[]{
                     "AdSupport",
                     "CoreMotion",
                     "Security",
-                    "AppTrackingTransparency"
                 });
+
+            PublicWeakFrameworks.AddRange(
+                new string[]{
+                    "AppTrackingTransparency",
+                }
+            );
 
             PublicAdditionalFrameworks.Add(
                 new Framework(
@@ -84,5 +89,5 @@ public class TapDB : ModuleRules
                 Path.Combine(ModuleDirectory, "TapDB_Android_UPL.xml")
             );
         }
-	}
+    }
 }

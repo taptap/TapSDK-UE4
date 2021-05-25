@@ -45,8 +45,8 @@ class UTapMomentBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment With ImagePath and VideoPath"),Category = "TapMoment")
 	static void OpenWithMedia(int config,TArray<FString> imagePath,TArray<FString> videPath,FString title ,FString content);
 
-	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment with extras"))
-	static void DirectlyOpen(int config,FString page,FString extras);
+	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Open Moment with extras"),Category = "TapMoment")
+	static void DirectlyOpen(int config,FString page, FString extras);
 
 	UFUNCTION(BlueprintCallable,meta = (DisplayName = "Close Moment"),Category = "TapMoment")
 	static void Close();
