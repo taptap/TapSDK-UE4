@@ -24,7 +24,7 @@ static void OnTapFriendsOpenURL(UIApplication* application, NSURL* url, NSString
 void FTapFriendsModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-#if PLATFORM_IOS
+#if PLATFORM_IOS || EXTEND_OPENURL
 	FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapFriendsOpenURL);
 #endif
 }

@@ -85,7 +85,7 @@ void FTapBootstrapModule::StartupModule()
 		UTapBootstrapBPLibrary::RegisterLoginResultListener();
 		UTapBootstrapBPLibrary::RegisterUserStatusChangedListener();
 
-#if PLATFORM_IOS
+#if PLATFORM_IOS || EXTEND_OPENURL
 		FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapBootstrapOpenURL);
 #endif
 
