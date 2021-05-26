@@ -269,9 +269,9 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
             bool getTestQualificationParseEnable = FJsonSerializer::Deserialize(testQualificationReader,testQualificationRoot);
             if(getTestQualificationParseEnable){
                 bool testQualification = testQualificationRoot->GetIntegerField(TEXT("userTestQualification")) == 1;
-                if(testQualification){
-                    TSharedPtr<FJsonObject> testQualificationInner = testQualificationRoot->GetObjectField(TEXT("error"));
-                    error = {testQualificationInner->GetIntegerField(TEXT("code")),testQualificationInner->GetStringField(TEXT("error_description"))};
+                if(!testQualification){
+                    FString testInnerStr = testQualificationRoot->GetStringField(TEXT("error"));
+                    FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(testInnerStr,&error,0,0);
                     FTapBootstrapModule::OnGetTestQualificationError.Broadcast(error);
                 }
                 FTapBootstrapModule::OnGetTestQualification.Broadcast(testQualification);
