@@ -4,10 +4,29 @@
 
 #define LOCTEXT_NAMESPACE "FTapFriendsModule"
 
+#if PLATFORM_IOS
+
+#pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
+#pragma clang diagnostic ignored "-Wundef"
+
+#include "IOSAppDelegate.h"
+#include "Misc/CoreDelegates.h"
+
+#import <TapFriendSDK/TapFriendSDK.h>
+
+static void OnTapFriendsOpenURL(UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation){
+	NSLog(@"OnTapBootstrapURL");
+	[TapFriends handleOpenURL:url];
+}
+
+#endif
+
 void FTapFriendsModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
+#if PLATFORM_IOS
+	FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapFriendsOpenURL);
+#endif
 }
 
 void FTapFriendsModule::ShutdownModule()

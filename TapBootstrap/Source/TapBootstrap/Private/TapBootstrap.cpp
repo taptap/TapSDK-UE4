@@ -12,26 +12,15 @@
 #pragma clang diagnostic ignored "-Wundef"
 
 #include "IOSAppDelegate.h"
+#include "Misc/CoreDelegates.h"
 
 #import <TapBootstrapSDK/TapBootstrapSDK.h>
 #import <TapBootstrapSDK/TapBootstrap.h>
 
-#pragma mark - AppDelegate
-@interface IOSAppDelegate (TapBootstrap)
-
-@end
-
-@implementation IOSAppDelegate (TapBootstrap)
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-   return [TapBootstrap handleOpenURL:url];
+static void OnTapBootstrapOpenURL(UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation){
+	NSLog(@"OnTapBootstrapURL");
+	[TapBootstrap handleOpenURL:url];
 }
-
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-   return [TapBootstrap handleOpenURL:url];
-}
-
-@end
 
 #endif
 
@@ -95,6 +84,10 @@ void FTapBootstrapModule::StartupModule()
 
 		UTapBootstrapBPLibrary::RegisterLoginResultListener();
 		UTapBootstrapBPLibrary::RegisterUserStatusChangedListener();
+
+#if PLATFORM_IOS
+		FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapBootstrapOpenURL);
+#endif
 
 	}
 #endif
