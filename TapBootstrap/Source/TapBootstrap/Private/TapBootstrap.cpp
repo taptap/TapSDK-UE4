@@ -15,7 +15,6 @@
 #include "Misc/CoreDelegates.h"
 
 #import <TapBootstrapSDK/TapBootstrapSDK.h>
-#import <TapBootstrapSDK/TapBootstrap.h>
 
 static void OnTapBootstrapOpenURL(UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation){
 	NSLog(@"OnTapBootstrapURL");
@@ -49,11 +48,6 @@ void FTapBootstrapModule::StartupModule()
 		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bIsCN"), bIsCN, GGameIni);
 		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bTapDBEnable"), bTapDBEnable, GGameIni);
 		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bAdvertiserIDCollectionEnabled"), bAdvertiserIDCollectionEnabled, GGameIni);
-
-		UE_LOG(LogTemp,Log,TEXT("TapBootstrap ClientID from UE Editor %s"),*clientID);
-		UE_LOG(LogTemp,Log,TEXT("TapBootstrap clientSecret from UE Editor %s"),*clientSecret);
-		UE_LOG(LogTemp,Log,TEXT("TapBootstrap gameVersion from UE Editor %s"),*gameVersion);
-		UE_LOG(LogTemp,Log,TEXT("TapBootstrap gameChannel from UE Editor %s"),*gameChannel);
 
 		FString configJSON;
 		TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> configWriter = TJsonWriterFactory< TCHAR, TCondensedJsonPrintPolicy<TCHAR> >::Create(&configJSON);
