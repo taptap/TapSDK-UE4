@@ -5,7 +5,7 @@
 	"FriendlyName": "TapMoment",
 	"Description": "TapTap Moment",
 	"Category": "TapTap",
-	"CreatedBy": "xiaoyi",
+	"CreatedBy": "TapTap Develop Service",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
@@ -22,9 +22,9 @@
 		}
 	],
 	"Plugins": [
-    	{
-    		"Name": "TapCommon",
-       		"Enabled": true
-   	 	}
+		{
+			"Name": "TapCommon",
+			"Enabled": true
+		}
 	]
 }
