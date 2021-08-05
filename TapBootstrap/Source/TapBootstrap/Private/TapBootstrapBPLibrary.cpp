@@ -43,11 +43,17 @@ void UTapBootstrapBPLibrary::Login(TArray<FString> permissions){
     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
     Writer->WriteObjectStart();
     Writer->WriteValue(TEXT("permissions"), permissions);
-    Writer->WriteValue(TEXT("login"),0);
     Writer->WriteObjectEnd();
     Writer->Close();
 
-    FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("login"), JsonOutString, false, TEXT(""),false);
+    FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("login"), JsonOutString, true, TEXT(TAP_BOOTSTRAP_REGISTER_LOGIN_ID),false);
+    GetBridge()->CallHandler(commandJson);
+#endif
+}
+
+void UTapBootstrapBPLibrary::AnonymouslyLogin(){
+#if PLATFORM_ANDROID || PLATFORM_IOS
+    FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("anonymouslyLogin"), TEXT(""), true, TEXT(TAP_BOOTSTRAP_REGISTER_LOGIN_ID),false);
     GetBridge()->CallHandler(commandJson);
 #endif
 }

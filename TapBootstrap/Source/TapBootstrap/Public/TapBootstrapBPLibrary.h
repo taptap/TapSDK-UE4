@@ -31,6 +31,9 @@ class TAPBOOTSTRAP_API UTapBootstrapBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Login by TapTap"), Category = "TapBootstrap")
 	static void Login(TArray<FString> permissions);
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Anonymously Login by TapTap"), Category = "TapBootstrap")
+	static void AnonymouslyLogin();
+
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Register UserStatus Listener"), Category = "TapBootstrap")
 	static void RegisterUserStatusChangedListener();
 

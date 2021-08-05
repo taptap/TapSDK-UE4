@@ -18,7 +18,7 @@
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'TapLicense_2.1.2', ext:'aar')
+dependencies.implementation(name: 'TapLicense_3.1.0', ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>
