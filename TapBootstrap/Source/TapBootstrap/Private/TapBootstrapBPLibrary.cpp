@@ -147,9 +147,10 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
         FJsonObjectConverter::JsonObjectStringToUStruct<FTapLoginWrapper>(tapResult.content,&loginWrapper,0,0);
 
         if(loginWrapper.loginCallbackCode == 0){
-            FTapAccessToken accessToken;
-            FJsonObjectConverter::JsonObjectStringToUStruct<FTapAccessToken>(loginWrapper.wrapper,&accessToken,0,0);
-            FTapBootstrapModule::OnLoginSuccess.Broadcast(accessToken);
+            FTapUser user;
+            UE_LOG(LogTemp,Warning,TEXT("TapBootstrap OnLoginSuccess:%s"),*loginWrapper.wrapper);
+            FJsonObjectConverter::JsonObjectStringToUStruct<FTapUser>(loginWrapper.wrapper,&user,0,0);
+            FTapBootstrapModule::OnLoginSuccess.Broadcast(user);
             return;
         }
 
@@ -164,35 +165,6 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
             FTapBootstrapModule::OnLoginError.Broadcast(loginError);
             return;
         }
-        return;
-    }
-
-    /** Handler Logout Callback */    
-    if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_REGISTER_STATUS_ID)){
-        if(!UTapCommonBPLibrary::CheckResult(tapResult)){
-            return;
-        }
-        FTapUserStatusWrapper tapUserStatusWrapper;
-        FTapError userStatusError;
-        FJsonObjectConverter::JsonObjectStringToUStruct<FTapUserStatusWrapper>(tapResult.content,&tapUserStatusWrapper,0,0);
-
-        if(tapUserStatusWrapper.userStatusCallbackCode == 1){
-            FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(tapUserStatusWrapper.wrapper,&userStatusError,0,0);
-            FTapBootstrapModule::OnLogout.Broadcast(userStatusError);
-            return;
-        }
-    }
-
-    /** Handler GetAccessToken Callback */
-    if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_GET_ACCESSTOKEN_ID)){
-        FTapAccessToken accessToken;
-        FTapError accessTokenError;
-        if(!UTapCommonBPLibrary::CheckResult(tapResult)){
-            accessTokenError = {80080,"TapSDK get AccessToken error!"};
-            return;
-        }
-        FJsonObjectConverter::JsonObjectStringToUStruct<FTapAccessToken>(tapResult.content,&accessToken,0,0);
-        FTapBootstrapModule::OnGetAccessToken.Broadcast(accessToken);
         return;
     }
 
@@ -218,48 +190,6 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
         FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(userWrapper.wrapper,&userError,0,0);
         FTapBootstrapModule::OnGetUserError.Broadcast(userError);
         return;
-    }
-
-    /** Handler GetUser Detail */
-    if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_GET_DETAIL_USER_ID)){
-        FTapUserDetail detailUser;
-        FTapError detailError;
-        if(!UTapCommonBPLibrary::CheckResult(tapResult)){
-            detailError = {80080,"TapSDK get Detail error!"};
-            FTapBootstrapModule::OnGetUserDetailError.Broadcast(detailError);
-            return;
-        }
-        FTapUserDetailInfoWrapper userDetailWrapper;
-        FJsonObjectConverter::JsonObjectStringToUStruct<FTapUserDetailInfoWrapper>(tapResult.content,&userDetailWrapper,0,0);
-
-        if(userDetailWrapper.getUserDetailInfoCode != 0){
-            if(!FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(userDetailWrapper.wrapper,&detailError,0,0)){
-                detailError = {80000,"GetDetailUserInfo Undefine Error"};
-            }
-            FTapBootstrapModule::OnGetUserDetailError.Broadcast(detailError);
-            return;
-        }
-
-        TSharedRef<TJsonReader<TCHAR>> reader = TJsonReaderFactory<TCHAR>::Create(userDetailWrapper.wrapper);
-        TSharedPtr<FJsonObject> root;
-        FTapUserCenterEntry userCenterEntry;
-        bool getUserDetailPaseEnable = FJsonSerializer::Deserialize(reader,root);
-        if(getUserDetailPaseEnable){
-
-            TSharedPtr<FJsonObject> entryJsonObject = root->GetObjectField(TEXT("entry"));
-            userCenterEntry.isMomentEnable = entryJsonObject->GetBoolField(TEXT("isMomentEnable"));
-
-            detailUser.entry = userCenterEntry;
-            detailUser.user_id = root->GetStringField(TEXT("user_id"));
-            detailUser.avatar = root->GetStringField(TEXT("avatar"));      
-            detailUser.name = root->GetStringField(TEXT("name"));      
-            detailUser.taptap_user_id = root->GetStringField(TEXT("taptap_user_id"));      
-            detailUser.isGuest = root->GetBoolField(TEXT("isGuest"));      
-            detailUser.gender = root->GetIntegerField(TEXT("gender"));
-
-            FTapBootstrapModule::OnGetUserDetailSuccess.Broadcast(detailUser);
-            return;
-        }
     }
 
     if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID)){
