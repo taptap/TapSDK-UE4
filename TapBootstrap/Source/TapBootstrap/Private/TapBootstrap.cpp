@@ -32,8 +32,7 @@ void FTapBootstrapModule::StartupModule()
 #if PLATFORM_ANDROID || PLATFORM_IOS
 
 	FString clientID;
-	FString clientToken;
-	FString serverUrl;
+	FString clientSecret;
 	bool bIsCN = true;
 	bool bTapDBEnable = true;
 	bool bAdvertiserIDCollectionEnabled = false;
@@ -43,8 +42,7 @@ void FTapBootstrapModule::StartupModule()
 	if(GConfig)
 	{
 		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("ClientId"), clientID, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("clientToken"), clientToken, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("serverUrl"), serverUrl, GGameIni);
+		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("clientSecret"), clientSecret, GGameIni);
 		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameVersion"), gameVersion, GGameIni);
 		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameChannel"), gameChannel, GGameIni);
 		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bIsCN"), bIsCN, GGameIni);
@@ -55,8 +53,7 @@ void FTapBootstrapModule::StartupModule()
 		TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> configWriter = TJsonWriterFactory< TCHAR, TCondensedJsonPrintPolicy<TCHAR> >::Create(&configJSON);
 		configWriter->WriteObjectStart();
 		configWriter->WriteValue("clientID",clientID);
-		configWriter->WriteValue("clientToken",clientToken);
-		configWriter->WriteValue("serverUrl",serverUrl);
+		configWriter->WriteValue("clientSecret",clientSecret);
 		configWriter->WriteValue("isCN",bIsCN);
 		if(bTapDBEnable){
 			configWriter->WriteObjectStart("dbConfig");
@@ -78,6 +75,9 @@ void FTapBootstrapModule::StartupModule()
 		bootstrapWriter->WriteObjectEnd();
 		bootstrapWriter->Close();
 		Init(bootstrapConfigJSON);
+
+		UTapBootstrapBPLibrary::RegisterLoginResultListener();
+		UTapBootstrapBPLibrary::RegisterUserStatusChangedListener();
 
 #if PLATFORM_IOS
 		FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapBootstrapOpenURL);

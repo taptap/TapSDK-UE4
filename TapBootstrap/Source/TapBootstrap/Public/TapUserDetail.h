@@ -18,23 +18,26 @@ struct FTapUserDetail
 {
     GENERATED_USTRUCT_BODY()
 
- UPROPERTY()
-    FString uuid;
+    UPROPERTY()
+    FString user_id;
 
     UPROPERTY()
-    FString userName;
+    FString name;
 
     UPROPERTY()
-    FString email;
+    FString avatar;
 
     UPROPERTY()
-    FString phoneNumber;
+    FString taptap_user_id;
 
     UPROPERTY()
-    FString sessionToken;
+    bool isGuest;
 
     UPROPERTY()
-    bool isAnonymous;
+    uint64 gender;
+
+    UPROPERTY()
+    FTapUserCenterEntry entry;
 
 };
 
