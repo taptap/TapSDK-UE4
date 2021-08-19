@@ -34,6 +34,7 @@ void UTapCommonBPLibrary::Register(FString serviceClz, FString serviceImpl)
 void UTapCommonBPLibrary::CallHandler(FString command)
 {
 #if PLATFORM_ANDROID || PLATFORM_IOS
+    UE_LOG(LogTemp, Warning, TEXT("CallHandler: %s"), command);
 	GetBridge()->CallHandler(command);
 #endif
 }
