@@ -136,12 +136,7 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
     }
 
     /** Handler RegisterLogin Callback */
-    if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_REGISTER_LOGIN_ID)){
-        if(!UTapCommonBPLibrary::CheckResult(tapResult)){
-            FTapError error = {80080,"TapSDK RegisterLoginResultListener Error!"};
-            FTapBootstrapModule::OnLoginError.Broadcast(error);
-            return;
-        }
+    if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_REGISTER_LOGIN_ID)) {
 
         FTapLoginWrapper loginWrapper;
         FJsonObjectConverter::JsonObjectStringToUStruct<FTapLoginWrapper>(tapResult.content,&loginWrapper,0,0);
@@ -151,44 +146,28 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
             UE_LOG(LogTemp,Warning,TEXT("TapBootstrap OnLoginSuccess:%s"),*loginWrapper.wrapper);
             FJsonObjectConverter::JsonObjectStringToUStruct<FTapUser>(loginWrapper.wrapper,&user,0,0);
             FTapBootstrapModule::OnLoginSuccess.Broadcast(user);
-            return;
-        }
-
-        if(loginWrapper.loginCallbackCode == 1){
-            FTapBootstrapModule::OnLoginCancel.Broadcast();
-            return;
-        }
-
-        if(loginWrapper.loginCallbackCode == 2){
+        } else {
             FTapError loginError;
             FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(loginWrapper.wrapper,&loginError,0,0);
             FTapBootstrapModule::OnLoginError.Broadcast(loginError);
-            return;
         }
         return;
     }
 
     /** Handler GetUser Callback */
     if(tapResult.callbackId.Equals(TAP_BOOTSTRAP_GET_USER_ID)){
-        FTapUser user;
-        FTapError userError;
-        if(!UTapCommonBPLibrary::CheckResult(tapResult)){
-            userError = {80080,"TapSDK get User error!"};
-            FTapBootstrapModule::OnGetUserError.Broadcast(userError);
-            return;
-        }
-
         FTapUserInfoWrapper userWrapper;
         FJsonObjectConverter::JsonObjectStringToUStruct<FTapUserInfoWrapper>(tapResult.content,&userWrapper,0,0);
 
         if(userWrapper.getUserInfoCode == 0){
+            FTapUser user;
             FJsonObjectConverter::JsonObjectStringToUStruct<FTapUser>(userWrapper.wrapper,&user,0,0);
             FTapBootstrapModule::OnGetUserSuccess.Broadcast(user);
-            return;
+        } else {
+            FTapError userError;
+            FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(userWrapper.wrapper,&userError,0,0);
+            FTapBootstrapModule::OnGetUserError.Broadcast(userError);
         }
-
-        FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(userWrapper.wrapper,&userError,0,0);
-        FTapBootstrapModule::OnGetUserError.Broadcast(userError);
         return;
     }
 
