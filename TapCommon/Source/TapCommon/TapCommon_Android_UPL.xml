@@ -10,6 +10,7 @@
         <insert>
 -keep public class com.tds.common.** {*;}
 -keep public class com.tapsdk.** {*;}
+-keep class com.tds.lz4.** {*;}
         </insert>
     </proguardAdditions>
 
