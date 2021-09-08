@@ -163,7 +163,7 @@ static FLoginCancel OnLoginCancel;
 
 你需要在你的头文件中定义接口用于绑定以上几种委托
 ```c++
-void OnLoginSuccess(const FTapAccessToken token);
+void OnLoginSuccess(const FTapUser token);
 
 void OnLoginError(const FTapError error);
 

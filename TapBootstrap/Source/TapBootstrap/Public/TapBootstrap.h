@@ -28,7 +28,7 @@ public:
     void Init(FString tapConfig);
 
     /** RegisterLoginResultListener Callback */
-    DECLARE_MULTICAST_DELEGATE_OneParam(FLoginSuccess, const FTapAccessToken);
+    DECLARE_MULTICAST_DELEGATE_OneParam(FLoginSuccess, const FTapUser);
 
     DECLARE_MULTICAST_DELEGATE_OneParam(FLoginError, const FTapError);
 
