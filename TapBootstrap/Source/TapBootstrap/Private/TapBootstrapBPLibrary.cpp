@@ -33,6 +33,7 @@ UTapBootstrapBPLibrary::UTapBootstrapBPLibrary(const FObjectInitializer& ObjectI
 {
 #if PLATFORM_ANDROID || PLATFORM_IOS
 	GetBridge()->Register(TEXT(TAP_BOOTSTRAP_CLZ),TEXT(TAP_BOOTSTRAP_IMPL));
+	GetBridge()->Register(TEXT("com.taptap.sdk.wrapper.TDSLoginService"),TEXT("com.taptap.sdk.wrapper.TDSLoginServiceImpl"));
     FTapCommonModule::OnBridgeCallback.AddUObject(this, &UTapBootstrapBPLibrary::OnBridgeCallback);
 #endif
 }
