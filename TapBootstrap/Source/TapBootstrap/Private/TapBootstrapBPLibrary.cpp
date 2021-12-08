@@ -74,7 +74,7 @@ void UTapBootstrapBPLibrary::RegisterLoginResultListener(){
 
 void UTapBootstrapBPLibrary::GetTestQualification(){
 #if PLATFORM_ANDROID || PLATFORM_IOS
-    FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("getTestQualification"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID),true);
+    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSLoginService"),TEXT("getTestQualification"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID),true);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
