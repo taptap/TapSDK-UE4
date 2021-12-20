@@ -82,7 +82,7 @@
     <buildGradleAdditions>
         <insert>
 repositories { flatDir { dirs 'src/main/libs/' } }
-dependencies.implementation(name: 'TapCommon_3.2.1',ext:'aar')
+dependencies.implementation(name: 'TapCommon_3.5.1',ext:'aar')
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
