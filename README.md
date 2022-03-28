@@ -24,15 +24,17 @@
 * 重启 Unreal Editor
 * 打开 编辑 > 插件 > 项目 > TapTap 中开启所需模块
 * 打开 编辑 > 项目设置，在 TapTap Bootstrap 目录下添加配置参数
+    * TapTap Auto Init:可选。是否开启 Bootstrap 自动初始化
     * TapTap ClientId: 必填。项目的 TapTap ClientId。
-    * TapTap Secret: 必填。 项目的 TapTap Secret。
+    * TapTap ClientToken: 必填。 项目的 TapTap Token。
+    * TapTap serverUrl:必填。项目使用的 Server Url。
     * China Mainland: 必填。 用于区分是否是中国大陆。
     * Open TapDB:可选。是否开启 TapDB，开启后才能配置以下选项。
         * iOS 14 Open IDFA: 可选。是否在 iOS 14+ 获取 IDFA。
         * Game Version: 可选。游戏版本号。
         * Game Channel: 可选。游戏渠道。
 
-        ![image](./bootstrap_config.png)
+![](./bootstarp.png)
 
 
 #### 1.2 iOS 配置
@@ -80,40 +82,13 @@
 
 > NSUserTrackingUsageDescription: 数据追踪，用于 TapDB
 
-### 1.2.2 Android Manifest 配置
-
-在 项目设置 > Platform > Android > Extra Settings for <application> section 中可以填入一个字符串，复制以下代码并且替换其中的ClientId。
-
-> 注意事项：clientId 在以下配置中必须为小写
-
-```xml
-<activity
-    android:name="com.tapsdk.friends.TapFriendsRouterPageActivity"
-    android:allowTaskReparenting="true"
-    android:configChanges="keyboardHidden|orientation"
-    android:exported="true"
-    android:launchMode="singleTask"
-    android:screenOrientation="nosensor"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data
-                android:host="{client_id}"
-                android:path="/friends"
-                android:scheme="tapsdk" />
-        </intent-filter>
-</activity>
-```
-
 ### 2.如何使用 TapSDK
 
 > TapSDK 接口支持 C++ 以及蓝图两种方式，且统一通过 UE4 的多播委托来实现回调。详细介绍请看 2.1.1 登陆接口。
 
 在 **Project.Build.cs** 中添加所需模块:
 ```c#
-PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" ,"TapCommon","TapBootstrap","TapLogin","TapDB","TapMoment","TapFriends","TapLicense","TapFriendUI"});
+PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" ,"TapCommon","TapBootstrap","TapLogin","TapDB","TapMoment","TapFriends","TapLicense"});
 ```
 
 #### 2.1 TapBootstrap 启动器

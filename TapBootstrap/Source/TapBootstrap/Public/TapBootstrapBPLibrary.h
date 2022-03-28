@@ -27,6 +27,9 @@ UCLASS()
 class TAPBOOTSTRAP_API UTapBootstrapBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
+	UFUNCTION(BlueprintCallable, meta=(DisplayName = "TapBootstrap init"), Category = "TapBootstrap")
+	static void Init(FString clientID, FString clientToken, FString serverUrl, bool bIsCN, bool bTapDBEnable,
+	                 bool bAdvertiserIDCollectionEnabled, FString gameVersion, FString gameChannel);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Login by TapTap"), Category = "TapBootstrap")
 	static void Login(TArray<FString> permissions);
@@ -58,12 +61,8 @@ class TAPBOOTSTRAP_API UTapBootstrapBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TapTap Language config"), Category = "TapBootstrap")
 	static void SetPreferLanguage(FTapLanguage language);
 
-	UFUNCTION(BlueprintCallable,meta = (DisplayName = "TapTap Test Qualification"), Category = "TapBootstrap")
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TapTap Test Qualification"), Category = "TapBootstrap")
 	static void GetTestQualification();
 
-	void OnBridgeCallback(const FString &result);
-
+	void OnBridgeCallback(const FString& result);
 };
-
-
-

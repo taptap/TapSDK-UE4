@@ -4,7 +4,7 @@
 
 #include "Modules/ModuleManager.h"
 
-class FTapCommonModule : public IModuleInterface
+class TAPCOMMON_API FTapCommonModule : public IModuleInterface
 {
 public:
 

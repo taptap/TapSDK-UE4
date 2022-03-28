@@ -28,7 +28,11 @@ public class TapLogin : ModuleRules
 			new string[]
 			{
 				"Core",
+				"Json",
+				"JsonUtilities",
+				"TapCommon"
 				// ... add other public dependencies that you statically link with here ...
+				
 			}
 			);
 			

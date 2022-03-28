@@ -2,124 +2,263 @@
 
 #pragma once
 
-#include "Modules/ModuleManager.h"
 #include "TapError.h"
-#include "TapUserRelationShip.h"
+#include "TapFriendInfo.h"
+#include "TapThirdPartyFriendInfo.h"
+#include "TapFriendHandleResult.h"
+#include "TapFriendLinkInfo.h"
+#include "Modules/ModuleManager.h"
+#include "TapFriendshipRequest.h"
+#include "TapFriendshipRequestAndInfo.h"
 
-class FTapFriendsModule : public IModuleInterface
+class TAPFRIENDS_API FTapFriendsModule : public IModuleInterface
 {
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	/** 添加 Friends Callback */
-    DECLARE_MULTICAST_DELEGATE_OneParam(FAddFriend, const bool);
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FAddFriendError, const FTapError);
-
+	/** RegisterFriendStatusChanged Callback */
+	/** add new Friend (The trigger timing is the same as "The sent friend request is accepted" ) */
+	DECLARE_MULTICAST_DELEGATE_OneParam(FFriendAdd, const FTapFriendInfo&);
 	UPROPERTY(BlueprintAssignable, Category = "TapFriends")
-    static FAddFriend OnAddFriendCallback;
+	static FFriendAdd OnFriendAdd;
 
-	UPROPERTY(BlueprintAssignable, Category = "TapFriends")
-    static FAddFriendError OnAddFriendError;
+	
+	DECLARE_MULTICAST_DELEGATE_OneParam(TapFriendInfoCallback, const FTapFriendshipRequestAndInfo&);
+	/** add Friend Request */
+	UPROPERTY(BlueprintAssignable, Category="TapFriends")
+	static TapFriendInfoCallback OnRequestComming;
 
-	/** 删除好友 Callback */
-    DECLARE_MULTICAST_DELEGATE_OneParam(FDeleteFriend, const bool);
+	// accept friend request
+	UPROPERTY(BlueprintAssignable, Category="TapFriends")
+	static TapFriendInfoCallback OnRequestAccepted;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FDeleteFriendError, const FTapError);
+	// decline friend request
+	UPROPERTY(BlueprintAssignable, Category="TapFriends")
+	static TapFriendInfoCallback OnRequestDeclined;
 
-	UPROPERTY(BlueprintAssignable, Category = "TapFriends")
-    static FDeleteFriend OnDeleteFriendCallback;
+	// friend online
+	DECLARE_MULTICAST_DELEGATE_OneParam(FFriendOnline, const FString&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendOnline OnFriendOnline;
 
-	UPROPERTY(BlueprintAssignable, Category = "TapFriends")
-    static FDeleteFriendError OnDeleteFriendError;
+	// friend offline
+	DECLARE_MULTICAST_DELEGATE_OneParam(FFriendOffline, const FString&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendOffline OnFriendOffline;
 
-	/** 获取关注列表 Callback */
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FGetFollowingList, const TArray<FTapUserRelationShip>);
+	// friend rich presence changed
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendRichPresenceChanged, const FString&, const FString&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendRichPresenceChanged OnFriendRichPresenceChanged;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGetFollowingListError, const FTapError);
+	// friend on connected
+	DECLARE_MULTICAST_DELEGATE(FFriendConnectedCallback)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendConnectedCallback OnFriendConnected;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetFollowingList OnGetFollowingListSuccess;
+	// friend disconnected
+	DECLARE_MULTICAST_DELEGATE(FFriendDisconnected)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendConnectedCallback OnFriendDisconnected;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetFollowingListError OnGetFollowingListError;
+	// friend disconnected
+	DECLARE_MULTICAST_DELEGATE_OneParam(FFriendOnConnectedError, const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendOnConnectedError OnConnectedError;
 
-	/** 获取互相关注 Callback */
+	// request friend request list 
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendQueryRequest, const TArray<FTapFriendshipRequest>&, const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendQueryRequest OnFriendQueryRequest;
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FGetFollowerList, const TArray<FTapUserRelationShip>);
+	// request friend request and info list 
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendQueryFriendRequestWithFriendStateList, const TArray<FTapFriendshipRequestAndInfo>&, const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendQueryFriendRequestWithFriendStateList OnQueryFriendRequestWithFriendStateList;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGetFollowerListError, const FTapError);
+	// accept friend request
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendOperationCallback, const bool, const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnAcceptFriendRequest;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetFollowerList OnGetFollowerListSuccess;
+	DECLARE_MULTICAST_DELEGATE_ThreeParams(FFriendFollowOperationCallback, const int64, const FString&,
+	                                       const FTapError&)
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetFollowerListError OnGetFollowerListError;
+	// decline friend request
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnFriendDeclineRequest;
 
-	/** 拉黑 Callback */
+	// delete friend request
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnFriendDeleteRequest;
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FBlockUser, const bool);
+	// online
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnSelfOnline;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FBlockUserError, const FTapError);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendQueryListCallback, const TArray<FTapFriendInfo>&, const FTapError&)
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FBlockUser OnBlockUserCallback;
+	// query friend by nick name
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendQueryListCallback OnQueryFriendsByNickName;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FBlockUserError OnBlockUserError;
+	
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendQueryInfoCallback, const FTapFriendInfo&, const FTapError&)
+	// query friend by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendQueryInfoCallback OnQueryFriendByShortCode;
 
-	/** 解除拉黑 Callback */
+	// query friend by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendQueryInfoCallback OnQueryFriendByObjectId;
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FUnBlockUser, const bool);
+	// save friend rich presence
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendOperationCallback OnSaveRichPresence;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FUnBlockUserError, const FTapError);
+	// clear friend rich presence
+	UPROPERTY(BlueprintAssignable, Category="TapFriendsCore")
+	static FFriendOperationCallback OnClearRichPresence;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FUnBlockUser OnUnBlockUserCallback;
+	// add friend by short code
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnAddFriendByShortCode;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FUnBlockUserError OnUnBlockUserError;
+	// add friend by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnAddFriendByObjectId;
 
-	/** 获取拉黑列表 Callback */
+	// delete friend by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnFriendDeleteByObjectId;
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FGetBlockUserList, const TArray<FTapUserRelationShip>);
+	// query friend list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendQueryListCallback OnQueryFriendsList;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGetBlockUserListError, const FTapError);
+	// check friend ship
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendOperationCallback OnCheckFriendShip;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetBlockUserList OnBlockUserListCallback;
+	// generateFriendInvitation
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FFriendGenerateFriendInvitation, const FString&, const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFriends pattern")
+	static FFriendGenerateFriendInvitation OnGenerateFriendInvitation;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGetBlockUserListError OnGetBlockUserListError;
+	// follow by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FFriendFollowOperationCallback OnFollowByShortCode;
 
-	/** 搜索好友 */
-	DECLARE_MULTICAST_DELEGATE_OneParam(FSearchUser, const FTapUserRelationShip);
+	// follow by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FFriendFollowOperationCallback OnFollowByObjectId;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FSearchUserError, const FTapError);
+	// unfollow by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FFriendFollowOperationCallback OnUnFollowByShortCode;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FSearchUser OnSearchCallback;
+	// unfollow by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FFriendFollowOperationCallback OnUnFollowByObjectId;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FSearchUserError OnSearchError;
+	// query follow mutal list
+	DECLARE_MULTICAST_DELEGATE_ThreeParams(FQueryFriendsInfoList, const FString&, const TArray<FTapFriendInfo>&,
+	                                       const FTapError&)
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FQueryFriendsInfoList OnQueryFollowMutalList;
 
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGenerateFriendInvitation, const FString &);
+	// query followee list
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FQueryFriendsInfoList OnQueryFolloweeList;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FGenerateFriendInvitation OnGenerateFriendInvitationCallback;
+	// query follower list
+	UPROPERTY(BlueprintAssignable, Category="TapFollows pattern")
+	static FQueryFriendsInfoList OnQueryFollowerList;
 
-	DECLARE_MULTICAST_DELEGATE_OneParam(FSendFriendInvitation, const FString &);
+	UPROPERTY(BlueprintAssignable, Category = "TapFollows Query block list")
+	static FQueryFriendsInfoList OnFollowQueryBlockList;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FSendFriendInvitation OnSendFriendInvitationCallback;
+	// follow TapUser by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnFollowTapUserByShortCode;
 
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FRegisterMessageListener,const int,const FString &)
+	// unfollow TapUser by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnUnFollowTapUserByShortCode;
 
-	UPROPERTY(BlueprintAssignable,Category = "TapFriends")
-	static FRegisterMessageListener OnMessage;
+	// block TapUser by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnBlockTapUserByShortCode;
 
+	// block TapUser by shortCode
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnUnBlockTapUserByShortCode;
+
+	// follow TapUser by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnFollowTapUserByObjectId;
+
+	// unfollow TapUser by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnUnFollowTapUserByObjectId;
+
+	// block TapUser by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnBlockTapUserByObjectId;
+
+	// block TapUser by objectId
+	UPROPERTY(BlueprintAssignable, Category="TapFollows TapUser pattern")
+	static FFriendOperationCallback OnUnBlockTapUserByObjectId;
+
+	// query third party mutal list
+	DECLARE_MULTICAST_DELEGATE_ThreeParams(FQueryThirdPartyFriendList, const FString&,
+										   const TArray<FTapThirdPartyFriendInfo>&,
+										   const FTapError&)
+	
+	// query third party friend list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends ThirdParty pattern")
+	static FQueryThirdPartyFriendList OnQueryThirdPartyFriendList;
+	
+	// query third party mutal list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends ThirdParty pattern")
+	static FQueryThirdPartyFriendList OnQueryThirdPartyFriendMutalList;
+
+	// query third party follower list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends ThirdParty pattern")
+	static FQueryThirdPartyFriendList OnQueryThirdPartyFriendFollowerList;
+
+	// query third party follower list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends ThirdParty pattern")
+	static FQueryThirdPartyFriendList OnQueryThirdPartyFriendFolloweeList;
+
+	// query third party block list
+	UPROPERTY(BlueprintAssignable, Category="TapFriends ThirdParty pattern")
+	static FQueryThirdPartyFriendList OnQueryThirdPartyFriendBlockList;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFriends HandleFriends Invitation link")
+	static FFriendOperationCallback OnHandleFriendInvitationLink;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFollows HandFriends Invitation link")
+	static FFriendFollowOperationCallback OnHandleFollowInvitationLink;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFollows Block by ObjectId")
+	static FFriendFollowOperationCallback OnBlockByObjectId;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFollows unBlock by ObjectId")
+	static FFriendFollowOperationCallback OnUnBlockByObjectId;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFollows Block by code")
+	static FFriendFollowOperationCallback OnBlockByShortCode;
+
+	UPROPERTY(BlueprintAssignable, Category="TapFollows unBlock by code")
+	static FFriendFollowOperationCallback OnUnBlockByShortCode;
+
+	DECLARE_MULTICAST_DELEGATE_OneParam(FParseFriendLinkInfo, const FTapFriendLinkInfo&);
+	UPROPERTY(BlueprintAssignable,Category="TapFollows Parse link FriendInfo")
+	static FParseFriendLinkInfo OnParseFriendLinkInfo;
+	
 };

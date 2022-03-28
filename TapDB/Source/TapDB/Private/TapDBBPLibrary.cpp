@@ -343,7 +343,7 @@ extern "C"
         TapDBDynamicProperties* properties = nullptr; 
         * properties = * UTapDBBPLibrary::dbDynamicProperties;
         FString dynamicProperties = properties->GetDynamicProperties();
-        jstring result = env->NewStringUTF(TCHAR_TO_ANSI(*dynamicProperties));
+        jstring result = env->NewStringUTF(TCHAR_TO_UTF8(*dynamicProperties));
         return result;
     }
 

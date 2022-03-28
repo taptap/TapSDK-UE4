@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TapBootstrapBPLibrary.h"
+
+#include "JsonObjectConverter.h"
 #include "TapBootstrap.h"
 #include "TapBridge.h"
 #include "TapCommon.h"
@@ -12,6 +14,13 @@
 #include "TapBridgeWrapper.h"
 #include "Containers/UnrealString.h"
 #include "Serialization/JsonWriter.h"
+
+#if PLATFORM_IOS
+#pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
+#pragma clang diagnostic ignored "-Wundef"
+#import <TapBootstrapSDK/TapBootstrapSDK.h>
+#include "IOSHelper.h"
+#endif
 
 /** Bootstrap ServiceName and Android Platform packageName */
 
@@ -29,17 +38,73 @@
 #define TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID  "TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID"
 
 UTapBootstrapBPLibrary::UTapBootstrapBPLibrary(const FObjectInitializer& ObjectInitializer)
-: Super(ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 #if PLATFORM_ANDROID || PLATFORM_IOS
 	GetBridge()->Register(TEXT(TAP_BOOTSTRAP_CLZ),TEXT(TAP_BOOTSTRAP_IMPL));
-	GetBridge()->Register(TEXT("com.taptap.sdk.wrapper.TDSLoginService"),TEXT("com.taptap.sdk.wrapper.TDSLoginServiceImpl"));
     FTapCommonModule::OnBridgeCallback.AddUObject(this, &UTapBootstrapBPLibrary::OnBridgeCallback);
 #endif
 }
 
-void UTapBootstrapBPLibrary::Login(TArray<FString> permissions){
+void UTapBootstrapBPLibrary::Init(FString clientID, FString clientToken, FString serverUrl, bool bIsCN,
+                                  bool bTapDBEnable, bool bAdvertiserIDCollectionEnabled, FString gameVersion,
+                                  FString gameChannel)
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
+	FString configJSON;
+	TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> configWriter = TJsonWriterFactory<
+		TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&configJSON);
+	configWriter->WriteObjectStart();
+	configWriter->WriteValue("clientID", clientID);
+	configWriter->WriteValue("clientToken", clientToken);
+	configWriter->WriteValue("serverUrl", serverUrl);
+	configWriter->WriteValue("isCN", bIsCN);
+	if (bTapDBEnable)
+	{
+		configWriter->WriteObjectStart("dbConfig");
+		configWriter->WriteValue("enable", bTapDBEnable);
+#if PLATFORM_IOS
+        configWriter->WriteValue("advertiserIDCollectionEnabled",bAdvertiserIDCollectionEnabled);
+#endif
+		configWriter->WriteValue("gameVersion", gameVersion);
+		configWriter->WriteValue("channel", gameChannel);
+		configWriter->WriteObjectEnd();
+	}
+	configWriter->WriteObjectEnd();
+	configWriter->Close();
+
+	FString bootstrapConfigJSON;
+	TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> bootstrapWriter = TJsonWriterFactory<
+		TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&bootstrapConfigJSON);
+	bootstrapWriter->WriteObjectStart();
+	bootstrapWriter->WriteValue("initWithConfig", configJSON);
+	bootstrapWriter->WriteObjectEnd();
+	bootstrapWriter->Close();
+    
+    FString command = TapJson::ConstructorCommand(TEXT("TapBootstrapService"),TEXT("initWithConfig"),bootstrapConfigJSON,false,TEXT(""),false);
+    GetBridge()->CallHandler(command);
+#endif
+}
+
+
+void UTapBootstrapBPLibrary::Login(TArray<FString> permissions)
+{
+
+#if PLATFORM_IOS
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [TDSUser loginByTapTapWithPermissions: IOSHelper::convertArray(permissions) callback:^(TDSUser *_Nullable user, NSError *_Nullable error) {
+          if (error) {
+              FTapError Error = IOSHelper::convertError(error);
+              FTapBootstrapModule::OnLoginError.Broadcast(Error);
+          } else {
+              FTapUser User = FTapUser((NSObject *)user);
+              FTapBootstrapModule::OnLoginSuccess.Broadcast(User);
+          }
+      }];
+    });
+   
+#endif
+#if PLATFORM_ANDROID
     FString JsonOutString;
     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
     Writer->WriteObjectStart();
@@ -52,63 +117,84 @@ void UTapBootstrapBPLibrary::Login(TArray<FString> permissions){
 #endif
 }
 
-void UTapBootstrapBPLibrary::AnonymouslyLogin(){
+void UTapBootstrapBPLibrary::AnonymouslyLogin()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("anonymouslyLogin"), TEXT(""), true, TEXT(TAP_BOOTSTRAP_REGISTER_LOGIN_ID),false);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::RegisterUserStatusChangedListener(){
+void UTapBootstrapBPLibrary::RegisterUserStatusChangedListener()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("registerUserStatusChangedListener"), TEXT(""), false, TEXT(TAP_BOOTSTRAP_REGISTER_STATUS_ID),false);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::RegisterLoginResultListener(){
+void UTapBootstrapBPLibrary::RegisterLoginResultListener()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE), TEXT("registerLoginResultListener"), TEXT(""), false, TEXT(TAP_BOOTSTRAP_REGISTER_LOGIN_ID),false);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::GetTestQualification(){
+void UTapBootstrapBPLibrary::GetTestQualification()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSLoginService"),TEXT("getTestQualification"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_TEST_QUALIFICATION_ID),true);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::GetUser(){
-#if PLATFORM_ANDROID || PLATFORM_IOS
+void UTapBootstrapBPLibrary::GetUser()
+{
+#if PLATFORM_IOS
+    TDSUser *iOSUser = [TDSUser currentUser];
+    if (iOSUser) {
+        FTapUser user = FTapUser((NSObject *)iOSUser);
+        FTapBootstrapModule::OnGetUserSuccess.Broadcast(user);
+    } else {
+        FTapError userError;
+        userError.code = 1;
+        userError.error_description = TEXT("user信息为空");
+        FTapBootstrapModule::OnGetUserError.Broadcast(userError);
+    }
+#endif
+#if PLATFORM_ANDROID
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("getUser"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_USER_ID),true);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::GetDetailUser(){
+void UTapBootstrapBPLibrary::GetDetailUser()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("getUserDetails"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_DETAIL_USER_ID),true);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::GetAccessToken(){
+void UTapBootstrapBPLibrary::GetAccessToken()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("getCurrentToken"),TEXT(""),true,TEXT(TAP_BOOTSTRAP_GET_ACCESSTOKEN_ID),true);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::OpenUserCenter(){
+void UTapBootstrapBPLibrary::OpenUserCenter()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("openUserCenter"),TEXT(""),false,TEXT(""),false);
     GetBridge()->CallHandler(commandJson);
 #endif
 }
 
-void UTapBootstrapBPLibrary::Logout(){
+void UTapBootstrapBPLibrary::Logout()
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     FString commandJson = TapJson::ConstructorCommand(TEXT(TAP_BOOTSTRAP_SERVICE),TEXT("logout"),TEXT(""),false,TEXT(""),false);
     GetBridge()->CallHandler(commandJson);
@@ -125,7 +211,8 @@ void UTapBootstrapBPLibrary::SetPreferLanguage(FTapLanguage language)
 #endif
 }
 
-void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
+void UTapBootstrapBPLibrary::OnBridgeCallback(const FString& result)
+{
 #if PLATFORM_ANDROID || PLATFORM_IOS
     
     UE_LOG(LogTemp,Warning,TEXT("TapBootstrap OnBridgeCallback:%s"),*result);
@@ -151,6 +238,7 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
             FTapError loginError;
             FJsonObjectConverter::JsonObjectStringToUStruct<FTapError>(loginWrapper.wrapper,&loginError,0,0);
             FTapBootstrapModule::OnLoginError.Broadcast(loginError);
+            UE_LOG(LogTemp,Warning,TEXT("TapBootstrap OnLoginError:%s"),*loginWrapper.wrapper);
         }
         return;
     }
@@ -199,5 +287,3 @@ void UTapBootstrapBPLibrary::OnBridgeCallback(const FString &result){
 
 #endif
 }
-
-

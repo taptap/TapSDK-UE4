@@ -11,7 +11,7 @@
 -keep public class com.tds.common.** {*;}
 -keep public class com.tapsdk.** {*;}
 -keep class com.tds.** {*;}
-
+            
 # proguard.cfg
 
 -keepattributes Signature
@@ -82,7 +82,7 @@
     <buildGradleAdditions>
         <insert>
 repositories { flatDir { dirs 'src/main/libs/' } }
-dependencies.implementation(name: 'TapCommon_3.5.1',ext:'aar')
+dependencies.implementation(name: 'TapCommon_3.7.0',ext:'aar')
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

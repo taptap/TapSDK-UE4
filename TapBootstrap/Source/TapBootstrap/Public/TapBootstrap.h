@@ -56,8 +56,8 @@ public:
     static FGetAccessToken OnGetAccessToken;
 
     /** GetUser Callback */
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserSuccess,const FTapUser);
-    DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserError,const FTapError);
+    DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserSuccess,const FTapUser&);
+    DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserError,const FTapError&);
 
     UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
     static FGetUserSuccess OnGetUserSuccess;
