@@ -34,55 +34,71 @@ void FTapBootstrapModule::StartupModule()
 	FString clientID;
 	FString clientToken;
 	FString serverUrl;
+	bool bIsAutoInit = false;
 	bool bIsCN = true;
-	bool bTapDBEnable = true;
+	bool bTapDBEnable = false;
 	bool bAdvertiserIDCollectionEnabled = false;
 	FString gameVersion;
 	FString gameChannel;
 
-	if(GConfig)
+	if (GConfig)
 	{
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("ClientId"), clientID, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("clientToken"), clientToken, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("serverUrl"), serverUrl, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameVersion"), gameVersion, GGameIni);
-		GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameChannel"), gameChannel, GGameIni);
-		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bIsCN"), bIsCN, GGameIni);
-		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bTapDBEnable"), bTapDBEnable, GGameIni);
-		GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bAdvertiserIDCollectionEnabled"), bAdvertiserIDCollectionEnabled, GGameIni);
+		GConfig->GetBool(
+			TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bIsAutoInit"), bIsAutoInit, GGameIni);
 
-		FString configJSON;
-		TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> configWriter = TJsonWriterFactory< TCHAR, TCondensedJsonPrintPolicy<TCHAR> >::Create(&configJSON);
-		configWriter->WriteObjectStart();
-		configWriter->WriteValue("clientID",clientID);
-		configWriter->WriteValue("clientToken",clientToken);
-		configWriter->WriteValue("serverUrl",serverUrl);
-		configWriter->WriteValue("isCN",bIsCN);
-		if(bTapDBEnable){
-			configWriter->WriteObjectStart("dbConfig");
-			configWriter->WriteValue("enable",bTapDBEnable);
+		if (bIsAutoInit)
+		{
+			GConfig->GetString(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("ClientId"), clientID, GGameIni);
+			GConfig->GetString(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("clientToken"), clientToken, GGameIni);
+			GConfig->GetString(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("serverUrl"), serverUrl, GGameIni);
+			GConfig->GetString(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameVersion"), gameVersion, GGameIni);
+			GConfig->GetString(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("gameChannel"), gameChannel, GGameIni);
+			GConfig->GetBool(TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bIsCN"), bIsCN, GGameIni);
+			GConfig->GetBool(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bTapDBEnable"), bTapDBEnable, GGameIni);
+			GConfig->GetBool(
+				TEXT("/Script/TapBootstrap.TapBootstrapSettings"), TEXT("bAdvertiserIDCollectionEnabled"),
+				bAdvertiserIDCollectionEnabled, GGameIni);
+
+			FString configJSON;
+			TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> configWriter = TJsonWriterFactory<
+				TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&configJSON);
+			configWriter->WriteObjectStart();
+			configWriter->WriteValue("clientID", clientID);
+			configWriter->WriteValue("clientToken", clientToken);
+			configWriter->WriteValue("serverUrl", serverUrl);
+			configWriter->WriteValue("isCN", bIsCN);
+			if (bTapDBEnable)
+			{
+				configWriter->WriteObjectStart("dbConfig");
+				configWriter->WriteValue("enable", bTapDBEnable);
 #if PLATFORM_IOS
 			configWriter->WriteValue("advertiserIDCollectionEnabled",bAdvertiserIDCollectionEnabled);
 #endif
-			configWriter->WriteValue("gameVersion",gameVersion);
-			configWriter->WriteValue("channel",gameChannel);
+				configWriter->WriteValue("gameVersion", gameVersion);
+				configWriter->WriteValue("channel", gameChannel);
+				configWriter->WriteObjectEnd();
+			}
 			configWriter->WriteObjectEnd();
+			configWriter->Close();
+
+			FString bootstrapConfigJSON;
+			TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> bootstrapWriter = TJsonWriterFactory<
+				TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&bootstrapConfigJSON);
+			bootstrapWriter->WriteObjectStart();
+			bootstrapWriter->WriteValue("initWithConfig", configJSON);
+			bootstrapWriter->WriteObjectEnd();
+			bootstrapWriter->Close();
+			Init(bootstrapConfigJSON);
 		}
-		configWriter->WriteObjectEnd();
-		configWriter->Close();
-		
-		FString bootstrapConfigJSON;
-		TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> bootstrapWriter = TJsonWriterFactory< TCHAR, TCondensedJsonPrintPolicy<TCHAR> >::Create(&bootstrapConfigJSON);
-		bootstrapWriter->WriteObjectStart();
-		bootstrapWriter->WriteValue("initWithConfig",configJSON);
-		bootstrapWriter->WriteObjectEnd();
-		bootstrapWriter->Close();
-		Init(bootstrapConfigJSON);
 
 #if PLATFORM_IOS
 		FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapBootstrapOpenURL);
 #endif
-
 	}
 #endif
 }
@@ -91,12 +107,11 @@ void FTapBootstrapModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	
 }
 
 void FTapBootstrapModule::Init(FString tapConfig)
 {
-UE_LOG(LogTemp,Display,TEXT("TapBoostrap Init Config:%s"),*tapConfig);
+	UE_LOG(LogTemp, Display, TEXT("TapBoostrap Init Config:%s"), *tapConfig);
 #if PLATFORM_ANDROID || PLATFORM_IOS
 	FString command = TapJson::ConstructorCommand(TEXT("TapBootstrapService"),TEXT("initWithConfig"),tapConfig,false,TEXT(""),false);
 	GetBridge()->CallHandler(command);
@@ -104,7 +119,7 @@ UE_LOG(LogTemp,Display,TEXT("TapBoostrap Init Config:%s"),*tapConfig);
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FTapBootstrapModule, TapBootstrap)
 
 

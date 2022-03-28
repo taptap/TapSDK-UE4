@@ -18,7 +18,7 @@
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'TapDB_3.5.1',ext:'aar')
+dependencies.implementation(name: 'TapDB_3.7.0',ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>

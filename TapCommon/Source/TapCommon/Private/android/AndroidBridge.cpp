@@ -51,8 +51,8 @@ void AndroidBridge::Register(FString serviceClz, FString serviceImpl)
     if (jUnrealClass)
     {
         const char *strMethod = "register";
-        const char *strServiceClz = TCHAR_TO_ANSI(*serviceClz);
-        const char *strServiceImpl = TCHAR_TO_ANSI(*serviceImpl);
+        const char *strServiceClz = TCHAR_TO_UTF8(*serviceClz);
+        const char *strServiceImpl = TCHAR_TO_UTF8(*serviceImpl);
 
         auto jServiceClz = FAndroidApplication::FindJavaClass(strServiceClz);
         auto jServiceImplClz = FAndroidApplication::FindJavaClass(strServiceImpl);
@@ -77,7 +77,7 @@ void AndroidBridge::CallHandler(FString command)
         auto jMethod = env->GetMethodID(jUnrealClass, strMethod, "(Ljava/lang/String;)V");
         if (jMethod)
         {
-            auto jCommand = env->NewStringUTF(TCHAR_TO_ANSI(*command));
+            auto jCommand = env->NewStringUTF(TCHAR_TO_UTF8(*command));
             env->CallVoidMethod(GetJBridge(), jMethod, jCommand);
             env->DeleteLocalRef(jCommand);
         }

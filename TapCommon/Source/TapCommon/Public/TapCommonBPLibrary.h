@@ -25,7 +25,7 @@
 *	https://wiki.unrealengine.com/Custom_Blueprint_Node_Creation
 */
 UCLASS()
-class UTapCommonBPLibrary : public UBlueprintFunctionLibrary
+class TAPCOMMON_API UTapCommonBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
@@ -55,6 +55,12 @@ class UTapCommonBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable,Category = "TapCommon")
 	static void OpenReviewInTapGlobal(FString appId);
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static TMap<FString, FString> RemoveEmptyKey(TMap<FString, FString> stringMap);
+
+	UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	static TArray<FString> RemoveEmptyString(TArray<FString> stringArray);
 
 	static bool CheckResult(const FTapResult result);
 

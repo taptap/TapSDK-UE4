@@ -12,61 +12,86 @@
 #include "IOSAppDelegate.h"
 #include "Misc/CoreDelegates.h"
 
-#import <TapFriendSDK/TapFriendSDK.h>
 
 static void OnTapFriendsOpenURL(UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation){
-	NSLog(@"OnTapBootstrapURL");
-	[TapFriends handleOpenURL:url];
 }
 
 #endif
 
 void FTapFriendsModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-#if PLATFORM_IOS
-	FIOSCoreDelegates::OnOpenURL.AddStatic(&OnTapFriendsOpenURL);
-#endif
 }
 
 void FTapFriendsModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FTapFriendsModule, TapFriends)
 
-FTapFriendsModule::FAddFriend FTapFriendsModule::OnAddFriendCallback;
-FTapFriendsModule::FAddFriendError FTapFriendsModule::OnAddFriendError;
+FTapFriendsModule::FFriendAdd FTapFriendsModule::OnFriendAdd;
+FTapFriendsModule::TapFriendInfoCallback FTapFriendsModule::OnRequestComming;
+FTapFriendsModule::TapFriendInfoCallback FTapFriendsModule::OnRequestAccepted;
+FTapFriendsModule::TapFriendInfoCallback FTapFriendsModule::OnRequestDeclined;
+FTapFriendsModule::FFriendOnline FTapFriendsModule::OnFriendOnline;
+FTapFriendsModule::FFriendOffline FTapFriendsModule::OnFriendOffline;
+FTapFriendsModule::FFriendRichPresenceChanged FTapFriendsModule::OnFriendRichPresenceChanged;
+FTapFriendsModule::FFriendConnectedCallback FTapFriendsModule::OnFriendConnected;
+FTapFriendsModule::FFriendConnectedCallback FTapFriendsModule::OnFriendDisconnected;
+FTapFriendsModule::FFriendOnConnectedError FTapFriendsModule::OnConnectedError;
+FTapFriendsModule::FFriendQueryRequest FTapFriendsModule::OnFriendQueryRequest;
+FTapFriendsModule::FFriendQueryFriendRequestWithFriendStateList FTapFriendsModule::OnQueryFriendRequestWithFriendStateList;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnAcceptFriendRequest;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnFriendDeclineRequest;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnFriendDeleteRequest;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnSelfOnline;
+FTapFriendsModule::FFriendQueryListCallback FTapFriendsModule::OnQueryFriendsByNickName;
+FTapFriendsModule::FFriendQueryInfoCallback FTapFriendsModule::OnQueryFriendByShortCode;
+FTapFriendsModule::FFriendQueryInfoCallback FTapFriendsModule::OnQueryFriendByObjectId;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnSaveRichPresence;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnClearRichPresence;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnAddFriendByShortCode;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnAddFriendByObjectId;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnFriendDeleteByObjectId;
+FTapFriendsModule::FFriendQueryListCallback FTapFriendsModule::OnQueryFriendsList;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnCheckFriendShip;
+FTapFriendsModule::FFriendGenerateFriendInvitation FTapFriendsModule::OnGenerateFriendInvitation;
 
-FTapFriendsModule::FDeleteFriend FTapFriendsModule::OnDeleteFriendCallback;
-FTapFriendsModule::FDeleteFriendError FTapFriendsModule::OnDeleteFriendError;
-
-FTapFriendsModule::FGetFollowingList FTapFriendsModule::OnGetFollowingListSuccess;
-FTapFriendsModule::FGetFollowingListError FTapFriendsModule::OnGetFollowingListError;
-
-FTapFriendsModule::FGetFollowerList FTapFriendsModule::OnGetFollowerListSuccess;
-FTapFriendsModule::FGetFollowerListError FTapFriendsModule::OnGetFollowerListError;
-
-FTapFriendsModule::FBlockUser FTapFriendsModule::OnBlockUserCallback;
-FTapFriendsModule::FBlockUserError FTapFriendsModule::OnBlockUserError;
-
-FTapFriendsModule::FUnBlockUser FTapFriendsModule::OnUnBlockUserCallback;
-FTapFriendsModule::FUnBlockUserError FTapFriendsModule::OnUnBlockUserError;
-
-FTapFriendsModule::FGetBlockUserList FTapFriendsModule::OnBlockUserListCallback;
-FTapFriendsModule::FGetBlockUserListError FTapFriendsModule::OnGetBlockUserListError;
-
-FTapFriendsModule::FSearchUser FTapFriendsModule::OnSearchCallback;
-FTapFriendsModule::FSearchUserError FTapFriendsModule::OnSearchError;
-
-FTapFriendsModule::FGenerateFriendInvitation FTapFriendsModule::OnGenerateFriendInvitationCallback;
-FTapFriendsModule::FRegisterMessageListener FTapFriendsModule::OnMessage;
-FTapFriendsModule::FSendFriendInvitation FTapFriendsModule::OnSendFriendInvitationCallback;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnFollowByObjectId;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnUnFollowByObjectId;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnFollowByShortCode;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnUnFollowByShortCode;
+FTapFriendsModule::FQueryFriendsInfoList FTapFriendsModule::OnQueryFollowMutalList;
+FTapFriendsModule::FQueryFriendsInfoList FTapFriendsModule::OnQueryFolloweeList;
+FTapFriendsModule::FQueryFriendsInfoList FTapFriendsModule::OnQueryFollowerList;
+FTapFriendsModule::FQueryFriendsInfoList FTapFriendsModule::OnFollowQueryBlockList;
 
 
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnFollowTapUserByShortCode;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnUnFollowTapUserByShortCode;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnBlockTapUserByShortCode;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnUnBlockTapUserByShortCode;
 
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnFollowTapUserByObjectId;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnUnFollowTapUserByObjectId;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnBlockTapUserByObjectId;
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnUnBlockTapUserByObjectId;
+
+FTapFriendsModule::FQueryThirdPartyFriendList FTapFriendsModule::OnQueryThirdPartyFriendList;
+FTapFriendsModule::FQueryThirdPartyFriendList FTapFriendsModule::OnQueryThirdPartyFriendMutalList;
+FTapFriendsModule::FQueryThirdPartyFriendList FTapFriendsModule::OnQueryThirdPartyFriendFolloweeList;
+FTapFriendsModule::FQueryThirdPartyFriendList FTapFriendsModule::OnQueryThirdPartyFriendFollowerList;
+FTapFriendsModule::FQueryThirdPartyFriendList FTapFriendsModule::OnQueryThirdPartyFriendBlockList;
+
+FTapFriendsModule::FFriendOperationCallback FTapFriendsModule::OnHandleFriendInvitationLink;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnHandleFollowInvitationLink;
+
+FTapFriendsModule::FParseFriendLinkInfo FTapFriendsModule::OnParseFriendLinkInfo;
+
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnBlockByObjectId;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnUnBlockByObjectId;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnUnBlockByShortCode;
+FTapFriendsModule::FFriendFollowOperationCallback FTapFriendsModule::OnBlockByShortCode;

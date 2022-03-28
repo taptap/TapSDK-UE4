@@ -27,6 +27,47 @@ class UTapLoginBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "TapLogin sample test testing"), Category = "TapLoginTesting")
-	static float TapLoginSampleFunction(float Param);
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "init TapTap Login"),
+		Category = "TapLogin")
+	static void Init(FString clientID);
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "init TapTap Login with params"),
+		Category = "TapLogin")
+	static void InitWithParams(FString clientID, bool bIsCN, bool bRoundCorner);
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Fetch profile"), Category = "TapLogin")
+	static void FetchProfile();
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Get profile"), Category = "TapLogin")
+	static void GetProfile();
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Get AccessToken"), Category = "TapLogin")
+	static void GetAccessToken();
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Login"), Category = "TapLogin")
+	static void Login(TArray<FString> permissions);
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Logout"), Category = "TapLogin")
+	static void Logout();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Test Qualification"), Category = "TapLogin")
+	static void GetTestQualification();
+
+	static void RegisterLoginCallback();
+
+	static void UnRegisterLoginCallback();
+	
+	void OnBridgeCallback(const FString& result);
+
+
+	UFUNCTION(BlueprintCallable,
+		meta = (DisplayName = "Query Mutual List"), Category = "Login TapFriend")
+	static void QueryMutualList(FString cursor, int size);
 };
