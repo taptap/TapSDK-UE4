@@ -23,13 +23,13 @@
 
 * 重启 Unreal Editor
 * 打开 编辑 > 插件 > 项目 > TapTap 中开启所需模块
-* 打开 编辑 > 项目设置，在 TapTap Bootstrap 目录下添加配置参数
-    * TapTap Auto Init:可选。是否开启 Bootstrap 自动初始化
-    * TapTap ClientId: 必填。项目的 TapTap ClientId。
-    * TapTap ClientToken: 必填。 项目的 TapTap Token。
-    * TapTap serverUrl:必填。项目使用的 Server Url。
-    * China Mainland: 必填。 用于区分是否是中国大陆。
-    * Open TapDB:可选。是否开启 TapDB，开启后才能配置以下选项。
+* 打开 编辑 > 项目设置，在 TapTap Bootstrap 目录下添加配置参数。
+    * TapTap Auto Init：可选。是否开启 Bootstrap 自动初始化。
+    * TapTap ClientId：必填，对应 **开发者中心 > 你的游戏 > 游戏服务 > 应用配置 > Client ID**。
+    * TapTap ClientToken：必填，对应 **开发者中心 > 你的游戏 > 游戏服务 > 应用配置 > Client Token**。
+    * TapTap serverUrl：必填，游戏的 [API 域名](https://developer.taptap.com/docs/sdk/start/get-ready/#%E7%BB%91%E5%AE%9A-api-%E5%9F%9F%E5%90%8D)，对应 **开发者中心 > 你的游戏 > 游戏服务 > 应用配置 > 域名配置 > API**。
+    * China Mainland: 必填，游戏的[适用地区](https://developer.taptap.com/docs/sdk/start/get-ready/#%E9%80%82%E7%94%A8%E5%9C%B0%E5%8C%BA)，用于区分是否是中国大陆。
+    * Open TapDB：可选。是否开启 TapDB，开启后才能配置以下选项。
         * iOS 14 Open IDFA: 可选。是否在 iOS 14+ 获取 IDFA。
         * Game Version: 可选。游戏版本号。
         * Game Channel: 可选。游戏渠道。
