@@ -24,7 +24,9 @@
 
 下列配置仅供参考，具体根据插件需要配置
 
-在 项目设置 > Platform > iOS > Additional Plist data 中可以填入一个字符串，复制以下代码并且替换其中的ClientId以及授权文案。
+在 项目设置 > Platform > iOS > Additional Plist data 中可以填入一个字符串，复制以下代码并且替换其中的 `ClientId` 以及授权文案。
+
+⚠️ 注意 `<string>tt{ClientId}</string>` 中的 `tt` 要保留，仅替换 `{ClientId}` 为游戏在开发者中心应用配置中的 Client ID。
 
 ```xml
 <key>CFBundleURLTypes</key>
