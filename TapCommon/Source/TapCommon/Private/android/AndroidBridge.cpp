@@ -1,6 +1,7 @@
 #include "AndroidBridge.h"
 #include "TapCommon.h"
 #include "Engine.h"
+#include "TUMobileBridge.h"
 
 #define TDS_BRIDGE_CLASS "com/tds/common/bridge/Bridge"
 
@@ -89,11 +90,12 @@ extern "C"
 {
 #endif
 
-    void Java_com_tds_common_bridge_Bridge_nativeOnResult(JNIEnv *jenv, jclass thiz, jstring msg)
+    __attribute__((visibility("default"))) void Java_com_tds_common_bridge_Bridge_nativeOnResult(JNIEnv *jenv, jclass thiz, jstring msg)
     {
         const char *cMsg = jenv->GetStringUTFChars(msg, 0);
         FString fMsg = UTF8_TO_TCHAR(cMsg);
         FTapCommonModule::OnBridgeCallback.Broadcast(fMsg);
+        TUMobileBridge::DoCallBack(fMsg);
         jenv->ReleaseStringUTFChars(msg, cMsg);
     }
 

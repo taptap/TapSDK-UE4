@@ -2,139 +2,141 @@
 
 TapBootstrap 用于 TapSDK 中的内建账户登陆、用户信息获取等功能
 
-```c++
-#include "TapBootstrap.h"
-#include "TapBootstrapBPLibrary.h"
+## 支持平台
+
+* Android
+* iOS
+
+## 前提条件
+
+* 安装 **UE 4.26** 及以上版本
+* IOS **12** 或更高版本 
+* Android MinSDK 为 **API21** 或更高版本
+
+## 安装插件
+
+* 下载 **TapSDK.zip** 解压后将 `TapBootstrap`、 `TapLogin`、`TapCommon` 文件夹 `Copy` 到项目的 `Plugins` 目录中
+* 重启 Unreal Editor
+* 打开 **编辑 > 插件 > 项目 > TapTap**，开启 `TapBootstrap`、 `TapLogin` 模块
+
+
+### iOS 配置
+
+在 **项目设置 > Platform > iOS > Additional Plist data** 中可以填入一个字符串，复制以下代码并且替换其中的`ClientId`以及授权文案。
+
+```xml
+<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>taptap</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>tt{ClientId}</string>
+            </array>
+        </dict>
+    </array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>tapiosdk</string>
+    <string>tapsdk</string>
+</array>
 ```
 
-## 接口描述
+如果有 `TapDB` 模块，那么还需要加上：
+```xml
+<key>NSUserTrackingUsageDescription<key>
+<string>{数据追踪权限申请文案} </string>
+```
+
+## TapBootstrap使用
+
+### 依赖所需模块
+在 **Project.Build.cs** 中添加所需模块:
+```c#
+PublicDependencyModuleNames.AddRange(new string[] { "Core",
+	"CoreUObject",
+	"Engine",
+	"Json",
+	"InputCore",
+	"JsonUtilities",
+	"SlateCore",
+	"TapCommon",
+	"TapBootstrap",
+	"TapLogin"
+});
+```
+
+### 导入头文件
+```cpp
+#include "TapUEBootstrap.h"
+#include "TapUECommon.h"
+```
 
 ### 初始化
 
-如果未在 `Unreal Editor` 开启 `TapBootstrap Auto Init` 选项的话，则需要手动调用该方法
-
-入参描述参考 [启用 TapSDK 插件](../README.md)
-
-```c++
-UFUNCTION(BlueprintCallable, meta=(DisplayName = "TapBootstrap init"), Category = "TapBootstrap")
-static void Init(FString clientID, FString clientToken, FString serverUrl, bool bIsCN, bool bTapDBEnable,
-	                 bool bAdvertiserIDCollectionEnabled, FString gameVersion, FString gameChannel);
+`TapBootstrap`会把`TapLogin`模块一起初始化，如果插件中包含`TapDB`并且`DBConfig.Enable = true`，那么也会把`TapDB`初始化，相关模块无需再次初始化。
+```cpp
+FTUConfig Config;
+Config.ClientID = ClientID;
+Config.ClientToken = ClientToken;
+Config.ServerURL = ServerURL;
+Config.RegionType = RegionType;
+Config.DBConfig.Enable = true;  // 如果该项为true，那么会将TapDB一起初始化了
+Config.DBConfig.Channel = Channel;
+Config.DBConfig.GameVersion = GameVersion;
+Config.DBConfig.AdvertiserIDCollectionEnabled = AdvertiserIDCollectionEnabled;
+TapUEBootstrap::Init(Config);
 ```
 
-### TDS 内建账户登陆
-
-在你使用 TDS 内建登陆时调用以下接口:
-
-```c++
-/**
- * 调用 TDS 内建账户登陆 (TapTap 登录)
- * @param permissions 登陆权限
- */
-UFUNCTION(BlueprintCallable, meta = (DisplayName = "Login by TapTap"), Category = "TapBootstrap")
-static void Login(TArray<FString> permissions);
-
-/**
- * 游客(匿名)登录
- */
-UFUNCTION(BlueprintCallable, meta = (DisplayName = "Anonymously Login by TapTap"), Category = "TapBootstrap")
-static void AnonymouslyLogin();
-
+### TapTap登录
+```cpp
+TapUEBootstrap::Login({TUType::PermissionScope::Profile}, [](const FTDSUser& User) {
+	// 登录成功
+}, [](const FTUError& Error) {
+	// 登录失败
+});
 ```
 
-TapTap 登陆提供以下几种委托用于接口登陆回调
-
-```c++
-// 登陆成功
-DECLARE_MULTICAST_DELEGATE_OneParam(FLoginSuccess, const FTapAccessToken);
-
-// 登陆失败
-DECLARE_MULTICAST_DELEGATE_OneParam(FLoginError, const FTapError);
-
-// 登陆取消
-DECLARE_MULTICAST_DELEGATE(FLoginCancel);
-
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FLoginSuccess OnLoginSuccess;
-
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FLoginError OnLoginError;
-
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FLoginCancel OnLoginCancel;
-
+### 匿名登录
+```cpp
+TapUEBootstrap::AnonymouslyLogin([](const FTDSUser& User) {
+	// 登录成功
+}, [](const FTUError& Error) {
+	// 登录失败
+});
 ```
 
-你需要在你的头文件中定义接口用于绑定以上几种委托
-
-```c++
-void OnLoginSuccess(const FTapUser token);
-
-void OnLoginError(const FTapError error);
-
-void OnLoginCancel();
+### 登出
+```cpp
+TapUEBootstrap::Logout();
 ```
 
-接下来，你需要和 TapBootstrapModule 绑定以上定义的接口,这样就能收到 TapBootstrap 登陆接口的回调。
-
-```c++
-FTapBootstrapModule::OnLoginSuccess.AddUbObject(this,&YourObject::OnLoginSuccess);
-FTapBootstrapModule::OnLoginError.AddUbObject(this,&YourObject::OnLoginError);
-FTapBootstrapModule::OnLoginCancel.AddUbObject(this,&YourObject::OnLoginCancel);
+### 获取当前用户
+```cpp
+TSharedPtr<FTDSUser> UserPtr = TapUEBootstrap::GetUser();
+if (UserPtr.IsValid()) {
+	// TDS User
+} else {
+	// No User
+}
 ```
 
-### 退出登录
-
-```c++
-// 接口定义
-UFUNCTION(BlueprintCallable, meta = (DisplayName = "TapTap Logout"), Category = "TapBootstrap")
-static void Logout();
-
-// 委托定义
-DECLARE_MULTICAST_DELEGATE_OneParam(FLogout, const FTapError);
-
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FLogout OnLogout;
-
-```
-
-### 获取 TDS Token
-
-```c++        
-// 导入头文件
-#include "TapAccessToken.h"
-
-// 接口定义
-UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get TapTap AccessToken"), Category = "TapBootstrap")
-static void GetAccessToken();
-
-// 委托定义
-DECLARE_MULTICAST_DELEGATE_OneParam(FGetAccessToken, const FTapAccessToken);
-    
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FGetAccessToken OnGetAccessToken;
-
-```
-
-### 获取 TDS 用户信息
-
-```c++
-// 导入头文件
-#include "TapUser.h"
-
-// 接口定义
-UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get TapTap Userinfo"), Category = "TapBootstrap")
-static void GetUser();
-
-// 获取用户信息成功
-DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserSuccess,const FTapUser);
-
-// 获取用户信息失败
-DECLARE_MULTICAST_DELEGATE_OneParam(FGetUserError,const FTapError);
-
-UPROPERTY(BlueprintAssignable, Category = "TapBootstrap")
-static FGetUserSuccess OnGetUserSuccess;
-
-UPROPERTY(BlueprintAssignable,Category = "TapBootstrap")
-static FGetUserError OnGetUserError;
-
+### 设置多语言
+```cpp
+UENUM(BlueprintType)
+enum class ELanguageType : uint8
+{
+	AUTO = 0,   // 国内默认简体中文
+	ZH,			// 简体中文
+	EN,			// 英文，海外默认语言
+	ZHTW,		// 繁体中文
+	JA,			// 日语
+	KO,			// 韩语
+	TH,			// 泰文
+	ID,			// 印尼文
+};
+TapUEBootstrap::SetPreferLanguage(LangType);
 ```

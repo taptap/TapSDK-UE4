@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "TapError.h"
+#include "TUError.h"
 #include "TapResult.h"
 #include "TapCommonBPLibrary.generated.h"
 
@@ -35,26 +35,26 @@ class TAPCOMMON_API UTapCommonBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "TapCommon")
 	static void CallHandler(FString command);
 
-	UFUNCTION(BlueprintCallable, Category="TapCommon")
-	static void GetRegionCode();
-
-	UFUNCTION(BlueprintCallable,Category = "TapCommon")
-	static void IsTapTapInstalled();
-
-	UFUNCTION(BlueprintCallable,Category = "TapCommon")
-	static void IsTapGlobalInstalled();
-
-	UFUNCTION(BlueprintCallable,Category = "TapCommon")
-	static void UpdateGameInTapTap(FString appId);
-
-	UFUNCTION(BlueprintCallable,Category = "TapCommon")
-	static void UpdateGameInTapGlobal(FString appId);
-
-	UFUNCTION(BlueprintCallable, Category = "TapCommon")
-	static void OpenReviewInTapTap(FString appId);
-
-	UFUNCTION(BlueprintCallable,Category = "TapCommon")
-	static void OpenReviewInTapGlobal(FString appId);
+	// UFUNCTION(BlueprintCallable, Category="TapCommon")
+	// static void GetRegionCode();
+	//
+	// UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	// static void IsTapTapInstalled();
+	//
+	// UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	// static void IsTapGlobalInstalled();
+	//
+	// UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	// static void UpdateGameInTapTap(FString appId);
+	//
+	// UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	// static void UpdateGameInTapGlobal(FString appId);
+	//
+	// UFUNCTION(BlueprintCallable, Category = "TapCommon")
+	// static void OpenReviewInTapTap(FString appId);
+	//
+	// UFUNCTION(BlueprintCallable,Category = "TapCommon")
+	// static void OpenReviewInTapGlobal(FString appId);
 
 	UFUNCTION(BlueprintCallable,Category = "TapCommon")
 	static TMap<FString, FString> RemoveEmptyKey(TMap<FString, FString> stringMap);

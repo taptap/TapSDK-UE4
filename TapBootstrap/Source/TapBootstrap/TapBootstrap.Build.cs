@@ -46,7 +46,20 @@ public class TapBootstrap : ModuleRules
             new string[]
             {
                 "Core",
-                "ApplicationCore"
+                "ApplicationCore",
+                "Analytics",
+                "Engine",
+                "RenderCore",
+                "RHI",
+                "Core",
+                "CoreUObject",
+                "Slate",
+                "SlateCore",
+                "UMG",
+                "Json",
+                "JsonUtilities",
+                "TapCommon",
+                "TapLogin",
 				// ... add other public dependencies that you statically link with here ...
 			}
             );
@@ -59,7 +72,7 @@ public class TapBootstrap : ModuleRules
                 "Engine",
                 "Slate",
                 "SlateCore",
-				// ... add private dependencies that you statically link with here ...	
+                // ... add private dependencies that you statically link with here ...	
 			}
             );
 
@@ -70,38 +83,21 @@ public class TapBootstrap : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
             );
-
-        PublicDependencyModuleNames.AddRange(
-                new string[]
-                {
-                    "Analytics",
-                    "Engine",
-                    "RenderCore",
-                    "RHI",
-                    "Core",
-                    "CoreUObject",
-                    "Slate",
-                    "SlateCore",
-                    "UMG",
-                    "Json",
-                    "JsonUtilities",
-                    "TapCommon"
-                }
-            );
+        
 
         if (Target.Platform == UnrealTargetPlatform.IOS)
         {
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapBootstrapSDK",
-                    "../TapBootstrap/ios/framework/TapBootstrapSDK.embeddedframework.zip"
+                    "../TapBootstrap/ios/framework/TapBootstrapSDK.zip"
                 )
             );
 
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "LeanCloudObjc",
-                    "../TapBootstrap/ios/framework/LeanCloudObjc.embeddedframework.zip"
+                    "../TapBootstrap/ios/framework/LeanCloudObjc.zip"
                 )
             );
         }

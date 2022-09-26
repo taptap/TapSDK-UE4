@@ -1,205 +1,171 @@
 # TapDB 
 
-```c++
-#include "TapDB.h"
-#include "TapDBBPLibrary.h"
+## 支持平台
+
+* Android
+* iOS
+* Windows
+* macOS
+
+## 前提条件
+
+* 安装 **UE 4.26** 及以上版本
+* IOS **12** 或更高版本 
+* Android MinSDK 为 **API21** 或更高版本
+* macOS 为 **10.14.0** 或更高版本
+* Windows 为 **Windows 7** 或更高版本
+
+## 如何使用
+
+### 安装插件
+
+* 下载 **TapSDK.zip** 解压后将 `TapDB`、`TapCommon` 文件夹 `Copy` 到项目的 `Plugins` 目录中
+* 重启 Unreal Editor
+* 打开 **编辑 > 插件 > 项目 > TapTap**，开启 `TapDB` 模块
+
+### 依赖所需模块
+在 **Project.Build.cs** 中添加所需模块:
+```c#
+PublicDependencyModuleNames.AddRange(new string[] { "Core",
+	"CoreUObject",
+	"Engine",
+	"Json",
+	"InputCore",
+	"JsonUtilities",
+	"SlateCore",
+	"TapCommon",
+	"TapDB"
+});
+```
+
+## API使用
+
+### 导入头文件
+```cpp
+#include "TapUEDB.h"
 ```
 
 ### 初始化 TapDB
 
->  TapDB 初始化可以通过 Unreal Editor 中的 TapTap Bootstrap 进行配置，也可以通过调用接口来进行初始化。
-
-```c++
-/**
- *
- * @param clientID TapTap client ID
- * @param channel 游戏渠道
- * @param gameVersion 游戏版本
- * @param isCN 是否是中国大陆
- */ 
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void Init(FString clientID,FString channel,FString gameVersion,bool isCN);
+```cpp
+FTUDBConfig Config;
+Config.ClientId = TEXT("your client id");
+Config.Channel = TEXT("分包渠道名称，可为空");
+Config.GameVersion = TEXT("游戏版本");
+Config.RegionType = ERegionType::CN; // 国内 or 海外
+TapUEDB::Init(Config);
 ```
 
 ### 设置用户
 
-```c++
-/**
- * @param userId  用户id
- */ 
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void SetUser(FString userId);
+```cpp
+FString UserId = TEXT("user id"); // 用户唯一标识
+FString LoginType = TUDBType::LoginType::TapTap; // 登录方式，参考TUDBType::LoginType，可以不传
+TapUEDB::SetUserWithLoginType(UserId, LoginType);
+```
 
-/**
- * 设置 UserId 以及 登陆类型
- * @param userId 用户 ID
- * @param loginType 登陆类型
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void SetUserWithLoginType(FString userId,FString loginType);
+
+### 清除用户
+```cpp
+TapUEDB::ClearUser();
 ```
 
 ### 设置 Name
 
-```c++
-/**
- * @param name 用户 name
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void SetName(FString name);
+```cpp
+FString Name = TEXT("Name"); // 用户游戏昵称
+TapUEDB::SetName(Name);
 ```
 
 ### 设置等级
 
-```c++
-/**
- * @param level 等级
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void SetLevel(int level);
+```cpp
+int32 Level = 100; // 用户游戏等级
+TapUEDB::SetLevel(Level);
 ```
+
 ### 设置服务
-```c++
-/**
- * @param server 服务地址
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void SetServer(FString server);
+```cpp
+FString Server = TEXT("Server"); // 服务
+TapUEDB::SetServer(Server);
 ```
 
 ### 充值
 
-```c++
+```cpp
 /**
  *
- * @param orderÎd 订单id
- * @param product 商品名称
- * @param amount 价格 
- * @param currencyType 货币名称
- * @param payment 充值渠道
+ * @param OrderId 订单id
+ * @param Product 商品名称
+ * @param Amount 价格 
+ * @param CurrencyType 货币名称
+ * @param Payment 充值渠道
+ * @param Properties 自定义参数
  */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void OnCharge(FString orderId,FString product,int32 amount,FString currencyType,FString payment);
+TapUEDB::OnCharge(OrderId, Product, Amount, CurrencyType, Payment, Properties);
 ```
 
-### 上报事件
-```c++
+### 上报自定义事件
+```cpp
 /*
- * @param eventName 上报事件 key
- * @param properties 上报事件 value （必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void TrackEvent(FString eventName,FString properties);
+TapUEDB::TrackEvent(EventName, Properties);
 ```
 
-### 注册动态事件 (不支持蓝图)
-```c++
-/**
- * 注册动态事件
- * @param properties 继承 TapDBDynamicProperties
- */
-static void RegisterDynamicProperties(TapDBDynamicProperties* properties);
+### 注册动态事件 
+```cpp
+TapUEDB::RegisterDynamicProperties(PropertiesBlock);
 ```
 
 ### 注册静态事件
-```c++
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-/**
- * 注册静态事件
- * @param properties 必须为 JSON 字符串
- */
-static void RegisterStaticProperties(FString properties);
+```cpp
+TapUEDB::RegisterStaticProperties(Properties);
 ```
 
 ### 取消静态事件
-```c++
-/**
- * 删除静态事件
- * @param key 必须为已注册的静态事件的 key
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void UnregisterStaticProperty(FString key);
+```cpp
+TapUEDB::UnregisterStaticProperty(Key);
 ```
 
 ### 清除静态事件
-```c++
-/**
- * 清除所有静态事件
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void ClearStaticProperties();
+```cpp
+TapUEDB::ClearStaticProperties();
 ```
 
 ### 设备初始化
-```c++
-/**
- * @param properties 设置初始化（必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void DeviceInitialize(FString properties);
+```cpp
+TapUEDB::DeviceInitialize(Properties);
 ```
 
 ### 设备更新
-```c++
-/**
- * @param properties 设置更新（必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void DeviceUpdate(FString properties);
+```cpp
+TapUEDB::DeviceUpdate(Properties);
 ```
 
 ### 添加设备
-```c++
-/**
- *
- * @param propertis 添加设备（必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void DeviceAdd(FString properties);
+```cpp
+TapUEDB::DeviceAdd(Properties);
 ```
 
 ### 用户初始化
-```c++
-/**
- *
- * @param properties 用户初始化 (必须为 JSON 字符串)
- *
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void UserInitialize(FString properties);
+```cpp
+TapUEDB::UserInitialize(Properties);
 ```
 
 ### 用户更新
-```c++
-/**
- *
- * @param propertis 用户更新（必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void UserUpdate(FString properties);
+```cpp
+TapUEDB::UserUpdate(Properties);
 ```
 
 ### 添加用户
-```c++
-/**
- *
- * @param propertis 添加用户（必须为 JSON 字符串）
- */
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void UserAdd(FString properties);
+```cpp
+TapUEDB::UserAdd(Properties);
 ```
 
-### 清除用户
-```c++
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void ClearUser();
-```
 
 ### 开启 iDFA
 
 > iOS 独占方法
 
-```c++
-UFUNCTION(BlueprintCallable,Category = "TapDB")
-static void AdvertiserIDCollectionEnabled(bool enable);
+```cpp
+TapUEDB::AdvertiserIDCollectionEnabled(true);
 ```

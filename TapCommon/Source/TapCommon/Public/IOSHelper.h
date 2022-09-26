@@ -2,7 +2,7 @@
 
 
 // #if PLATFORM_IOS
-#include "TapError.h"
+#include "TUError.h"
 #import <Foundation/Foundation.h>
 
 class IOSHelper
@@ -14,9 +14,9 @@ public:
 
 	static FString convertString(NSString *string);
 
-	static NSString * convertString(FString& string);
+	static NSString * convertString(const FString& string);
 
-	static FTapError convertError(NSError *error);
+	static FTUError convertError(NSError *error);
 
 	static FString getJson(NSDictionary *dic);
     

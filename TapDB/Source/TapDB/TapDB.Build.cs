@@ -77,7 +77,7 @@ public class TapDB : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapDB",
-                    "../TapDB/ios/framework/TapDB.embeddedframework.zip"
+                    "../TapDB/ios/framework/TapDB.zip"
                 )
             );
         }
