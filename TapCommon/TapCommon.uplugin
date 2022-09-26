@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "3.6.0",
+	"Version": 31501001,
+	"VersionName": "3.15.1",
 	"FriendlyName": "TapCommon",
 	"Description": "TapTap Common",
 	"Category": "TapTap",
@@ -18,7 +18,12 @@
 		{
 			"Name": "TapCommon",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreLoadingScreen"
+		},
+		{
+			"Name": "TapWebBrowser",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
 		}
 	]
 }

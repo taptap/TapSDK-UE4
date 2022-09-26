@@ -1,0 +1,21 @@
+{
+  "upload_user_action": 1,
+  "ui_config": {
+    "input_realname_info": {
+      "title": "Xác nhận thông tin",
+      "description": "Để cải thiện trải nghiệm của bạn, hãy chọn ngày tháng năm sinh. \nThông tin bạn cung cấp sẽ được bảo vệ nghiêm ngặt, chỉ dùng để xác minh người chơi vị thành niên, sẽ không dùng vào mục đích khác. Xin hãy yên tâm.",
+      "button": "Gửi",
+      "submit_success_message": "Gửi thành công",
+      "birthdate_invalidate_message": "Hãy chọn ngày tháng năm sinh"
+    },
+    "health_reminder": {
+      "title": "Nhắc nhở thời gian chơi game",
+      "description": "Bạn hiện là người chơi vị thành niên, thời gian chơi game hàng ngày là 180 phút. Hôm nay đã hết giờ chơi, chú ý nghỉ ngơi.",
+      "button_exit": "thoát khỏi trò chơi",
+      "button_switch": "chuyển tài khoản"
+    },
+    "pay_reminder": {
+      "button_confirm": "trở lại trò chơi"
+    }
+  }
+}

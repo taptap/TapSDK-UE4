@@ -12,6 +12,8 @@ public class TapCommon : ModuleRules
 
         PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
         PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public")));
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Tools")));
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "TDSNet")));
 
         PublicIncludePaths.AddRange(
             new string[] {
@@ -31,7 +33,8 @@ public class TapCommon : ModuleRules
             new string[]
             {
                 "Core",
-                "ApplicationCore"
+                "ApplicationCore",
+                "HTTPServer",
 				// ... add other public dependencies that you statically link with here ...
 			}
             );
@@ -44,9 +47,13 @@ public class TapCommon : ModuleRules
                 "Engine",
                 "Slate",
                 "SlateCore",
+                "Sockets",
+                "UMG", "WebBrowser",
 				// ... add private dependencies that you statically link with here ...	
 			}
             );
+
+        AddEngineThirdPartyPrivateStaticDependencies(Target, "OpenSSL");
 
 
         DynamicallyLoadedModuleNames.AddRange(
@@ -69,6 +76,7 @@ public class TapCommon : ModuleRules
                     "SlateCore",
                     "UMG",
                     "Json",
+                    "Http",
                     "JsonUtilities"
                 }
             );
@@ -88,8 +96,8 @@ public class TapCommon : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapCommonSDK",
-                    "../TapCommon/ios/framework/TapCommonSDK.embeddedframework.zip",
-                    "Resource/TapCommonResource.bundle"
+                    "../TapCommon/ios/framework/TapCommonSDK.zip",
+                    "TapCommonResource.bundle"
                 )
             );
         }

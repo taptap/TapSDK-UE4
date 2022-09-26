@@ -4,7 +4,8 @@
 #include "TapCommon.h"
 #include "TapBridge.h"
 #include "TapJson.h"
-#include "TapError.h"
+#include "TUError.h"
+
 
 #define TAPCOMMON_REGION_CODE_ID "TAPCOMMON_REGION_CODE_ID"
 #define TAPCOMMON_IS_TAPTAP_INSTALLED_ID "TAPCOMMON_IS_TAPTAP_INSTALLED_ID"
@@ -39,88 +40,88 @@ void UTapCommonBPLibrary::CallHandler(FString command)
 #endif
 }
 
-void UTapCommonBPLibrary::GetRegionCode()
-{
-#if PLATFORM_ANDROID || PLATFORM_IOS
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"), TEXT("getRegionCode"), TEXT(""), true, TEXT(TAPCOMMON_REGION_CODE_ID),true);
-	GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::GetRegionCode()
+// {
+// #if PLATFORM_ANDROID || PLATFORM_IOS
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"), TEXT("getRegionCode"), TEXT(""), true, TEXT(TAPCOMMON_REGION_CODE_ID),true);
+// 	GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
 
-void UTapCommonBPLibrary::IsTapTapInstalled(){
-#if PLATFORM_ANDROID
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("isTapTapInstalled"),TEXT(""),true,TEXT(TAPCOMMON_IS_TAPTAP_INSTALLED_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::IsTapTapInstalled(){
+// #if PLATFORM_ANDROID
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("isTapTapInstalled"),TEXT(""),true,TEXT(TAPCOMMON_IS_TAPTAP_INSTALLED_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
-void UTapCommonBPLibrary::IsTapGlobalInstalled(){
-#if PLATFORM_ANDROID
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("isTapGlobalInstalled"),TEXT(""),true,TEXT(TAPCOMMON_IS_TAPGLOBAL_INSTALLED_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::IsTapGlobalInstalled(){
+// #if PLATFORM_ANDROID
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("isTapGlobalInstalled"),TEXT(""),true,TEXT(TAPCOMMON_IS_TAPGLOBAL_INSTALLED_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
-void UTapCommonBPLibrary::UpdateGameInTapTap(FString appId){
-#if PLATFORM_ANDROID
-    FString JsonOutString;
-    TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
-    Writer->WriteObjectStart();
-    Writer->WriteValue(TEXT("appId"), appId);
-    Writer->WriteObjectEnd();
-    Writer->Close();
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("updateGameInTapTap"),JsonOutString,true,TEXT(TAPCOMMON_UPDATE_GAME_TAPTAP_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::UpdateGameInTapTap(FString appId){
+// #if PLATFORM_ANDROID
+//     FString JsonOutString;
+//     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
+//     Writer->WriteObjectStart();
+//     Writer->WriteValue(TEXT("appId"), appId);
+//     Writer->WriteObjectEnd();
+//     Writer->Close();
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("updateGameInTapTap"),JsonOutString,true,TEXT(TAPCOMMON_UPDATE_GAME_TAPTAP_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
-void UTapCommonBPLibrary::UpdateGameInTapGlobal(FString appId){
-#if PLATFORM_ANDROID
-    FString JsonOutString;
-    TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
-    Writer->WriteObjectStart();
-    Writer->WriteValue(TEXT("appId"), appId);
-    Writer->WriteObjectEnd();
-    Writer->Close();
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("updateGameInTapGlobal"),JsonOutString,true,TEXT(TAPCOMMON_UPDATE_GAME_TAPGLOBAL_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::UpdateGameInTapGlobal(FString appId){
+// #if PLATFORM_ANDROID
+//     FString JsonOutString;
+//     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
+//     Writer->WriteObjectStart();
+//     Writer->WriteValue(TEXT("appId"), appId);
+//     Writer->WriteObjectEnd();
+//     Writer->Close();
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("updateGameInTapGlobal"),JsonOutString,true,TEXT(TAPCOMMON_UPDATE_GAME_TAPGLOBAL_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
-void UTapCommonBPLibrary::OpenReviewInTapTap(FString appId){
-#if PLATFORM_ANDROID
-    FString JsonOutString;
-    TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
-    Writer->WriteObjectStart();
-    Writer->WriteValue(TEXT("appId"), appId);
-    Writer->WriteObjectEnd();
-    Writer->Close();
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("openReviewInTapTap"),JsonOutString,true,TEXT(TAPCOMMON_OPEN_GAME_TAPTAP_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::OpenReviewInTapTap(FString appId){
+// #if PLATFORM_ANDROID
+//     FString JsonOutString;
+//     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
+//     Writer->WriteObjectStart();
+//     Writer->WriteValue(TEXT("appId"), appId);
+//     Writer->WriteObjectEnd();
+//     Writer->Close();
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("openReviewInTapTap"),JsonOutString,true,TEXT(TAPCOMMON_OPEN_GAME_TAPTAP_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
-void UTapCommonBPLibrary::OpenReviewInTapGlobal(FString appId){
-#if PLATFORM_ANDROID
-    FString JsonOutString;
-    TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
-    Writer->WriteObjectStart();
-    Writer->WriteValue(TEXT("appId"), appId);
-    Writer->WriteObjectEnd();
-    Writer->Close();
-    FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("openReviewInTapGlobal"),JsonOutString,true,TEXT(TAPCOMMON_OPEN_GAME_TAPGLOBAL_ID),true);
-    GetBridge()->CallHandler(commandJson);
-#endif
-}
+// void UTapCommonBPLibrary::OpenReviewInTapGlobal(FString appId){
+// #if PLATFORM_ANDROID
+//     FString JsonOutString;
+//     TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer = TJsonWriterFactory<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>::Create(&JsonOutString);
+//     Writer->WriteObjectStart();
+//     Writer->WriteValue(TEXT("appId"), appId);
+//     Writer->WriteObjectEnd();
+//     Writer->Close();
+//     FString commandJson = TapJson::ConstructorCommand(TEXT("TDSCommonService"),TEXT("openReviewInTapGlobal"),JsonOutString,true,TEXT(TAPCOMMON_OPEN_GAME_TAPGLOBAL_ID),true);
+//     GetBridge()->CallHandler(commandJson);
+// #endif
+// }
 
 TMap<FString, FString> UTapCommonBPLibrary::RemoveEmptyKey(TMap<FString, FString> stringMap)
 {
-    // FTapError Error;
+    // FTUError Error;
     // Error.code = 10;
     // Error.error_description = TEXT("哈哈__123'1；231_。。。。");
     // FString ErrorJson;
-    // FJsonObjectConverter::UStructToJsonObjectString(FTapError::StaticStruct(), &Error, ErrorJson, 0, 0);
+    // FJsonObjectConverter::UStructToJsonObjectString(FTUError::StaticStruct(), &Error, ErrorJson, 0, 0);
     // UE_LOG(LogTemp, Display, TEXT("hyf__%s"), *ErrorJson);
     stringMap.Remove("");
     return stringMap;

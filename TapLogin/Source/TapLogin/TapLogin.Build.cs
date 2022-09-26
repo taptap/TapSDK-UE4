@@ -6,10 +6,12 @@ using System;
 
 public class TapLogin : ModuleRules
 {
+
 	public TapLogin(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
+		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
@@ -30,6 +32,7 @@ public class TapLogin : ModuleRules
 				"Core",
 				"Json",
 				"JsonUtilities",
+				"HTTPServer",
 				"TapCommon"
 				// ... add other public dependencies that you statically link with here ...
 				
@@ -44,6 +47,7 @@ public class TapLogin : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"UMG",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -62,7 +66,7 @@ public class TapLogin : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapLoginSDK",
-                    "../TapLogin/ios/framework/TapLoginSDK.embeddedframework.zip"
+                    "../TapLogin/ios/framework/TapLoginSDK.zip"
                 )
             );
         }

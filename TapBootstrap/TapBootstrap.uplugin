@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "3.6.0",
+	"Version": 31501001,
+	"VersionName": "3.15.1",
 	"FriendlyName": "TapBootstrap",
 	"Description": "TapTap Bootstrap",
 	"Category": "TapTap",
@@ -18,17 +18,16 @@
 		{
 			"Name": "TapBootstrap",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "TapBootstrapEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreLoadingScreen"
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "TapCommon",
+			"Enabled": true
+		},
+		{
+			"Name": "TapLogin",
 			"Enabled": true
 		}
 	]

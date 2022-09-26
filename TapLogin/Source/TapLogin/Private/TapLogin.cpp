@@ -19,13 +19,3 @@ void FTapLoginModule::ShutdownModule()
 
 IMPLEMENT_MODULE(FTapLoginModule, TapLogin)
 
-FTapLoginModule::FLoginSuccess FTapLoginModule::OnLoginSuccess;
-FTapLoginModule::FLoginCancel FTapLoginModule::OnLoginCancel;
-FTapLoginModule::FLoginError FTapLoginModule::OnLoginError;
-FTapLoginModule::FGetAccessToken FTapLoginModule::OnGetAccessTokenSuccess;
-FTapLoginModule::FGetAccessTokenError FTapLoginModule::OnGetAccessTokenError;
-FTapLoginModule::FGetTestQualification FTapLoginModule::OnGetTestQualification;
-FTapLoginModule::FGetTestQualificationError FTapLoginModule::OnGetTestQualificationError;
-FTapLoginModule::FGetProfile FTapLoginModule::OnGetProfileSuccess;
-FTapLoginModule::FGetProfileError FTapLoginModule::OnGetProfileError;
-FTapLoginModule::FQueryMutualListCallBack FTapLoginModule::OnQueryMutualList;
