@@ -20,9 +20,9 @@ void TULanguage::ParseLanguages() {
 	for (auto Name : Names) {
 		if (Name.StartsWith("zh")) {
 			if (Name == "zh-TW") {
-				LanguageMap.Add(Name, ELanguageType::ZH);
-			} else {
 				LanguageMap.Add(Name, ELanguageType::ZHTW);
+			} else {
+				LanguageMap.Add(Name, ELanguageType::ZH);
 			}
 		} else if (Name.StartsWith("en")) {
 			LanguageMap.Add(Name, ELanguageType::EN);
@@ -49,6 +49,33 @@ ELanguageType TULanguage::GetNativeType() {
 		}
 	}
 	return *FindKey;
+}
+
+FString TULanguage::GetLanguageString()
+{
+	const ELanguageType Type = GetCurrentType();
+	switch (Type)
+	{
+	case ELanguageType::AUTO:
+		return TEXT("zh_CN");
+	case ELanguageType::ZH:
+		return TEXT("zh_CN");
+	case ELanguageType::EN:
+		return TEXT("en_US");
+	case ELanguageType::ZHTW:
+		return TEXT("zh-TW");
+	case ELanguageType::JA: 
+		return TEXT("ja_JP");
+	case ELanguageType::KO: 
+		return TEXT("ko_KR");
+	case ELanguageType::TH: 
+		return TEXT("th_TH");
+	case ELanguageType::ID: 
+		return TEXT("id_ID");
+	default:
+		ensure(false);
+		return TEXT("");
+	}
 }
 
 ELanguageType TULanguage::GetCurrentType() {

@@ -66,7 +66,7 @@ public class TapLogin : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapLoginSDK",
-                    "../TapLogin/ios/framework/TapLoginSDK.zip"
+                    "../ThirdParty/iOS/Frameworks/TapLoginSDK.zip"
                 )
             );
         }

@@ -13,13 +13,13 @@
 
     <!-- optional files or directories to copy to Intermediate/Android/APK -->
     <resourceCopies>
-        <copyDir src="$S(PluginDir)/../../Source/AntiAddiction/Android/libs/" dst="$S(BuildDir)/libs/" />
+        <copyDir src="$S(PluginDir)/../ThirdParty/Android/libs/" dst="$S(BuildDir)/libs/" />
     </resourceCopies>
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'AntiAddiction_3.15.0',ext:'aar')
-dependencies.implementation(name: 'AntiAddictionUI_3.15.0',ext:'aar')
+dependencies.implementation(name: 'AntiAddiction_3.16.2',ext:'aar')
+dependencies.implementation(name: 'AntiAddictionUI_3.16.2',ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>

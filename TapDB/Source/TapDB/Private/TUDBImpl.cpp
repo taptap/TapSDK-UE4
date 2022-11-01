@@ -7,7 +7,7 @@
 #include "Mobile//TUDBMobileImpl.h"
 #endif
 
-#define UnsupportedPlatformsLog TUDebuger::ErrorLog(FString::Printf(TEXT("Unsupported Platforms Call %s"), ANSI_TO_TCHAR(__FUNCTION__)));
+#define UnsupportedPlatformsLog TUDebuger::ErrorLog(FString::Printf(TEXT("TUDBImpl Unsupported Platforms Call %s"), ANSI_TO_TCHAR(__FUNCTION__)));
 
 TSharedPtr<TUDBImpl> TUDBImpl::Instance = nullptr;
 

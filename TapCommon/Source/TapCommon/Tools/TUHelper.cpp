@@ -1,9 +1,9 @@
 #include "TUHelper.h"
 #include "ImageUtils.h"
+#include "TUSettings.h"
 #include "GenericPlatform/GenericPlatformHttp.h"
 #if PLATFORM_WINDOWS
 #include "Windows/WindowsWindow.h"
-#include "Widgets/SWindow.h"
 #endif
 
 #if PLATFORM_MAC || PLATFORM_WINDOWS
@@ -12,23 +12,25 @@
 
 void TUHelper::LaunchURL(const TCHAR* URL, const TCHAR* Param, FString* Error)
 {
-#if PLATFORM_WINDOWS
-	if (GWorld)
-	{
-		if (UGameViewportClient* Viewport = GWorld->GetGameViewport())
-		{
-			if (FGenericWindow* Window = Viewport->GetWindow()->GetNativeWindow().Get())
-			{
-				if (Window->GetWindowMode() == EWindowMode::Fullscreen)
-				{
-					FWindowsWindow* Win = static_cast<FWindowsWindow*>(Window);
-					SetWindowPos(Win->GetHWnd(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-				}
-			}
-		}
+	auto Block = TUSettings::GetBlockBeforeLaunchUrl();
+	if (Block) {
+		Block();
 	}
-#endif
 	FPlatformProcess::LaunchURL(URL, Param, Error);
+}
+
+void TUHelper::PerformOnGameThread(TFunction<void()> Function) {
+	if (!Function) {
+		return;
+	}
+	if (IsInGameThread())
+	{
+		Function();
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, Function);
+	}
 }
 
 

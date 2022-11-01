@@ -2,6 +2,9 @@
 
 #include "TapCommon.h"
 
+#if PLATFORM_MAC
+#include "WebBrowserModule.h"
+#endif
 #include "Slate/STapThrobber.h"
 #include "Slate/TapStyleCommon.h"
 
@@ -10,6 +13,9 @@
 void FTapCommonModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+#if PLATFORM_MAC
+	IWebBrowserModule::Get().GetSingleton();
+#endif
 	FTapStyleCommon::Initialize();
 }
 

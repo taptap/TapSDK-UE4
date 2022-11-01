@@ -213,7 +213,7 @@ void UTAULoginWidget::GetProfile(const TSharedPtr<FTUAccessToken>& AccessToken)
 		{
 			FTUError TapError;
 			TapError.code = Error.code;
-			TapError.error_description = Error.error_description + "./t" + "Get profile error";
+			TapError.error_description = Error.error_description + ".\t" + "Get profile error";
 			Close(TUAuthResult::FailInit(TapError));
 		}
 	});

@@ -31,6 +31,8 @@ public:
 
 	TSharedPtr<SWebBrowser> GetInnerWebBrowser() const;
 
+	void ExecuteJavascript(const FString& ScriptText);
+
 	bool CanGoBack() const;
 	
 	UFUNCTION()
@@ -80,6 +82,16 @@ protected:
 
 	UPROPERTY(Meta = (BindWidgetOptional))
 	UPanelWidget* RetryPanel;
-};
 
- 
+private:
+	
+	void HandleOnURLChanged(const FText& NewURL);
+
+	void HandleOnTitleChanged(const FText& NewTitle);
+
+	void HandleOnLoadStarted();
+	
+	void HandleOnLoadCompleted();
+
+	void HandleOnLoadError();
+};

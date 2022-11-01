@@ -59,14 +59,14 @@ public class AntiAddiction : ModuleRules
 			PublicAdditionalFrameworks.Add(
 				new Framework(
 					"AntiAddictionService",
-					"../AntiAddiction/ios/framework/AntiAddictionService.zip"
+					"../ThirdParty/iOS/Frameworks/AntiAddictionService.zip"
 				)
 			);
 			
 			PublicAdditionalFrameworks.Add(
 				new Framework(
 					"AntiAddictionUI",
-					"../AntiAddiction/ios/framework/AntiAddictionUI.zip",
+					"../ThirdParty/iOS/Frameworks/AntiAddictionUI.zip",
 					"AntiAdictionResources.bundle"
 				)
 			);

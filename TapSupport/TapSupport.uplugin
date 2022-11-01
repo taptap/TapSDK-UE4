@@ -1,0 +1,30 @@
+{
+	"FileVersion": 3,
+	"Version": 31602001,
+	"VersionName": "3.16.2",
+	"FriendlyName": "TapSupport",
+	"Description": "TapTap Support",
+	"Category": "TapTap",
+	"CreatedBy": "TapTap Develop Service",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "TapSupport",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "TapCommon",
+			"Enabled": true
+		}
+	]
+}

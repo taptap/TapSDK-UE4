@@ -7,6 +7,8 @@ class TAPCOMMON_API TUHelper
 public:
 
 	static void LaunchURL(const TCHAR* URL, const TCHAR* Param, FString* Error);
+
+	static void PerformOnGameThread(TFunction<void()> Function);
 	
 	template <class UIType>
 	static UIType* GetWidgetUI(UUserWidget *widget, FName name)

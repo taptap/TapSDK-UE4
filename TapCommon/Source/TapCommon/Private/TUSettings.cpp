@@ -32,6 +32,14 @@ TWeakObjectPtr<UGameInstance> TUSettings::GetGameInstance() {
 	return Ptr;
 }
 
+void TUSettings::SetBlockBeforeLaunchUrl(TFunction<void()> Block) {
+	Get().BlockBeforeLaunchUrl = Block;
+}
+
+TFunction<void()> TUSettings::GetBlockBeforeLaunchUrl() {
+	return Get().BlockBeforeLaunchUrl;
+}
+
 TUSettings& TUSettings::Get() {
 	if (Instance == nullptr) {
 		Instance = new TUSettings();
