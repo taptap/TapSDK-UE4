@@ -13,12 +13,12 @@
 
     <!-- optional files or directories to copy to Intermediate/Android/APK -->
     <resourceCopies>
-        <copyDir src="$S(PluginDir)/../../Source/TapDB/android/libs/" dst="$S(BuildDir)/libs/" />
+        <copyDir src="$S(PluginDir)/../ThirdParty/Android/libs/" dst="$S(BuildDir)/libs/" />
     </resourceCopies>
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'TapDB_3.15.0',ext:'aar')
+dependencies.implementation(name: 'TapDB_3.16.2',ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>

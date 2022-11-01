@@ -96,7 +96,7 @@ public class TapCommon : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapCommonSDK",
-                    "../TapCommon/ios/framework/TapCommonSDK.zip",
+                    "../ThirdParty/iOS/Frameworks/TapCommonSDK.zip",
                     "TapCommonResource.bundle"
                 )
             );

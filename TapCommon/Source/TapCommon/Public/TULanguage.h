@@ -6,6 +6,7 @@ public:
 
 	static ELanguageType GetNativeType();
 
+	static FString GetLanguageString();
 	// 获得当前语言
 	static ELanguageType GetCurrentType();
 	// 设置当前语言

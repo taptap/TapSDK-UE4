@@ -90,14 +90,14 @@ public class TapBootstrap : ModuleRules
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "TapBootstrapSDK",
-                    "../TapBootstrap/ios/framework/TapBootstrapSDK.zip"
+                    "../ThirdParty/iOS/Frameworks/TapBootstrapSDK.zip"
                 )
             );
 
             PublicAdditionalFrameworks.Add(
                 new Framework(
                     "LeanCloudObjc",
-                    "../TapBootstrap/ios/framework/LeanCloudObjc.zip"
+                    "../ThirdParty/iOS/Frameworks/LeanCloudObjc.zip"
                 )
             );
         }
