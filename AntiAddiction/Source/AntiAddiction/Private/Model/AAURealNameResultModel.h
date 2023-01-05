@@ -16,16 +16,16 @@ struct FAAURealNameResultModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	int status;
+	int status = 0;
 
 	UPROPERTY()
-	int age_limit;
+	int age_limit = 0;
 
 	UPROPERTY()
 	FString anti_addiction_token;
 
 	UPROPERTY()
-	bool has_auth_record;
+	bool has_auth_record = false;
 
 	AuthState GetAuthState() {
 		if (status == Success) {

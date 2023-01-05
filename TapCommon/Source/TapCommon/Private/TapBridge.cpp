@@ -2,7 +2,7 @@
 
 #if PLATFORM_ANDROID
 
-#include "android/AndroidBridge.h"
+#include "Android/AndroidBridge.h"
 
 AndroidBridge * GetAndroidBridge(){
     static AndroidBridge * bridge = nullptr;
@@ -18,7 +18,7 @@ IBridge * GetBridge(){
 
 #elif PLATFORM_IOS
 
-#include "ios/IOSBridge.h"
+#include "iOS/IOSBridge.h"
 
 IOSBridge * GetIOSBridge(){
     static IOSBridge * bridge = nullptr;

@@ -18,9 +18,9 @@ struct FTapResult
     FString message;
 
     UPROPERTY()
-    int code;
+    int code = 0;
 
     UPROPERTY()
-    bool onceTime;
+    bool onceTime = true;
 
 };

@@ -9,7 +9,7 @@ struct FAAUServerTimeModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	int64 timestamp;
+	int64 timestamp = 0;
 
 };
 

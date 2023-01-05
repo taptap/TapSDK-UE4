@@ -214,7 +214,7 @@ void AAUVietnamServer::StartTimeLimitTimer() {
 }
 
 FDateTime AAUVietnamServer::GetCurrentTime() {
-	return AAUHelper::GetVietnamCurrentTime() + TimeSpan * ETimespan::TicksPerSecond;
+	return AAUHelper::GetVietnamCurrentTime() + FTimespan(TimeSpan * ETimespan::TicksPerSecond);
 }
 
 void AAUVietnamServer::LoginSuccess(const FAAUUser& User) {

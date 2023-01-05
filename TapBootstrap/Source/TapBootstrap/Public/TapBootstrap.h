@@ -1,17 +1,11 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
+#include "TUType.h"
 
-#include "Modules/ModuleManager.h"
-
-#define TapUEBootstrap_VERSION_NUMBER "31602001"
-#define TapUEBootstrap_VERSION "3.16.2"
-
-class TAPBOOTSTRAP_API FTapBootstrapModule : public IModuleInterface
-{
+class TAPBOOTSTRAP_API FTapBootstrap {
 public:
-    /** IModuleInterface implementation */
-    virtual void StartupModule() override;
-    virtual void ShutdownModule() override;
-    
+	/**
+	 * @brief TapBootstrap 初始化方法
+	 * @param InConfig 初始化配置参数
+	 */
+	static void Init(const FTUConfig& InConfig);
 };

@@ -1,48 +1,96 @@
 #pragma once
+#include "LCUser.h"
+#include "TUError.h"
 
-#include "CoreMinimal.h"
-#include "TDSUser.generated.h"
-#if PLATFORM_IOS
-#import <Foundation/Foundation.h>
-#endif
-
-USTRUCT(BlueprintType)
-struct FTDSUser
+/**
+ * TapTap Developer Services user
+ */
+/* Old -> New
+ * uuid -> GetObjectId()
+ * userName -> GetUsername()
+ * email -> GetEmail()
+ * phoneNumber -> GetMobilePhoneNumber()
+ * sessionToken -> GetSessionToken()
+ * isAnonymous -> IsAnonymous()
+ * avatar -> GetAvatar()
+ * nickName -> GetNickName()
+ * shortId -> GetShortID()
+ * UpdateAt -> GetUpdatedAt()
+ * CreateAt -> GetCreatedAt()
+ * bMobilePhoneVerified -> IsMobilePhoneVerified()
+ */
+struct TAPBOOTSTRAP_API FTDSUser: public FLCUser
 {
-	GENERATED_USTRUCT_BODY()
+public:
+	DECLARE_DELEGATE_OneParam(FDelegate, const FTDSUser& User);
+	
+	FTDSUser(TSharedPtr<FJsonObject> InServerData = nullptr);
+	
+	FString GetAvatar();
+	FString GetNickName();
+	FString GetShortID();
 
-	UPROPERTY()
-	FString uuid;
+	/**
+	 * Return last login user from cached memory or load from local storage
+	 */
+	static TSharedPtr<FTDSUser> GetCurrentUser();
 
-	UPROPERTY()
-	FString userName;
+	/**
+	 * Clear current user in memory and local storage
+	 */
+	static void Logout();
 
-	UPROPERTY()
-	FString email;
+	/**
+	 * Anonymously login to LeanCloud
+	 * 
+	 */
+	static void LoginAnonymously(FDelegate OnSuccess, FTUError::FDelegate OnError);
 
-	UPROPERTY()
-	FString phoneNumber;
+	/**
+	 * Login LeanCloud with auth data (this auth data is TapTap),
+	 * This evokes a TapTap login flow
+	 * 
+	 * @see LoginWithAuthData
+	 * 
+	 * @param Permissions @see TapUELogin::Login
+	 */
+	static void LoginWithTapTap(const TArray<FString>& Permissions, FDelegate OnSuccess, FTUError::FDelegate OnError);
 
-	UPROPERTY()
-	FString sessionToken;
+	/**
+	* Fetch LeanCloud user with LeanCloud's session token
+	* 
+	* @param SessionToken The session token pass-in
+	*/
+	static void BecomeWithSessionToken(const FString& SessionToken, FDelegate OnSuccess, FTUError::FDelegate OnError);
 
-	UPROPERTY()
-	bool isAnonymous;
+	/**
+	 * Login LeanCloud with other platform account
+	 * 
+	 * @param Platform The other platform to auth with
+	 * @param AuthData @see https://leancloud.cn/docs/rest_api.html#hash621643170
+	 */
+	static void LoginWithAuthData(const FString& Platform, TSharedPtr<FJsonObject> AuthData, FDelegate OnSuccess, FTUError::FDelegate OnError);
 
-	UPROPERTY()
-	FString avatar;
+	/**
+	 * Bind other platform account to TapTap Developer Services user
+	 * 
+	 * @param Platform The other platform to auth with
+	 * @param AuthData @see https://leancloud.cn/docs/rest_api.html#hash621643170
+	 */
+	void AssociateWithAuthData(const FString& Platform, TSharedPtr<FJsonObject> AuthData, FDelegate OnSuccess, FTUError::FDelegate OnError);
 
-	UPROPERTY()
-	FString nickName;
+	/**
+	 * Unbind other platform account to TapTap Developer Services user
+	 * 
+	 * @param Platform The other platform to unbind
+	 */
+	void DisassociateAuthData(const FString& Platform, FDelegate OnSuccess, FTUError::FDelegate OnError);
+	
+protected:
 
-	UPROPERTY()
-	FString shortId;
+	static FString KeyAvatar;
+	static FString KeyNickName;
+	static FString KeyShortID;
 
-	UPROPERTY()
-	FString serverData;
-
-#if PLATFORM_IOS
-	FTDSUser() = default;
-	FTDSUser(NSObject *user);
-#endif
+	void SaveUser();
 };

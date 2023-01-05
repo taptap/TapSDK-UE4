@@ -2,64 +2,29 @@
 
 using UnrealBuildTool;
 using System.IO;
-using System;
 
 public class TapBootstrap : ModuleRules
 {
-    public TapBootstrap(ReadOnlyTargetRules Target) : base(Target)
-    {
-        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+	public TapBootstrap(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
-        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public")));
-
-        PublicIncludePaths.AddRange(
-            new string[] {
-				// ... add public include paths required here ...
-
-			}
-            );
-
-
-        PrivateIncludePaths.AddRange(
-            new string[] {
-				// ... add other private include paths required here ...
-			}
-            );
-
-
-        PublicIncludePaths.AddRange(
-            new string[] {
-				// ... add public include paths required here ...
-			}
-            );
-
-
-        PrivateIncludePaths.AddRange(
-            new string[] {
-				// ... add other private include paths required here ...
-			}
-            );
-
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public/Android")));
+        PublicIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Public/iOS")));
+		PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private")));
 
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
                 "Core",
                 "ApplicationCore",
-                "Analytics",
-                "Engine",
-                "RenderCore",
-                "RHI",
-                "Core",
-                "CoreUObject",
-                "Slate",
-                "SlateCore",
                 "UMG",
                 "Json",
                 "JsonUtilities",
                 "TapCommon",
                 "TapLogin",
+                "LeanCloud",
+                "HTTP"
 				// ... add other public dependencies that you statically link with here ...
 			}
             );
@@ -93,13 +58,8 @@ public class TapBootstrap : ModuleRules
                     "../ThirdParty/iOS/Frameworks/TapBootstrapSDK.zip"
                 )
             );
+            PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private/IOS")));
 
-            PublicAdditionalFrameworks.Add(
-                new Framework(
-                    "LeanCloudObjc",
-                    "../ThirdParty/iOS/Frameworks/LeanCloudObjc.zip"
-                )
-            );
         }
 
         if (Target.Platform == UnrealTargetPlatform.Android)
@@ -114,7 +74,10 @@ public class TapBootstrap : ModuleRules
                 "AndroidPlugin",
                 Path.Combine(ModuleDirectory, "TapBootstrap_Android_UPL.xml")
             );
+            PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "Private/Android")));
+
         }
 
     }
 }
+

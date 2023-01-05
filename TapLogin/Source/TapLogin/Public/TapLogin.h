@@ -2,8 +2,8 @@
 
 #pragma once
 
-#define TapUELogin_VERSION_NUMBER "31602001"
-#define TapUELogin_VERSION "3.16.2"
+#define TapUELogin_VERSION_NUMBER "31605001"
+#define TapUELogin_VERSION "3.16.5"
 
 class FTapLoginModule : public IModuleInterface
 {

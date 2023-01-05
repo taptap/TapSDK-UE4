@@ -1,7 +1,7 @@
 #include "TUDeviceInfo.h"
 #include "SocketSubsystem.h"
 #include "TUCommonStorage.h"
-
+#include "HAL/PlatformSurvey.h"
 
 FString TUDeviceInfo::GetCPU()
 {
@@ -157,5 +157,30 @@ FString TUDeviceInfo::GetIpv6()
 }
 
 
+void TUDeviceInfo::GetCountryAndLanguage(FString& Country, FString& Language) {
+	static FString G_Country;
+	static FString G_Language;
+	if (G_Language.IsEmpty() && G_Country.IsEmpty()) {
+		// #if PLATFORM_IOS || PLATFORM_MAC
+		// 		G_Country = FString([[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
+		// 		G_Language = FString([[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
+		// #else
+		FHardwareSurveyResults OutResults;
+		FPlatformSurvey::GetSurveyResults(OutResults);
+		FString OSLanguage = FString(OutResults.OSLanguage);
+		TArray<FString> ResultArray;
+		OSLanguage.ParseIntoArray(ResultArray, TEXT("-"));
+		if (ResultArray.Num() == 1) {
+			G_Language = ResultArray[0];
+		} else if (ResultArray.Num() > 1) {
+			G_Country = ResultArray.Last();
+			// ResultArray.RemoveAt(ResultArray.Num() -1);
+			G_Language = OSLanguage;
+		}
+		// #endif
+	}
+	Country = G_Country;
+	Language = G_Language;
+}
 
 

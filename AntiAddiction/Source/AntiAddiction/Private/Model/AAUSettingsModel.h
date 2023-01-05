@@ -9,6 +9,6 @@ struct FAAUSettingsModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	bool stand_alone_mode;
+	bool stand_alone_mode = false;
 
 };

@@ -18,10 +18,10 @@ struct FTapCommand
     FString args;
 
     UPROPERTY()
-    bool callback;
+    bool callback = false;
 
     UPROPERTY()
-    bool onceTime;
+    bool onceTime = true;
 
     UPROPERTY()
     FString callbackId;

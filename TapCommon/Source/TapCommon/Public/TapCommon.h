@@ -4,8 +4,8 @@
 
 #include "Modules/ModuleManager.h"
 
-#define TapUECommon_VERSION_NUMBER "31602001"
-#define TapUECommon_VERSION "3.16.2"
+#define TapUECommon_VERSION_NUMBER "31605001"
+#define TapUECommon_VERSION "3.16.5"
 
 class FSlateStyleSet;
 

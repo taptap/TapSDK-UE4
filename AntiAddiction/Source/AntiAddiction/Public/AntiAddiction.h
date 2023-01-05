@@ -4,8 +4,8 @@
 
 #include "Modules/ModuleManager.h"
 
-#define AntiAddictionUE_VERSION_NUMBER "31602001"
-#define AntiAddictionUE_VERSION "3.16.2"
+#define AntiAddictionUE_VERSION_NUMBER "31605001"
+#define AntiAddictionUE_VERSION "3.16.5"
 
 class FAntiAddictionModule : public IModuleInterface
 {

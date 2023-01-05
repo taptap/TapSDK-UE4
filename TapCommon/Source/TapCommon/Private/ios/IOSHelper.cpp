@@ -1,8 +1,9 @@
 #include "IOSHelper.h"
 
 #include "TUDebuger.h"
+#include "TUJsonHelper.h"
 
-NSDictionary<NSString *, NSString *> * IOSHelper::convertMap(const TMap<FString, FString>& map)
+NSDictionary<NSString *, NSString *> * IOSHelper::Convert(const TMap<FString, FString>& map)
 {
 	
 	NSMutableDictionary<NSString *, NSString *> *dic = [NSMutableDictionary dictionaryWithCapacity:map.Num()];
@@ -13,7 +14,7 @@ NSDictionary<NSString *, NSString *> * IOSHelper::convertMap(const TMap<FString,
 	return [dic copy];
 }
 
-NSArray<NSString *> * IOSHelper::convertArray(const TArray<FString>& array)
+NSArray<NSString *> * IOSHelper::Convert(const TArray<FString>& array)
 {
 	NSMutableArray<NSString *> *tempArr = [NSMutableArray arrayWithCapacity:array.Num()];
 	for (FString element : array)
@@ -27,29 +28,29 @@ NSArray<NSString *> * IOSHelper::convertArray(const TArray<FString>& array)
 	return [tempArr copy];
 }
 
-FString IOSHelper::convertString(NSString* string) {
-	return FString(UTF8_TO_TCHAR([string UTF8String]));
+FString IOSHelper::Convert(NSString* string) {
+	return FString(string);
 }
 
-NSString * IOSHelper::convertString(const FString& string) {
+NSString * IOSHelper::Convert(const FString& string) {
 	return string.GetNSString();
 }
 
-FTUError IOSHelper::convertError(NSError *error)
+FTUError IOSHelper::Convert(NSError *error)
 {
 	FTUError tapError;
 	tapError.code = (int)error.code;
-	tapError.error_description = IOSHelper::convertString(error.localizedDescription);
+	tapError.error_description = IOSHelper::Convert(error.localizedDescription);
 	return tapError;
 }
 
 
-FString IOSHelper::getJson(NSDictionary *dic) {
+FString IOSHelper::GetJson(NSDictionary *dic) {
 	if ([dic isKindOfClass:[NSDictionary class]]) {
 		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
 		if (jsonData) {
 			NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-			return IOSHelper::convertString(dataStr);
+			return IOSHelper::Convert(dataStr);
 		}
 	}
 	NSLog(@"iOSHelper::getJson NSDictionary convert error");
@@ -57,17 +58,44 @@ FString IOSHelper::getJson(NSDictionary *dic) {
 	return tempStr;
 }
 
-FString IOSHelper::getJson(NSArray *array) {
+FString IOSHelper::GetJson(NSArray *array) {
 	if ([array isKindOfClass:[NSArray class]]) {
 		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:nil];
 		if (jsonData) {
 			NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-			return IOSHelper::convertString(dataStr);
+			return IOSHelper::Convert(dataStr);
 		}
 	}
 	NSLog(@"iOSHelper::getJson NSArray convert error");
 	FString tempStr;
 	return tempStr;
+}
+
+TArray<FString> IOSHelper::Convert(NSArray<NSString *> *strings) {
+	TArray<FString> UE_Strings;
+	for (NSString *string in strings) {
+		UE_Strings.Add(IOSHelper::Convert(string));
+	}
+	return UE_Strings;
+}
+
+TSharedPtr<FJsonObject> IOSHelper::Convert(NSDictionary *dic) {
+	FString JsonStr = IOSHelper::GetJson(dic);
+	return TUJsonHelper::GetJsonObject(JsonStr);
+}
+
+NSDictionary * IOSHelper::Convert(TSharedPtr<FJsonObject> JsonObject) {
+	if (!JsonObject.IsValid()) {
+		return nil;
+	}
+	FString JsonStr = TUJsonHelper::GetJsonString(JsonObject);
+	NSString *jsonString = IOSHelper::Convert(JsonStr);
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+	NSError *err;
+	NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+														options:NSJSONReadingMutableContainers
+														  error:&err];
+	return dic;
 }
 
 

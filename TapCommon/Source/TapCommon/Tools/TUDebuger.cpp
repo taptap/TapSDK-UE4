@@ -1,11 +1,11 @@
 #include "TUDebuger.h"
 
 #if PLATFORM_IOS
-#import <TapCommonSDK/TapCommonSDK.h>
-#include "IOSHelper.h"
 #pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
 #pragma clang diagnostic ignored "-Wundef"
 #pragma clang diagnostic ignored "-Wnonnull"
+#import <TapCommonSDK/TapCommonSDK.h>
+#include "IOSHelper.h"
 #endif
 
 #if PLATFORM_ANDROID
@@ -27,8 +27,8 @@ void TUDebuger::AddReplacedHostPair(const FString& OriginHost, const FString& Re
 	ReplaceHosts.Add(OriginHost, ReplacedHost);
 	TUDebuger::DisplayLog(FString::Printf(TEXT("原始地址：%s， 替换地址：%s"), *OriginHost, *ReplacedHost));
 #if PLATFORM_IOS
-	NSString *nsOriginHost = IOSHelper::convertString(OriginHost);
-	NSString *nsReplacedHost = IOSHelper::convertString(ReplacedHost);
+	NSString *nsOriginHost = IOSHelper::Convert(OriginHost);
+	NSString *nsReplacedHost = IOSHelper::Convert(ReplacedHost);
 	[[TDSHostReplaceUtil shareInstance] addReplacedHostPair:nsOriginHost replacedHost:nsReplacedHost];
 #elif PLATFORM_ANDROID
 
@@ -54,7 +54,7 @@ void TUDebuger::AddReplacedHostPair(const FString& OriginHost, const FString& Re
 void TUDebuger::RemoveReplacedHostPair(const FString& OriginHost) {
 	ReplaceHosts.Remove(OriginHost);
 #if PLATFORM_IOS
-	NSString *nsOriginHost = IOSHelper::convertString(OriginHost);
+	NSString *nsOriginHost = IOSHelper::Convert(OriginHost);
 	[[TDSHostReplaceUtil shareInstance] clearReplacedHostPair:nsOriginHost];
 #elif PLATFORM_ANDROID
 	

@@ -1,19 +1,17 @@
 #include "TULoginRegionConfig.h"
+
+#include "TUDebuger.h"
 #include "TULoginImpl.h"
 
 class TULoginRegionConfigCN: public TULoginRegionConfig
 {
 public:
 	virtual FString WebHost() {
-		return "https://www.taptap.com";
+		return TUDebuger::GetReplacedHost("https://accounts.tapapis.cn");
 	}
 	
 	virtual FString ApiHost() {
-		return "https://openapi.taptap.com";
-	}
-	
-	virtual FString AccountHost() {
-		return "https://accounts.taptap.com";
+		return TUDebuger::GetReplacedHost("https://open.tapapis.cn");
 	}
 	
 };
@@ -22,16 +20,13 @@ class TULoginRegionConfigIO: public TULoginRegionConfig
 {
 public:
 	virtual FString WebHost() {
-		return "https://www.taptap.io";
+		return TUDebuger::GetReplacedHost("https://accounts.tapapis.com");
 	}
 	
 	virtual FString ApiHost() {
-		return "https://openapi.tap.io";
+		return TUDebuger::GetReplacedHost("https://open.tapapis.com");
 	}
 	
-	virtual FString AccountHost() {
-		return "https://accounts.taptap.io";
-	}
 };
 
 FString TULoginRegionConfig::TapTapSDKVersion = "1.2.0";
@@ -54,7 +49,7 @@ FString TULoginRegionConfig::ProfileUrl()
 
 FString TULoginRegionConfig::AccountUrl()
 {
-	return AccountHost() + "/authorize";
+	return WebHost() + "/oauth2/v1/authorize";
 }
 
 FString TULoginRegionConfig::TestQualificationUrl()

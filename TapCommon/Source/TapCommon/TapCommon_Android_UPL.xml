@@ -77,13 +77,13 @@
     <!-- optional files or directories to copy to Intermediate/Android/APK -->
     <resourceCopies>
         <copyDir src="$S(PluginDir)/../ThirdParty/Android/libs/" dst="$S(BuildDir)/libs/" />
-        <copyDir src="$S(PluginDir)/../ThirdParty/Android/src/" dst="$S(BuildDir)/src/com/tds/" />
+        <copyDir src="$S(PluginDir)/Private/Android/Java/" dst="$S(BuildDir)/src/com/tds/" />
     </resourceCopies>
 
     <buildGradleAdditions>
         <insert>
 repositories { flatDir { dirs 'src/main/libs/' } }
-dependencies.implementation(name: 'TapCommon_3.16.2',ext:'aar')
+dependencies.implementation(name: 'TapCommon_3.16.5',ext:'aar')
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
