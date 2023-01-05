@@ -20,9 +20,9 @@ struct FTUQrCodeModel
 	FString user_code;
 
 	UPROPERTY()
-	int64 expires_in;
+	int64 expires_in = 0;
 
 	UPROPERTY()
-	int64 interval;
+	int64 interval = 0;
 	
 };

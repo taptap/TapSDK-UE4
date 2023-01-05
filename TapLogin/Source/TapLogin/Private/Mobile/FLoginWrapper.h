@@ -12,5 +12,5 @@ struct FLoginWrapper
 	FString wrapper;
 
 	UPROPERTY()
-	uint64 loginCallbackCode;
+	uint64 loginCallbackCode = 0;
 };

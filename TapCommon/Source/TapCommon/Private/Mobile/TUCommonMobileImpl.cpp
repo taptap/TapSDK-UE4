@@ -1,5 +1,4 @@
 #include "TUCommonMobileImpl.h"
-
 #include "TUMobileBridge.h"
 
 #define TAPCOMMON_SERVICE "TDSCommonService"

@@ -75,6 +75,6 @@ struct FTapCommonRegionCode
     GENERATED_BODY()
 	
 	UPROPERTY()
-	bool isMainland;
+	bool isMainland = false;
 
 };

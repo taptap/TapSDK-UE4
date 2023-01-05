@@ -23,7 +23,7 @@ struct FTUAccessToken
 	FString mac_algorithm;
 
 	UPROPERTY()
-	uint64 scope;
+	uint64 scope = 0;
 
 #if PLATFORM_MAC || PLATFORM_WINDOWS
 

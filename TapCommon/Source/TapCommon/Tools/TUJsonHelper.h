@@ -12,6 +12,23 @@ inline TSharedPtr<FJsonObject>& operator+=(TSharedPtr<FJsonObject> & Object, con
 class TAPCOMMON_API TUJsonHelper
 {
 public:
+
+	static FString GetStringField(TSharedPtr<FJsonObject> JsonObject, const FString& Field) {
+		FString Temp = "";
+		if (JsonObject.IsValid()) {
+			JsonObject->TryGetStringField(Field, Temp);
+		}
+		return Temp;
+	}
+	
+	static bool GetBoolField(TSharedPtr<FJsonObject> JsonObject, const FString& Field) {
+		bool Result = false;
+		if (JsonObject.IsValid()) {
+			JsonObject->TryGetBoolField(Field, Result);
+		}
+		return Result;
+	}
+	
 	static FString GetJsonString(const TSharedPtr<FJsonObject>& JsonObject)
 	{
 		FString OutputString;
@@ -116,3 +133,5 @@ public:
 		return Results;
 	}
 };
+
+

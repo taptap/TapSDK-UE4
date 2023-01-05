@@ -220,7 +220,7 @@ void AAUChinaSever::SubmitPayResult(int Amount, TFunction<void(bool Success)> Ca
 }
 
 FDateTime AAUChinaSever::GetCurrentTime() {
-	return AAUHelper::GetChinaCurrentTime() + TimeSpan * ETimespan::TicksPerSecond;
+	return AAUHelper::GetChinaCurrentTime() + FTimespan(TimeSpan * ETimespan::TicksPerSecond);
 }
 
 int64 AAUChinaSever::CalculateRemainTime(AAUTimeBoundary& Boundary) {

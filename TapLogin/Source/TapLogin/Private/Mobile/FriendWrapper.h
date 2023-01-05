@@ -12,9 +12,9 @@ struct FFriendWrapper
 	FString content;
 
 	UPROPERTY()
-	bool success;
+	bool success = false;
 
 	UPROPERTY()
-	int64 code;
+	int64 code = 0;
 	
 };

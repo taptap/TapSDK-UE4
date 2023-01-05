@@ -11,10 +11,10 @@ struct FTUSupportUnreadStatusResult
 	FString errorMsg;
 
 	UPROPERTY()
-	uint64 code;
+	uint64 code = 0;
 
 	UPROPERTY()
-	uint64 hasUnRead;
+	uint64 hasUnRead = 0;
 
 	bool HasUnread() {
 		return hasUnRead == 1;

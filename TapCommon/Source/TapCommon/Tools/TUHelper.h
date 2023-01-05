@@ -41,7 +41,7 @@ public:
 			TUDebuger::ErrorLog("类名或者方法名不得为空");
 			return Value;
 		}
-		UClass* ResultClass = FindObject<UClass>(ANY_PACKAGE, *CLassName);
+		UClass* ResultClass = FindObject<UClass>(nullptr, *CLassName);
 		if (ResultClass)
 		{
 			UFunction* Function = ResultClass->FindFunctionByName(FName(*FunctionName));
@@ -74,7 +74,7 @@ public:
 			TUDebuger::ErrorLog("类名或者方法名不得为空");
 			return;
 		}
-		UClass* ResultClass = FindObject<UClass>(ANY_PACKAGE, *CLassName);
+		UClass* ResultClass = FindObject<UClass>(nullptr, *CLassName);
 		if (ResultClass)
 		{
 			UFunction* Function = ResultClass->FindFunctionByName(FName(*FunctionName));

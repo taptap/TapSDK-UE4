@@ -1,26 +1,67 @@
 #include "TDSUser.h"
+#include "JsonObjectConverter.h"
+#include "TUJsonHelper.h"
+#include "TapBootstrapImpl.h"
 
 
-#if PLATFORM_IOS
-#pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
-#pragma clang diagnostic ignored "-Wundef"
-#import <TapBootstrapSDK/TDSUser.h>
-#include "IOSHelper.h"
+FString FTDSUser::KeyNickName = "nickname";
+FString FTDSUser::KeyAvatar = "avatar";
+FString FTDSUser::KeyShortID = "shortId";
 
-FTDSUser::FTDSUser(NSObject *user) {
-	if ([user isKindOfClass:[TDSUser class]]) {
-		TDSUser *realUser = (TDSUser *)user;
-		uuid = IOSHelper::convertString(realUser.objectId);
-		userName = IOSHelper::convertString(realUser.username);
-		email = IOSHelper::convertString(realUser.email);
-		phoneNumber = IOSHelper::convertString(realUser.mobilePhoneNumber);
-		sessionToken = IOSHelper::convertString(realUser.sessionToken);
-		avatar = IOSHelper::convertString(realUser[@"avatar"]);
-		nickName = IOSHelper::convertString(realUser[@"nickname"]);
-		shortId = IOSHelper::convertString(realUser[@"shortId"]);
-		isAnonymous = [realUser isAnonymous];
-		NSDictionary *dic = [[realUser dictionaryForObject] copy];
-		serverData = IOSHelper::getJson(dic);
-	}
+
+FTDSUser::FTDSUser(TSharedPtr<FJsonObject> InServerData)
+	: FLCUser(InServerData)
+{
 }
-#endif
+
+FString FTDSUser::GetAvatar() {
+	return TUJsonHelper::GetStringField(ServerData, KeyAvatar);
+}
+
+FString FTDSUser::GetNickName() {
+	return TUJsonHelper::GetStringField(ServerData, KeyNickName);
+}
+
+FString FTDSUser::GetShortID() {
+	return TUJsonHelper::GetStringField(ServerData, KeyShortID);
+}
+
+TSharedPtr<FTDSUser> FTDSUser::GetCurrentUser() {
+	return FTapBootstrapImpl::Get()->GetCurrentUser();
+}
+
+void FTDSUser::Logout() {
+	FTapBootstrapImpl::Get()->Logout();
+}
+
+void FTDSUser::LoginAnonymously(FDelegate OnSuccess, FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->LoginAnonymously(OnSuccess, OnError);
+}
+
+void FTDSUser::LoginWithTapTap(const TArray<FString>& Permissions, FDelegate OnSuccess, FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->LoginWithTapTap(Permissions, OnSuccess, OnError);
+}
+
+void FTDSUser::BecomeWithSessionToken(const FString& SessionToken, FDelegate OnSuccess, FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->BecomeWithSessionToken(SessionToken, OnSuccess, OnError);
+}
+
+void FTDSUser::LoginWithAuthData(const FString& Platform, TSharedPtr<FJsonObject> AuthData, FDelegate OnSuccess,
+	FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->LoginWithAuthData(Platform, AuthData, OnSuccess, OnError);
+}
+
+void FTDSUser::AssociateWithAuthData(const FString& Platform, TSharedPtr<FJsonObject> AuthData, FDelegate OnSuccess,
+	FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->AssociateWithAuthData(*this, Platform, AuthData, OnSuccess, OnError);
+}
+
+void FTDSUser::DisassociateAuthData(const FString& Platform, FDelegate OnSuccess, FTUError::FDelegate OnError) {
+	FTapBootstrapImpl::Get()->DisassociateAuthData(*this, Platform, OnSuccess, OnError);
+}
+
+void FTDSUser::SaveUser() {
+	FTapBootstrapImpl::Get()->SaveUser(*this);
+}
+
+

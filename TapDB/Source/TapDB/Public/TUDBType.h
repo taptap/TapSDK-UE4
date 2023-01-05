@@ -21,7 +21,7 @@ struct TAPDB_API FTUDBConfig
 
 	// 区域
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ERegionType RegionType;
+	ERegionType RegionType = ERegionType::CN;
 
 };
 

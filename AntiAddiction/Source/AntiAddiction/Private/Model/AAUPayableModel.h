@@ -9,7 +9,7 @@ struct FAAUPayableModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	bool status; 
+	bool status = false; 
 	
 	UPROPERTY()
 	FString title; 

@@ -35,7 +35,7 @@ struct TAPCOMMON_API FTUConfig
 	FString ClientToken;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ERegionType RegionType;
+	ERegionType RegionType = ERegionType::CN;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ServerURL;
@@ -46,13 +46,13 @@ struct TAPCOMMON_API FTUConfig
 
 	struct FTapDB
 	{
-		bool Enable; // 如果该值为true，将会自动把TapDB模块一起初始化，不用手动去初始化TapDB
+		bool Enable = false; // 如果该值为true，将会自动把TapDB模块一起初始化，不用手动去初始化TapDB
 	
 		FString Channel;
 
 		FString GameVersion;
 			
-		bool AdvertiserIDCollectionEnabled;
+		bool AdvertiserIDCollectionEnabled = false;
 	};
 		
 	FTapDB DBConfig;

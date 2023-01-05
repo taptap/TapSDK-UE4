@@ -47,4 +47,6 @@ public:
 	static FString GetIpv4();
 
 	static FString GetIpv6();
+	
+	static void GetCountryAndLanguage(FString& Country, FString& Language);
 };

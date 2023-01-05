@@ -53,7 +53,7 @@ void TULoginMobileImpl::FetchProfile(
 		}
 		auto WapperPtr = TUJsonHelper::GetUStruct<FLoginWrapper>(ResultStr);
 		if (!WapperPtr.IsValid()) {
-			CallBack(nullptr, FTUError(FTUError::ERROR_CODE_BRIDGE_EXECUTE, "TapLogin get profile error"));
+			CallBack(nullptr, FTUError(FTUError::BRIDGE_EXECUTE, "TapLogin get profile error"));
 			return;
 		}
 		if (WapperPtr->loginCallbackCode != 0) {
@@ -64,7 +64,7 @@ void TULoginMobileImpl::FetchProfile(
 		if (ModelPtr.IsValid()) {
 			CallBack(ModelPtr, FTUError());
 		} else {
-			CallBack(nullptr, FTUError(FTUError::ERROR_CODE_BRIDGE_EXECUTE, "TapLogin get profile error"));
+			CallBack(nullptr, FTUError(FTUError::BRIDGE_EXECUTE, "TapLogin get profile error"));
 		}
 	});
 }
@@ -103,7 +103,7 @@ void TULoginMobileImpl::Login(TArray<FString> Permissions, TFunction<void(const 
 			}
 		}
 
-		TUAuthResult Result = TUAuthResult::FailInit(FTUError(FTUError::ERROR_CODE_BRIDGE_EXECUTE, "TapLogin Login Bridge Error"));
+		TUAuthResult Result = TUAuthResult::FailInit(FTUError(FTUError::BRIDGE_EXECUTE, "TapLogin Login Bridge Error"));
 		CallBack(Result);
 	});
 
@@ -161,16 +161,16 @@ void TULoginMobileImpl::QueryMutualList(FString Cursor, int Size,
 		FTUError Error;
 		TSharedPtr<FTULoginFriendResult> ModelPtr = nullptr;
 		if (error) {
-			Error = IOSHelper::convertError(error);
+			Error = IOSHelper::Convert(error);
 			NSLog(@"TDSFriendLogError-%@: %@", @"queryMutualListWithOption", error);
 		} else {
 			ModelPtr = MakeShareable(new FTULoginFriendResult);
-			ModelPtr->cursor = IOSHelper::convertString(result.cursor);
+			ModelPtr->cursor = IOSHelper::Convert(result.cursor);
 			for (TapFriendInfo *info in result.data) {
 				FTULoginFriendInfo Info;
-				Info.name = IOSHelper::convertString(info.name);
-				Info.avatar = IOSHelper::convertString(info.avatar);
-				Info.openid = IOSHelper::convertString(info.openid);
+				Info.name = IOSHelper::Convert(info.name);
+				Info.avatar = IOSHelper::Convert(info.avatar);
+				Info.openid = IOSHelper::Convert(info.openid);
 				ModelPtr->data.Add(Info);
 			}
 		}
@@ -207,7 +207,7 @@ void TULoginMobileImpl::QueryMutualList(FString Cursor, int Size,
 				}
 			}
 		}
-		CallBack(nullptr, FTUError(FTUError::ERROR_CODE_BRIDGE_EXECUTE, "TapLogin QueryMutualList Bridge Error"));
+		CallBack(nullptr, FTUError(FTUError::BRIDGE_EXECUTE, "TapLogin QueryMutualList Bridge Error"));
 	});
 #endif
 	

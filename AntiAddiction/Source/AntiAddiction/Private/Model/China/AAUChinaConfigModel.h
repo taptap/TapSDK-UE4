@@ -51,22 +51,22 @@ struct FAAUChinaChildProtectedConfig
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	bool share_time_switch;
+	bool share_time_switch = false;
 
 	UPROPERTY()
-	bool use_time_switch;
+	bool use_time_switch = false;
 
 	UPROPERTY()
-	int no_identify_time;
+	int no_identify_time = 0;
 
 	UPROPERTY()
-	bool charge_amount_switch;
+	bool charge_amount_switch = false;
 
 	UPROPERTY()
-	int child_common_time;
+	int child_common_time = 0;
 
 	UPROPERTY()
-	int child_holiday_time;
+	int child_holiday_time = 0;
 
 	UPROPERTY()
 	FString night_strict_start;
@@ -75,10 +75,10 @@ struct FAAUChinaChildProtectedConfig
 	FString night_strict_end;
 
 	UPROPERTY()
-	int night_strict_warn;
+	int night_strict_warn = 0;
 
 	UPROPERTY()
-	int remain_time_warn;
+	int remain_time_warn = 0;
 	
 };
 
@@ -94,10 +94,10 @@ struct FAAUChinaPayLimitWord
 	FString single_description;
 
 	UPROPERTY()
-	int single_limit;
+	int single_limit = 0;
 
 	UPROPERTY()
-	int account_type;
+	int account_type = 0;
 
 	UPROPERTY()
 	FString month_title;
@@ -106,7 +106,7 @@ struct FAAUChinaPayLimitWord
 	FString month_description;
 
 	UPROPERTY()
-	int month_limit;
+	int month_limit = 0;
 	
 };
 
@@ -116,7 +116,7 @@ struct FAAUChinaHealthReminderWordTip
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int type;
+	int type = 0;
 
 	UPROPERTY()
 	FString title;
@@ -133,7 +133,7 @@ struct FAAUChinaHealthReminderWord
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	int account_type;
+	int account_type = 0;
 
 	UPROPERTY()
 	TArray<FAAUChinaHealthReminderWordTip> tips;
@@ -189,7 +189,7 @@ struct FAAUChinaConfigModel
 	FString name;
 	
 	UPROPERTY()
-	bool upload_user_action;
+	bool upload_user_action = false;
 
 	UPROPERTY()
 	FAAUChinaChildProtectedConfig child_protected_config;

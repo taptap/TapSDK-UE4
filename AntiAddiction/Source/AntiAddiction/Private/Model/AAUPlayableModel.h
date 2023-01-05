@@ -14,10 +14,10 @@ struct FAAUPlayableModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	int restrict_type; // 0-不限制1-宵禁 2-时长
+	int restrict_type = 0; // 0-不限制1-宵禁 2-时长
 
 	UPROPERTY()
-	int remain_time;  //   防沉迷剩余时间，单位秒
+	int remain_time = 0;  //   防沉迷剩余时间，单位秒
 
 	UPROPERTY()
 	FString title; // 实名的宵禁临近文案
@@ -26,9 +26,9 @@ struct FAAUPlayableModel
 	FString description; // 距离健康保护时间还剩余14分钟，请注意适当休息。
 
 	UPROPERTY()
-	int cost_time; //  今日游戏已玩时长，单位秒
+	int cost_time = 0; //  今日游戏已玩时长，单位秒
 
 	UPROPERTY()
-	int status;
+	int status = 0;
 	
 };

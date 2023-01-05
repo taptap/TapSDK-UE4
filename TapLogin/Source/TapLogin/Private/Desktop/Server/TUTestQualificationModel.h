@@ -8,6 +8,6 @@ struct FTUTestQualificationModel
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	bool in_test;
+	bool in_test = false;
 	
 };

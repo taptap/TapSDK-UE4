@@ -76,7 +76,7 @@ struct FAAUVietnamConfigModel
 	GENERATED_BODY()
 
 	UPROPERTY()
-	bool upload_user_action;
+	bool upload_user_action = false;
 	
 	UPROPERTY()
 	FAAUVietnamUIConfig ui_config;

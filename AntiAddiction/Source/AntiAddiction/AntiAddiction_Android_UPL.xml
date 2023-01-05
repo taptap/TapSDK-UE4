@@ -18,8 +18,8 @@
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'AntiAddiction_3.16.2',ext:'aar')
-dependencies.implementation(name: 'AntiAddictionUI_3.16.2',ext:'aar')
+dependencies.implementation(name: 'AntiAddiction_3.16.5',ext:'aar')
+dependencies.implementation(name: 'AntiAddictionUI_3.16.5',ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>

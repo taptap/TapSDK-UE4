@@ -19,7 +19,7 @@
 @implementation AAUChinaIOSImplDelegate
 
 - (void)antiAddictionCallbackWithCode:(AntiAddictionResultHandlerCode)code extra:(NSString * _Nullable)extra {
-	FString Msg = IOSHelper::convertString(extra);
+	FString Msg = IOSHelper::Convert(extra);
 	AsyncTask(ENamedThreads::GameThread, [=]() {
 		AntiAddictionUE::OnCallBack.ExecuteIfBound((AntiAddictionUE::ResultHandlerCode)code, Msg);
 	});
@@ -38,7 +38,7 @@ AAUChinaIOSImpl::~AAUChinaIOSImpl() {
 
 void AAUChinaIOSImpl::InitImpl(const FAAUConfig& _Config) {
 	AntiAddictionConfig *config = [[AntiAddictionConfig alloc] init];
-	config.clientID = IOSHelper::convertString(_Config.ClientID);
+	config.clientID = IOSHelper::Convert(_Config.ClientID);
 	config.useTapLogin = _Config.UseTapLogin;
 	config.showSwitchAccount = _Config.ShowSwitchAccount;
 
@@ -48,7 +48,7 @@ void AAUChinaIOSImpl::InitImpl(const FAAUConfig& _Config) {
 }
 
 void AAUChinaIOSImpl::Startup(const FString& UserID) {
-	NSString *userID = IOSHelper::convertString(UserID);
+	NSString *userID = IOSHelper::Convert(UserID);
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[AntiAddiction startupWithUserID:userID];
 	});
@@ -90,7 +90,7 @@ void AAUChinaIOSImpl::CheckPayLimit(int Amount, TFunction<void(bool Status)> Cal
 				}
 			});
 		} failureHandler:^(NSString *Msg) {
-			FString Message = IOSHelper::convertString(Msg);
+			FString Message = IOSHelper::Convert(Msg);
 			AsyncTask(ENamedThreads::GameThread, [=]() {
 				if (FailureHandler) {
 					FailureHandler(Message);
@@ -110,7 +110,7 @@ void AAUChinaIOSImpl::SubmitPayResult(int Amount, TFunction<void(bool Success)> 
 				}
 			});
 		} failureHandler:^(NSString *Msg) {
-			FString Message = IOSHelper::convertString(Msg);
+			FString Message = IOSHelper::Convert(Msg);
 			AsyncTask(ENamedThreads::GameThread, [=]() {
 				if (FailureHandler) {
 					FailureHandler(Message);
@@ -121,5 +121,5 @@ void AAUChinaIOSImpl::SubmitPayResult(int Amount, TFunction<void(bool Success)> 
 }
 
 FString AAUChinaIOSImpl::CurrentToken() {
-	return IOSHelper::convertString([AntiAddiction currentToken]);
+	return IOSHelper::Convert([AntiAddiction currentToken]);
 }
