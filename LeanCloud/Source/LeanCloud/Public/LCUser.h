@@ -12,7 +12,7 @@ public:
 	FString GetSessionToken() const;
 	bool IsAnonymous() const;
 	bool IsMobilePhoneVerified() const;
-	bool isAuthenticated() const;
+	bool IsAuthenticated() const;
 
 protected:
 	static FString KeyUserName;

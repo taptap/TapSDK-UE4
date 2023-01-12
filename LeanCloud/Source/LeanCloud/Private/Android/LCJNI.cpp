@@ -14,7 +14,16 @@ namespace LCJNI {
 	}
 
 	Class JNI::FindClass(const char* name) const {
-		jclass Class = FAndroidApplication::FindJavaClass(name);
+		FString Name = FString(UTF8_TO_TCHAR(name));
+		jclass Class = NULL;
+		if (Name.Find(TEXT("java/")) != INDEX_NONE) {
+			LCDebuger::DisplayLog("Env->FindClass: " + Name);
+			Class = Env->FindClass(name);
+		} else {
+			LCDebuger::DisplayLog("FAndroidApplication::FindJavaClass: " + Name);
+			Class = FAndroidApplication::FindJavaClass(name);
+		}
+
 		if (Class == NULL) {
 			LCDebuger::ErrorLog(FString::Printf(TEXT("LCJNI Class: %s not found"), UTF8_TO_TCHAR(name)));
 		}

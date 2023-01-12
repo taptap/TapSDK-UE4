@@ -156,9 +156,17 @@ UTexture2D* TUHelper::GenerateQrCode(const FString& string)
 		}
 	}
 	UTexture2D* texture = UTexture2D::CreateTransient(size, size, EPixelFormat::PF_B8G8R8A8);
+#if ENGINE_MAJOR_VERSION >= 5
+	void* data = texture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+#else
 	void* data = texture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+#endif
 	FMemory::Memcpy(data, pixels.GetData(), size * size * 4);
+#if ENGINE_MAJOR_VERSION >= 5
+	texture->GetPlatformData()->Mips[0].BulkData.Unlock();
+#else
 	texture->PlatformData->Mips[0].BulkData.Unlock();
+#endif
 	texture->UpdateResource();
 	texture->Filter = TextureFilter::TF_Nearest;
 	return texture;

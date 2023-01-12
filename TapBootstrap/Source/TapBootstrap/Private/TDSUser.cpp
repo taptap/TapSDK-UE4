@@ -14,15 +14,15 @@ FTDSUser::FTDSUser(TSharedPtr<FJsonObject> InServerData)
 {
 }
 
-FString FTDSUser::GetAvatar() {
+FString FTDSUser::GetAvatar() const {
 	return TUJsonHelper::GetStringField(ServerData, KeyAvatar);
 }
 
-FString FTDSUser::GetNickName() {
+FString FTDSUser::GetNickName() const {
 	return TUJsonHelper::GetStringField(ServerData, KeyNickName);
 }
 
-FString FTDSUser::GetShortID() {
+FString FTDSUser::GetShortID() const {
 	return TUJsonHelper::GetStringField(ServerData, KeyShortID);
 }
 

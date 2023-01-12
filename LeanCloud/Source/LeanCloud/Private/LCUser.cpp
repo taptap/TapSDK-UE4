@@ -47,7 +47,7 @@ bool FLCUser::IsMobilePhoneVerified() const {
 	return LCJsonHelper::GetBoolField(ServerData, KeyMobilePhoneVerified);
 }
 
-bool FLCUser::isAuthenticated() const {
+bool FLCUser::IsAuthenticated() const {
 	return !GetSessionToken().IsEmpty();
 }
 
