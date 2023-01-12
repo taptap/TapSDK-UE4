@@ -14,7 +14,16 @@ namespace TapJNI {
 	}
 
 	Class JNI::FindClass(const char* name) const {
-		jclass Class = FAndroidApplication::FindJavaClass(name);
+		FString Name = FString(UTF8_TO_TCHAR(name));
+		jclass Class = NULL;
+		if (Name.Find(TEXT("java/")) != INDEX_NONE) {
+			TUDebuger::DisplayLog("Env->FindClass: " + Name);
+			Class = Env->FindClass(name);
+		} else {
+			TUDebuger::DisplayLog("FAndroidApplication::FindJavaClass: " + Name);
+			Class = FAndroidApplication::FindJavaClass(name);
+		}
+
 		if (Class == NULL) {
 			TUDebuger::ErrorLog(FString::Printf(TEXT("LCJNI Class: %s not found"), UTF8_TO_TCHAR(name)));
 		}

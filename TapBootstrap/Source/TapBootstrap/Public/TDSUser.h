@@ -26,9 +26,9 @@ public:
 	
 	FTDSUser(TSharedPtr<FJsonObject> InServerData = nullptr);
 	
-	FString GetAvatar();
-	FString GetNickName();
-	FString GetShortID();
+	FString GetAvatar() const;
+	FString GetNickName() const;
+	FString GetShortID() const;
 
 	/**
 	 * Return last login user from cached memory or load from local storage

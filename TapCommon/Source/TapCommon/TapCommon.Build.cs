@@ -78,7 +78,7 @@ public class TapCommon : ModuleRules
                     "SlateCore",
                     "UMG",
                     "Json",
-                    "Http",
+                    "HTTP",
                     "JsonUtilities"
                 }
             );

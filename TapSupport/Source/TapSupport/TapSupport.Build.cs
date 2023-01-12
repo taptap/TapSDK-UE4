@@ -32,7 +32,7 @@ public class TapSupport : ModuleRules
 				"Json",
 				"JsonUtilities",
 				"UMG",
-				"Http",
+				"HTTP",
 				"TapCommon"
 				// ... add other public dependencies that you statically link with here ...
 			}
