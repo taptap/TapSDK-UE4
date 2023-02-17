@@ -13,11 +13,31 @@ TSharedPtr<FTUConfig>& FTUConfig::Get() {
 	return Instance;
 }
 
+FTUConfig::FTUConfig(const FTUConfig& Other)
+{
+	*this = Other;
+	if (Other.BillboardConfig)
+	{
+		if (BillboardConfig)
+		{
+			*BillboardConfig = *Other.BillboardConfig;
+		}
+		else
+		{
+			BillboardConfig = MakeShared<FBillboardConfig>(*Other.BillboardConfig);
+		}
+	}
+	else
+	{
+		BillboardConfig.Reset();
+	}
+}
+
 namespace TUType {
 	FString PermissionScope::BasicInfo = "basic_info";
 	FString PermissionScope::Profile = "public_profile";
 	FString PermissionScope::Friend = "user_friends";
-	
+	FString PermissionScope::Email = "email";	
 }
 
 

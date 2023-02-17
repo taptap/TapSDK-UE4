@@ -21,6 +21,67 @@ void STapThrobber::Construct(const FArguments& InArgs)
 	OnRemoveSelf = InArgs._OnRemoveSelf;
 	SavedRotationRate = StyleP->RotationRate;
 
+#if PLATFORM_WINDOWS || PLATFORM_MAC
+	TSharedRef<SVerticalBox> VBox = SNew(SVerticalBox);
+	ChildSlot
+	[
+		SNew(SBorder)
+			.Padding(0.f)
+			.BorderBackgroundColor(FLinearColor())
+			.HAlign(HAlign_Center)
+			.VAlign(VAlign_Center)
+			.Visibility(EVisibility::SelfHitTestInvisible)
+		[
+			SNew(SOverlay)
+			+ SOverlay::Slot()
+			  .HAlign(HAlign_Fill)
+			  .VAlign(VAlign_Fill)
+			[
+				SNew(SBorder)
+					.RenderTransform(FSlateRenderTransform(FVector2D(4.f, 6.f)))
+					.BorderImage(&StyleP->ShadowBrush)
+			]
+			+ SOverlay::Slot()
+			  .HAlign(HAlign_Fill)
+			  .VAlign(VAlign_Fill)
+			[
+				SNew(SBorder)
+				.BorderImage(InArgs._HasThrobber ? &StyleP->BackGroundBrush_PC : &StyleP->BackGroundBrush_PC_Text)
+				[
+					VBox
+				]
+			]
+		]
+	];
+
+	if (InArgs._HasThrobber)
+	{
+		VBox->AddSlot()
+		    .Padding(18.f)
+		    .VAlign(VAlign_Center)
+		    .HAlign(HAlign_Center)
+		[
+			SAssignNew(Throbber, SImage)
+							.Image(&StyleP->PieceImage_PC)
+							.RenderTransform(Transform.ToSlateRenderTransform())
+							.RenderTransformPivot(FVector(0.5f))
+							.ColorAndOpacity(StyleP->ColorAndOpacity)
+		];
+	}
+	if (!InArgs._Content.IsEmpty())
+	{
+		VBox->AddSlot()
+		    .Padding(24.f, 8.f)
+		    .VAlign(VAlign_Center)
+		    .HAlign(HAlign_Center)
+		[
+			SAssignNew(ContentText, STextBlock)
+							.TextStyle(&StyleP->ContentStyle_PC)
+							.Justification(ETextJustify::Center)
+							.WrapTextAt(352.f)
+		];
+	}
+#elif PLATFORM_ANDROID || PLATFORM_IOS
 	ChildSlot
 	[
 		SNew(SBorder)
@@ -59,6 +120,7 @@ void STapThrobber::Construct(const FArguments& InArgs)
 			]
 		]
 	];
+#endif
 
 	ShowThrobber(InArgs._HasThrobber);
 	UpdateContent(InArgs._Content);
@@ -67,20 +129,26 @@ void STapThrobber::Construct(const FArguments& InArgs)
 
 void STapThrobber::ShowThrobber(bool bNewShow)
 {
-	Throbber->SetVisibility(bNewShow ? EVisibility::SelfHitTestInvisible : EVisibility::Collapsed);
+	if (Throbber)
+	{
+		Throbber->SetVisibility(bNewShow ? EVisibility::SelfHitTestInvisible : EVisibility::Collapsed);
+	}
 }
 
 void STapThrobber::UpdateContent(const FText& NewContent)
 {
-	ContentText->SetText(NewContent);
-	ContentText->SetVisibility(NewContent.IsEmpty() ? EVisibility::Collapsed : EVisibility::SelfHitTestInvisible);
+	if (ContentText)
+	{
+		ContentText->SetText(NewContent);
+		ContentText->SetVisibility(NewContent.IsEmpty() ? EVisibility::Collapsed : EVisibility::SelfHitTestInvisible);
+	}
 }
 
 void STapThrobber::UpdateTimeInterval(float NewTime)
 {
 	if (NewTime > 0.f)
 	{
-		RemoveTimerHandle = RegisterActiveTimer( NewTime, FWidgetActiveTimerDelegate::CreateSP( this, &STapThrobber::TimerRemoveTapThrobber));
+		RemoveTimerHandle = RegisterActiveTimer(NewTime, FWidgetActiveTimerDelegate::CreateSP(this, &STapThrobber::TimerRemoveTapThrobber));
 	}
 	else
 	{
@@ -95,8 +163,11 @@ void STapThrobber::UpdateTimeInterval(float NewTime)
 void STapThrobber::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
 	SCompoundWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
-	Transform.Angle = Transform.Angle + SavedRotationRate * InDeltaTime;
-	Throbber->SetRenderTransform(Transform.ToSlateRenderTransform());
+	if (Throbber)
+	{
+		Transform.Angle = Transform.Angle + SavedRotationRate * InDeltaTime;
+		Throbber->SetRenderTransform(Transform.ToSlateRenderTransform());
+	}
 }
 
 EActiveTimerReturnType STapThrobber::TimerRemoveTapThrobber(double InCurrentTime, float InDeltaTime)

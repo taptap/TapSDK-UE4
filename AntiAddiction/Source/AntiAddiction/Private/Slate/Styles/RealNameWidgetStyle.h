@@ -26,6 +26,18 @@ struct ANTIADDICTION_API FRealNameStyle : public FSlateWidgetStyle
 	static const FRealNameStyle& GetDefault();
 
 	UPROPERTY(EditAnywhere)
+	FMargin WidgetMargin;
+
+	UPROPERTY(EditAnywhere)
+	FMargin ContentTextPadding;
+
+	UPROPERTY(EditAnywhere)
+	FMargin DateTimePadding;
+
+	UPROPERTY(EditAnywhere)
+	FMargin SubmitPadding;
+	
+	UPROPERTY(EditAnywhere)
 	FSlateBrush BackGroundBrush;
 
 	UPROPERTY(EditAnywhere)

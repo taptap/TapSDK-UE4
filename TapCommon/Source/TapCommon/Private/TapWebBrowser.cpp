@@ -6,6 +6,7 @@
 #include "SWebBrowser.h"
 #include "TapCommon.h"
 #include "TUHelper.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Components/NativeWidgetHost.h"
 
@@ -43,6 +44,15 @@ bool UTapWebBrowser::CanGoBack() const
 	return false;
 }
 
+bool UTapWebBrowser::IsLoaded() const
+{
+	if (const TSharedPtr<SWebBrowser> InnerBrowser = GetInnerWebBrowser())
+	{
+		return InnerBrowser->IsLoaded();
+	}
+	return false;
+}
+
 void UTapWebBrowser::GoBack()
 {
 	if (const TSharedPtr<SWebBrowser> InnerBrowser = GetInnerWebBrowser())
@@ -75,6 +85,8 @@ void UTapWebBrowser::NativeOnInitialized()
 	const TSharedRef<SWebBrowser> Browser = SNew(SWebBrowser)
 		.InitialURL(TEXT(""))
 		.ShowInitialThrobber(false)
+		.BackgroundColor(FColor(0,0,0,0))
+		.SupportsTransparency(true)
 		.ShowControls(false)
 		.ShowErrorMessage(false)
 		.BrowserFrameRate(60.f)
@@ -83,8 +95,9 @@ void UTapWebBrowser::NativeOnInitialized()
 		.OnLoadStarted(FSimpleDelegate::CreateUObject(this, &UTapWebBrowser::HandleOnLoadStarted))
 		.OnLoadCompleted(FSimpleDelegate::CreateUObject(this, &UTapWebBrowser::HandleOnLoadCompleted))
 		.OnLoadError(FSimpleDelegate::CreateUObject(this, &UTapWebBrowser::HandleOnLoadError))
-		.OnBeforeNavigation(SWebBrowser::FOnBeforeBrowse::CreateUObject(this, &UTapWebBrowser::OnBeforeNavigation));
-	
+		.OnBeforeNavigation(SWebBrowser::FOnBeforeBrowse::CreateUObject(this, &UTapWebBrowser::OnBeforeNavigation))
+		.OnBeforePopup(FOnBeforePopupDelegate::CreateUObject(this, &UTapWebBrowser::OnBeforePopup));
+
 	WebBrowser->SetContent(Browser);
 
 	if (ITextInputMethodSystem* InputSys = FSlateApplication::Get().GetTextInputMethodSystem())
@@ -133,6 +146,11 @@ void UTapWebBrowser::OnLoadError()
 }
 
 bool UTapWebBrowser::OnBeforeNavigation(const FString& URL, const FWebNavigationRequest& Request)
+{
+	return false;
+}
+
+bool UTapWebBrowser::OnBeforePopup(FString URL, FString FrameName)
 {
 	return false;
 }

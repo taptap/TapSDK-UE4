@@ -31,6 +31,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 
 	OpenBrush = &InArgs._Style->OpenComboBrush;
 	CloseBrush = &InArgs._Style->CloseComboBrush;
+	SavedStyle = InArgs._Style;
 
 	ComboBoxArray[0];
 	const FDateTime CurrentTime = AAUHelper::GetVietnamCurrentTime();
@@ -57,9 +58,9 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 	[
 		SNew(SConstraintCanvas)
 		+ SConstraintCanvas::Slot()
-		  .Alignment(FVector2D(0.5f))
-		  .Anchors(FAnchors(0.5f))
-		  .Offset(FMargin(0.f, 0.f, 904.5f, 864.f))
+			.Alignment(FVector2D(0.5f))
+			.Anchors(FAnchors(0.5f))
+			.Offset(InArgs._Style->WidgetMargin)
 		[
 			SNew(SOverlay)
 			+ SOverlay::Slot()
@@ -79,9 +80,13 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 				[
 					SNew(SOverlay)
 					+ SOverlay::Slot()
-					  .HAlign(HAlign_Center)
-					  .VAlign(VAlign_Center)
-					  .Padding(0.f, 32.f)
+						.HAlign(HAlign_Center)
+						.VAlign(VAlign_Center)
+#if PLATFORM_IOS || PLATFORM_ANDROID
+						.Padding(0.f, 32.f)
+#else
+						.Padding(0.f, 12.f)
+#endif
 					[
 						SAssignNew(TB_Title, STextBlock)
 						.Text(InArgs._Title)
@@ -103,18 +108,26 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 				]
 				+ SVerticalBox::Slot()
 				  .FillHeight(1.f)
-				  .HAlign(HAlign_Center)
-				  .VAlign(VAlign_Center)
-				  .Padding(54.f, 0.f)
+				  .HAlign(HAlign_Fill)
+				  .VAlign(VAlign_Bottom)
+				  .Padding(InArgs._Style->ContentTextPadding)
+				  // .Padding(54.f, 0.f)
 				[
 					SAssignNew(TB_Content, STextBlock)
 					.Text(InArgs._Content)
 					.TextStyle(&InArgs._Style->ContentTextStyle)
+#if PLATFORM_IOS || PLATFORM_ANDROID
+					.Justification(ETextJustify::Left)
+#else
+					.Justification(ETextJustify::Center)
+#endif
 					.AutoWrapText(true)
 				]
 				+ SVerticalBox::Slot()
 				  .AutoHeight()
-				  .Padding(54.f, 0.f, 54.f, 100.f)
+				  .Padding(InArgs._Style->DateTimePadding)
+				  .HAlign(HAlign_Center)
+				  // .Padding(54.f, 0.f, 54.f, 100.f)
 				[
 					SNew(SHorizontalBox)
 					+ SHorizontalBox::Slot()
@@ -128,6 +141,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.Visibility(EVisibility::SelfHitTestInvisible)
 						]
 						+ SOverlay::Slot()
+						.Padding(1.f)
 						[
 							SAssignNew(ComboBoxArray[COMBO_BOX_YEAR], SComboBox<TSharedPtr<int32>>)
 							.OptionsSource(&OptionYear)
@@ -137,6 +151,9 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.ContentPadding(InArgs._Style->ContentPadding)
 							.ForegroundColor(InArgs._Style->ForegroundColor)
 							.CustomScrollbar(SNew(SScrollBar).Visibility(EVisibility::Collapsed))
+#if PLATFORM_MAC
+							.IsFocusable(false)
+#endif
 							.MaxListHeight(300.f)
 							.OnSelectionChanged(this, &SAAURealNameVietnam::OnSelectChangedEvent, 0)
 							.OnGenerateWidget(this, &SAAURealNameVietnam::OnGenerateWidgetEvent, 0, 4)
@@ -146,6 +163,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 								.TimeNumber(*SelectYear)
 								.bIsSelected(true)
 								.MinimumIntegralDigits(4)
+								.TextStyle(&InArgs._Style->ItemStyle)
 							]
 						]
 					]
@@ -161,6 +179,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.Visibility(EVisibility::SelfHitTestInvisible)
 						]
 						+ SOverlay::Slot()
+						.Padding(1.f)
 						[
 							SAssignNew(ComboBoxArray[COMBO_BOX_MONTH], SComboBox<TSharedPtr<int32>>)
 							.OptionsSource(&OptionMonth)
@@ -170,6 +189,9 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.ContentPadding(InArgs._Style->ContentPadding)
 							.ForegroundColor(InArgs._Style->ForegroundColor)
 							.CustomScrollbar(SNew(SScrollBar).Visibility(EVisibility::Collapsed))
+#if PLATFORM_MAC
+							.IsFocusable(false)
+#endif
 							.MaxListHeight(300.f)
 							.OnSelectionChanged(this, &SAAURealNameVietnam::OnSelectChangedEvent, 1)
 							.OnGenerateWidget(this, &SAAURealNameVietnam::OnGenerateWidgetEvent, 1, 2)
@@ -179,6 +201,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 								.TimeNumber(*SelectMonth)
 								.bIsSelected(true)
 								.MinimumIntegralDigits(2)
+								.TextStyle(&InArgs._Style->ItemStyle)
 							]
 						]
 					]
@@ -193,6 +216,7 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.Visibility(EVisibility::SelfHitTestInvisible)
 						]
 						+ SOverlay::Slot()
+						.Padding(1.f)
 						[
 							SAssignNew(ComboBoxArray[COMBO_BOX_DAY], SComboBox<TSharedPtr<int32>>)
 							.OptionsSource(&OptionDay)
@@ -202,6 +226,9 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 							.ContentPadding(InArgs._Style->ContentPadding)
 							.ForegroundColor(InArgs._Style->ForegroundColor)
 							.CustomScrollbar(SNew(SScrollBar).Visibility(EVisibility::Collapsed))
+#if PLATFORM_MAC
+							.IsFocusable(false)
+#endif
 							.MaxListHeight(300.f)
 							.OnSelectionChanged(this, &SAAURealNameVietnam::OnSelectChangedEvent, 2)
 							.OnGenerateWidget(this, &SAAURealNameVietnam::OnGenerateWidgetEvent, 2, 2)
@@ -211,13 +238,15 @@ void SAAURealNameVietnam::Construct(const FArguments& InArgs)
 								.TimeNumber(*SelectDay)
 								.bIsSelected(true)
 								.MinimumIntegralDigits(2)
+								.TextStyle(&InArgs._Style->ItemStyle)
 							]
 						]
 					]
 				]
 				+ SVerticalBox::Slot()
 				  .AutoHeight()
-				  .Padding(54.f, 0.f, 54.f, 60.f)
+				  .Padding(InArgs._Style->SubmitPadding)
+				  // .Padding(54.f, 0.f, 54.f, 60.f)
 				  .HAlign(HAlign_Center)
 				  .VAlign(VAlign_Bottom)
 				[
@@ -316,6 +345,17 @@ FReply SAAURealNameVietnam::OnSubmitButtonClicked()
 	return FReply::Handled();
 }
 
+FReply SAAURealNameVietnam::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+{
+	FReply Reply = SCompoundWidget::OnMouseButtonDown(MyGeometry, MouseEvent);
+#if PLATFORM_MAC
+	ComboBoxArray[COMBO_BOX_DAY]->SetIsOpen(false, false);
+	ComboBoxArray[COMBO_BOX_MONTH]->SetIsOpen(false, false);
+	ComboBoxArray[COMBO_BOX_YEAR]->SetIsOpen(false, false);
+#endif
+	return Reply;
+}
+
 void SAAURealNameVietnam::OnSelectChangedEvent(TListTypeTraits<TSharedPtr<int32>>::NullableType NewSelectedNumber,
                                                ESelectInfo::Type SelectType, int32 ArrayIndex)
 {
@@ -358,7 +398,11 @@ TSharedRef<SWidget> SAAURealNameVietnam::OnGenerateWidgetEvent(TSharedPtr<int32>
 
 	const bool bIsSelected = SelectedNumber == NewNumber;
 
-	TSharedRef<SAAUTimeItem> NewItem = SNew(SAAUTimeItem).TimeNumber(NewNumber).bIsSelected(bIsSelected).MinimumIntegralDigits(MinimumIntegralDigits);
+	TSharedRef<SAAUTimeItem> NewItem = SNew(SAAUTimeItem)
+		.TimeNumber(NewNumber)
+		.bIsSelected(bIsSelected)
+		.MinimumIntegralDigits(MinimumIntegralDigits)
+		.TextStyle(&SavedStyle->ItemStyle);
 
 	AllItemsArray[ArrayIndex].Emplace(NewNumber, NewItem);
 

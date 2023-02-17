@@ -1,0 +1,34 @@
+{
+	"FileVersion": 3,
+	"Version": 31602001,
+	"VersionName": "3.17.0",
+	"FriendlyName": "TapBillboard",
+	"Description": "TapTap Billboard",
+	"Category": "TapTap",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "TapBillboard",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "TapCommon",
+			"Enabled": true
+		},
+		{
+			"Name": "TapBootstrap",
+			"Enabled": true
+		}
+	]
+}

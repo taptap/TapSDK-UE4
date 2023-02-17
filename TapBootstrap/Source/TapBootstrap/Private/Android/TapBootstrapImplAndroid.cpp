@@ -4,6 +4,8 @@
 #include "TapJavaHelper.h"
 #include "TapJNI.h"
 #include "TUHelper.h"
+#include "Android/AndroidJavaEnv.h"
+#include "Android/AndroidJNI.h"
 
 typedef TTuple<FTDSUser::FDelegate, FTUError::FDelegate> UserResultDelegate;
 typedef TTuple<FTDSLeaderBoardRanking::FRankingsDelegate, FTUError::FDelegate> RankingsResultDelegate;
@@ -16,6 +18,7 @@ FTapBootstrapImplAndroid::~FTapBootstrapImplAndroid() {
 }
 
 void FTapBootstrapImplAndroid::Init(const FTUConfig& InConfig) {
+	FTUConfig::Init(InConfig);
 	TapJNI::JNI JNI;
 	auto ClassObject = JNI.FindClass(TapBootstrapUE);
 	auto Activity = JNI.GetActivity();
@@ -26,7 +29,19 @@ void FTapBootstrapImplAndroid::Init(const FTUConfig& InConfig) {
 	auto GameVersion = JNI.ToJavaString(InConfig.DBConfig.GameVersion);
 	bool IsCN = InConfig.RegionType == ERegionType::CN;
 	bool DBConfigEnable = InConfig.DBConfig.Enable;
-	JNI.CallStaticVoidMethod(ClassObject, "init", "(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/lang/String;)V", *Activity, *ClientID, *ClientToken, *ServerURL, IsCN, DBConfigEnable, *Channel, *GameVersion);
+	bool bBillboardEnable = InConfig.BillboardConfig.IsValid();
+	auto jBillboardUrl = JNI.ToJavaString(InConfig.BillboardConfig->BillboardUrl);
+
+	JNIEnv*	JEnv = *JNI;
+	
+	auto jDimensionString = NewScopedJavaObject(JEnv, (jobjectArray)JEnv->NewObjectArray(InConfig.BillboardConfig->Dimensions.Num() * 2, FJavaWrapper::JavaStringClass, nullptr));
+	int32 Index = 0;
+	for (TTuple<FString, FString>& T : InConfig.BillboardConfig->Dimensions)
+	{
+		JEnv->SetObjectArrayElement(*jDimensionString, Index++, *FJavaHelper::ToJavaString(JEnv, T.Key));
+		JEnv->SetObjectArrayElement(*jDimensionString, Index++, *FJavaHelper::ToJavaString(JEnv, T.Value));
+	}
+	JNI.CallStaticVoidMethod(ClassObject, "init", "(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;)V", *Activity, *ClientID, *ClientToken, *ServerURL, IsCN, DBConfigEnable, *Channel, *GameVersion, bBillboardEnable, *jBillboardUrl, *jDimensionString);
 }
 
 TSharedPtr<FTDSUser> FTapBootstrapImplAndroid::GetCurrentUser() {

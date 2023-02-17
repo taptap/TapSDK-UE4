@@ -50,8 +50,9 @@ public class TapCommon : ModuleRules
                 "Slate",
                 "SlateCore",
                 "Sockets",
-                "UMG", "WebBrowser",
-				// ... add private dependencies that you statically link with here ...	
+                "UMG", 
+                "WebBrowser",
+                // ... add private dependencies that you statically link with here ...	
 			}
             );
 
@@ -79,7 +80,8 @@ public class TapCommon : ModuleRules
                     "UMG",
                     "Json",
                     "HTTP",
-                    "JsonUtilities"
+                    "JsonUtilities",
+                    "ImageWrapper",
                 }
             );
 

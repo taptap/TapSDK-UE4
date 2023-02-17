@@ -18,10 +18,15 @@ void SAAUTimeItem::Construct(const FArguments& InArgs)
 		SNew(SBox)
 		.HAlign(HAlign_Center)
 		.VAlign(VAlign_Center)
+#if PLATFORM_WINDOWS || PLATFORM_MAC
+		.HeightOverride(38.f)
+#else
 		.HeightOverride(86.f)
+#endif
 		[
 			SAssignNew(Content, STextBlock)
 			.Text(FText::AsNumber(InArgs._TimeNumber, &Options))
+			.Justification(ETextJustify::Center)
 			.TextStyle(InArgs._TextStyle)
 		]
 	];

@@ -4,8 +4,8 @@
 
 #include "Modules/ModuleManager.h"
 
-#define TapUEBootstrap_VERSION_NUMBER "31605001"
-#define TapUEBootstrap_VERSION "3.16.5"
+#define TapUEBootstrap_VERSION_NUMBER "31700001"
+#define TapUEBootstrap_VERSION "3.17.0"
 
 
 class TAPBOOTSTRAP_API FTapBootstrapModule : public IModuleInterface

@@ -122,7 +122,7 @@ void UTAULoginWidget::CheckScanRequest(int64 ExpireAt) {
 		IsRequestingAccessToken = true;
 		IsWaitRequestAccessToken = false;
 		TULoginNet::RequestAccessToken(QrCodeModel->device_code, [=](TSharedPtr<FTUAccessToken> Model, FTULoginError Error) {
-			if (!WeakSelf.IsValid()) {
+			if (!IsValid(WeakSelf.Get()) || !IsInViewport()) {
 				return;
 			}
 			if (Model.IsValid()) {

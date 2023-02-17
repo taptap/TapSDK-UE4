@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- init section is always evaluated once per architecture -->
+    <init>
+        <log text="TapBillboard Android Build init"/>
+    </init>
+
+    <!-- optional additions to proguard -->
+    <proguardAdditions>
+        <insert>
+            -keep public class com.tds.** {*;}
+        </insert>
+    </proguardAdditions>
+
+    <buildGradleAdditions>
+        <insert>
+            dependencies.implementation(name: 'TapBillboard_3.17.0',ext:'aar')
+        </insert>
+    </buildGradleAdditions>
+
+    <!-- optional files or directories to copy to Intermediate/Android/APK -->
+    <resourceCopies>
+        <copyDir src="$S(PluginDir)/../ThirdParty/Android/libs/" dst="$S(BuildDir)/libs/" />
+        <copyDir src="$S(PluginDir)/Private/Android/Java/" dst="$S(BuildDir)/src/com/tds/" />
+    </resourceCopies>
+</root>

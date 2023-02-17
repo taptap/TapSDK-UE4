@@ -63,7 +63,7 @@ FString TULanguage::GetLanguageString()
 	case ELanguageType::EN:
 		return TEXT("en_US");
 	case ELanguageType::ZHTW:
-		return TEXT("zh-TW");
+		return TEXT("zh_TW");
 	case ELanguageType::JA: 
 		return TEXT("ja_JP");
 	case ELanguageType::KO: 

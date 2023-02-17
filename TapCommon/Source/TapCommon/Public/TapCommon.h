@@ -4,10 +4,12 @@
 
 #include "Modules/ModuleManager.h"
 
-#define TapUECommon_VERSION_NUMBER "31605001"
-#define TapUECommon_VERSION "3.16.5"
+#define TapUECommon_VERSION_NUMBER "31700001"
+#define TapUECommon_VERSION "3.17.0"
 
 class FSlateStyleSet;
+
+DECLARE_DELEGATE_OneParam(FAsyncDownloadImage, UTexture2DDynamic*);
 
 class TAPCOMMON_API FTapCommonModule : public IModuleInterface
 {
@@ -73,6 +75,8 @@ public:
 	
 	UPROPERTY(BlueprintAssignable,Category = "TapCommon")
 	static FOpenReviewInTapGlobal OnOpenReviewInTapGlobal;
+
+	static void AsyncDownloadImage(const FString& Url, const FAsyncDownloadImage& Callback);
 
 	static void TapThrobberShowWait();
  

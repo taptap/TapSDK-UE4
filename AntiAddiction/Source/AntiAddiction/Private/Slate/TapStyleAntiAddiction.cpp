@@ -2,7 +2,6 @@
 
 
 #include "TapStyleAntiAddiction.h"
-
 #include "Slate/SlateGameResources.h"
 #include "Styling/SlateStyleRegistry.h"
 #include "Styling/SlateStyle.h"

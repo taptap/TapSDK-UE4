@@ -1,4 +1,5 @@
 #include "TUCommonMobileImpl.h"
+#include "TULanguage.h"
 #include "TUMobileBridge.h"
 
 #define TAPCOMMON_SERVICE "TDSCommonService"
@@ -17,4 +18,5 @@ void TUCommonMobileImpl::SetLanguage(ELanguageType LanguageType) {
 	Writer->WriteObjectEnd();
 	Writer->Close();
 	TUMobileBridge::AsyncPerform(TAPCOMMON_SERVICE, "setPreferredLanguage", JsonOutString);
+	TULanguage::SetCurrentType(LanguageType);
 }
