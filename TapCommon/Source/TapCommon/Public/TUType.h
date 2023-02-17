@@ -24,6 +24,20 @@ enum class ELanguageType : uint8
 };
 
 USTRUCT(BlueprintType)
+struct TAPCOMMON_API FBillboardConfig
+{
+	GENERATED_BODY()
+
+	/** Dimensions configured in DC */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, FString> Dimensions;
+
+	/** Billboard url configured in DC. Unnecessary when FTUConfig::RegionType == ERegionType::IO */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString BillboardUrl;
+};
+
+USTRUCT(BlueprintType)
 struct TAPCOMMON_API FTUConfig
 {
 	GENERATED_BODY()
@@ -42,7 +56,9 @@ struct TAPCOMMON_API FTUConfig
 
 	static void Init(const FTUConfig& InitConfig);
 	static TSharedPtr<FTUConfig>& Get();
-		
+
+	FTUConfig() = default;
+	FTUConfig(const FTUConfig& Other);
 
 	struct FTapDB
 	{
@@ -57,8 +73,8 @@ struct TAPCOMMON_API FTUConfig
 		
 	FTapDB DBConfig;
 		
-
-
+	TSharedPtr<FBillboardConfig> BillboardConfig;
+	
 private:
 	static TSharedPtr<FTUConfig> Instance;
 		
@@ -70,5 +86,6 @@ namespace TUType {
 		static FString BasicInfo;	// 无感登录（PC暂不支持）
 		static FString Profile;		// 获得用户信息的权限
 		static FString Friend;		// 获得好友的权限
+		static FString Email;
 	};
 }

@@ -28,14 +28,29 @@ struct TAPCOMMON_API FTapThrobberStyle : public FSlateWidgetStyle
 	UPROPERTY(EditAnywhere, Category=BackGround)
 	FSlateBrush BackGroundBrush;
 
+	UPROPERTY(EditAnywhere, Category=BackGround)
+	FSlateBrush BackGroundBrush_PC;
+
+	UPROPERTY(EditAnywhere, Category=BackGround)
+	FSlateBrush BackGroundBrush_PC_Text;
+	
+	UPROPERTY(EditAnywhere, Category=BackGround)
+	FSlateBrush ShadowBrush;
+
 	UPROPERTY(EditAnywhere, Category=Throbber)
 	FSlateBrush PieceImage;
+	
+	UPROPERTY(EditAnywhere, Category=Throbber)
+	FSlateBrush PieceImage_PC;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Throbber)
 	FSlateColor ColorAndOpacity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=TextBlock)
 	FTextBlockStyle ContentStyle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=TextBlock)
+	FTextBlockStyle ContentStyle_PC;
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 0.f;

@@ -18,7 +18,7 @@
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'TapLogin_3.16.5',ext:'aar')
+dependencies.implementation(name: 'TapLogin_3.17.0',ext:'aar')
         </insert>
     </buildGradleAdditions>
 </root>

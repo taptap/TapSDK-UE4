@@ -30,14 +30,14 @@ void AAUVietnamServer::Login(const FAAUUser& User, TFunction<void(const AAULogin
 
 				if (User.AgeLimit == EAAUAgeLimit::Adult) {
 					Result.LoginState = AAULoginResult::SuccessWithNoLimit;
-					CallBack(Result);
 					LoginSuccess(User);
+					CallBack(Result);
 				}
 				else {
 					if (ModelPtr->remain_time > 0) {
 						Result.LoginState = AAULoginResult::SuccessWithLimit;
-						CallBack(Result);
 						LoginSuccess(User);
+						CallBack(Result);
 					}
 					else {
 						// 不在判断restrict_type类型，remain_time == 0 就可玩时长耗尽
@@ -52,8 +52,8 @@ void AAUVietnamServer::Login(const FAAUUser& User, TFunction<void(const AAULogin
 					RemainTime = AAUImpl::AdultRemainTime;
 					AAULoginResult Result;
 					Result.LoginState = AAULoginResult::SuccessWithNoLimit;
-					CallBack(Result);
 					LoginSuccess(User);
+					CallBack(Result);
 				}
 				else {
 					AAULoginResult Result;

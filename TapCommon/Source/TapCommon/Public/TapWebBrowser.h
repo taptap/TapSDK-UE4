@@ -23,7 +23,7 @@ class TAPCOMMON_API UTapWebBrowser : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	void LoadURL(const FString& InURL);
+	virtual void LoadURL(const FString& InURL);
 	
 	void UpdateRetryPanelVisibility(ESlateVisibility NewVisibility);
 
@@ -34,6 +34,8 @@ public:
 	void ExecuteJavascript(const FString& ScriptText);
 
 	bool CanGoBack() const;
+
+	bool IsLoaded() const;
 	
 	UFUNCTION()
 	virtual void GoBack();
@@ -58,6 +60,8 @@ protected:
 	virtual void OnLoadError();
 
 	virtual bool OnBeforeNavigation(const FString& URL, const FWebNavigationRequest& Request);
+
+	virtual bool OnBeforePopup(FString URL,FString FrameName);
 	
 	UPROPERTY(Meta = (BindWidget))
 	UNativeWidgetHost* WebBrowser;
@@ -95,3 +99,4 @@ private:
 
 	void HandleOnLoadError();
 };
+

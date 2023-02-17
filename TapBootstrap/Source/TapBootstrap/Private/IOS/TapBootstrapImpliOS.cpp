@@ -16,7 +16,7 @@ FTapBootstrapImpliOS::~FTapBootstrapImpliOS() {
 }
 
 void FTapBootstrapImpliOS::Init(const FTUConfig& InConfig) {
-
+	FTUConfig::Init(InConfig);
 	TapConfig* tapConfig = [TapConfig new];
 	tapConfig.clientId = IOSHelper::Convert(InConfig.ClientID);
 	if (InConfig.RegionType == ERegionType::CN) {
@@ -33,6 +33,23 @@ void FTapBootstrapImpliOS::Init(const FTUConfig& InConfig) {
 		dbConfig.enable = InConfig.DBConfig.Enable;
 		dbConfig.advertiserIDCollectionEnabled = InConfig.DBConfig.AdvertiserIDCollectionEnabled;
 		tapConfig.dbConfig = dbConfig;
+	}
+	if (InConfig.BillboardConfig.IsValid())
+	{
+		NSMutableSet <NSArray *> *dimensionSet = [[NSMutableSet alloc] init];
+		if (InConfig.BillboardConfig->Dimensions.Num() > 0)
+		{
+			for (TTuple<FString, FString>& T : InConfig.BillboardConfig->Dimensions)
+			{
+				[dimensionSet addObject:[NSArray arrayWithObjects:T.Key.GetNSString(), T.Value.GetNSString(), nil]];
+			}
+		}
+
+		TapBillboardConfig *billboardCnConfig = [TapBillboardConfig new];
+		billboardCnConfig.diemensionSet = dimensionSet; // 可选项
+		billboardCnConfig.serverUrl = InConfig.BillboardConfig->BillboardUrl.GetNSString();
+		
+		tapConfig.tapBillboardConfig = billboardCnConfig;
 	}
 	[TapBootstrap initWithConfig:tapConfig];
 	

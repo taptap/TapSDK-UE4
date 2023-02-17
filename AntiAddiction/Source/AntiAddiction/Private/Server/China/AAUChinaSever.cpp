@@ -36,13 +36,13 @@ void AAUChinaSever::Login(const FAAUUser& User, TFunction<void(const AAULoginRes
 
 					if (User.AgeLimit == EAAUAgeLimit::Adult) {
 						Result.LoginState = AAULoginResult::SuccessWithNoLimit;
-						CallBack(Result);
 						LoginSuccess(User, false);
+						CallBack(Result);
 					} else {
 						if (ModelPtr->remain_time > 0) {
 							Result.LoginState = AAULoginResult::SuccessWithLimit;
-							CallBack(Result);
 							LoginSuccess(User, true);
+							CallBack(Result);
 						}
 						else {
 							if (ModelPtr->restrict_type == 1) {
@@ -259,8 +259,8 @@ void AAUChinaSever::LoginStandAlone(const FAAUUser& User, TFunction<void(const A
 	if (User.AgeLimit == EAAUAgeLimit::Adult) {
 		AAULoginResult Result;
 		Result.LoginState = AAULoginResult::SuccessWithNoLimit;
-		CallBack(Result);
 		LoginSuccess(User, false);
+		CallBack(Result);
 	} else {
 		auto Today = GetCurrentTime();
 		FString TodayStr = FString::Printf(TEXT("%04i%02i%02i"), Today.GetYear(), Today.GetMonth(), Today.GetDay());
@@ -279,9 +279,9 @@ void AAUChinaSever::LoginStandAlone(const FAAUUser& User, TFunction<void(const A
 			Result.Title = Tip.title;
 			Result.Description = Tip.description;
 			Result.RemainTime = RemainTime;
-			CallBack(Result);
 			// 已经算过了。就不需要在算costtime了。
 			LoginSuccess(User, false);
+			CallBack(Result);
 		}
 		else {
 			if (Boundary == AAUTimeBoundaryCurfew) {

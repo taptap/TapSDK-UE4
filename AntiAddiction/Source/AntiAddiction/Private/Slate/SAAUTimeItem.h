@@ -18,7 +18,7 @@ public:
 	SLATE_BEGIN_ARGS(SAAUTimeItem)
 		: _bIsSelected(false)
 		, _MinimumIntegralDigits(1)
-		, _TextStyle(&FTapStyleAntiAddiction::Get().GetWidgetStyle<FRealNameStyle>("RealNameVietnam").ItemStyle)
+		, _TextStyle()
 		{
 		}
 

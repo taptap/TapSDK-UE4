@@ -12,7 +12,11 @@ UAAUMobileTipWidget::UAAUMobileTipWidget(const FObjectInitializer& ObjectInitial
 
 
 UAAUMobileTipWidget* UAAUMobileTipWidget::ShowUI() {
+#if PLATFORM_WINDOWS || PLATFORM_MAC
+	if (UClass* MyWidgetClass = LoadClass<UAAUMobileTipWidget>(nullptr, TEXT("WidgetBlueprint'/AntiAddiction/AAUTipViewBPPC.AAUTipViewBPPC_C'")))
+#else
 	if (UClass* MyWidgetClass = LoadClass<UAAUMobileTipWidget>(nullptr, TEXT("WidgetBlueprint'/AntiAddiction/AAUTipViewBP.AAUTipViewBP_C'")))
+#endif
 	{
 		if (TUSettings::GetGameInstance().IsValid()) {
 			auto widget = CreateWidget<UAAUMobileTipWidget>(TUSettings::GetGameInstance().Get(), MyWidgetClass);

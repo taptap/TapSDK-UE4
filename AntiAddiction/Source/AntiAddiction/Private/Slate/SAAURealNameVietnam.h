@@ -21,7 +21,11 @@ class ANTIADDICTION_API SAAURealNameVietnam : public SCompoundWidget
 {
 public:
 	SLATE_BEGIN_ARGS(SAAURealNameVietnam)
+#if PLATFORM_WINDOWS || PLATFORM_MAC
+		: _Style(&FTapStyleAntiAddiction::Get().GetWidgetStyle<FRealNameStyle>("RealNameVietnamPC"))
+#else
 		: _Style(&FTapStyleAntiAddiction::Get().GetWidgetStyle<FRealNameStyle>("RealNameVietnam"))
+#endif
 		, _Title(NSLOCTEXT("FAntiAddictionModule", "RealNameTitle", "信息确认"))
 		, _SubmitText(NSLOCTEXT("FAntiAddictionModule", "RealNameTitle", "Submit"))
 		{}
@@ -48,6 +52,8 @@ public:
 	FReply OnCloseButtonClicked();
 
 	FReply OnSubmitButtonClicked();
+
+	virtual FReply OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 
 	void OnSelectChangedEvent(TListTypeTraits<TSharedPtr<int32>>::NullableType NewSelectedNumber, ESelectInfo::Type SelectType, int32 ArrayIndex);
 	
@@ -85,6 +91,6 @@ public:
 
 	const FSlateBrush* OpenBrush = nullptr;
 	const FSlateBrush* CloseBrush = nullptr;
+	const FRealNameStyle* SavedStyle = nullptr;
 };
-
 

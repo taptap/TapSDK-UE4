@@ -67,3 +67,6 @@ struct FTUError {
 	FTUError(int Code, FString ErrorDescription) : code(Code), error_description(ErrorDescription) {
 	};
 };
+
+DECLARE_DELEGATE_OneParam(FTapFailed, const FTUError&/** Error */);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTapMulticastFailed, const FTUError&/** Error */);

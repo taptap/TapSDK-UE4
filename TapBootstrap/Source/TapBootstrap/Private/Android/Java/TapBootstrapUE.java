@@ -8,6 +8,8 @@ import com.tapsdk.bootstrap.TapBootstrap;
 import com.tapsdk.bootstrap.account.TDSUser;
 import com.tapsdk.bootstrap.exceptions.TapError;
 import com.tapsdk.bootstrap.leaderboard.TDSLeaderBoardRanking;
+import com.tds.common.entities.Pair;
+import com.tds.common.entities.TapBillboardConfig;
 import com.tds.common.entities.TapConfig;
 import com.tds.common.entities.TapDBConfig;
 import com.tds.common.models.TapRegionType;
@@ -16,30 +18,48 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import cn.leancloud.LCUser;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class TapBootstrapUE {
-    public static void init(Activity activity, String clientID, String clientToken, String serverUrl, boolean isCN, boolean dbEnable, String channel, String gameVersion) {
+    public static void init(Activity activity, String clientID, String clientToken, String serverUrl, boolean isCN, boolean dbEnable, String channel, String gameVersion, boolean billboardEnable, String billboardUrl, String[] dimensionString) {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(new Runnable() {
             @Override
-            public void run() {
+            public void run() {                
                 TapDBConfig dbConfig = new TapDBConfig();
                 dbConfig.setEnable(dbEnable);
                 dbConfig.setChannel(channel);
                 dbConfig.setGameVersion(gameVersion);
 
-                TapConfig tapConfig = new TapConfig.Builder().withAppContext(activity)
+                TapConfig.Builder builder = new TapConfig.Builder().withAppContext(activity)
                         .withServerUrl(serverUrl)
                         .withClientId(clientID)
                         .withClientToken(clientToken)
                         .withRegionType(isCN ? TapRegionType.CN : TapRegionType.IO)
-                        .withTapDBConfig(dbConfig)
-                        .build();
-
+                        .withTapDBConfig(dbConfig);
+                
+                if(billboardEnable){
+                    Set<Pair<String, String>> dimensionSet = new HashSet<>();
+                    for (int i = 0; i < dimensionString.length; i += 2)
+                    {
+                        dimensionSet.add(Pair.create(dimensionString[i], dimensionString[i+1]));
+                    }
+                    
+                    TapBillboardConfig billboardConfig = new TapBillboardConfig.Builder()
+                            .withDimensionSet(dimensionSet) 
+                            .withServerUrl(billboardUrl)
+                            .build();
+                            
+                    builder.withBillboardConfig(billboardConfig);
+                }
+                
+                TapConfig tapConfig = builder.build();
+                
                 TapBootstrap.init(activity, tapConfig);
             }
         });
