@@ -7,34 +7,44 @@ TUSupportNet::TUSupportNet() {
 	
 }
 
-void TUSupportNet::FetchUnReadStatus(const FString& UserID,
+void TUSupportNet::FetchUnReadStatus(ESupportLoginType LoginType, const FString& UserID,
 	TFunction<void(const FString& Model, const FTUError& Error)> Callback) {
 	const TSharedPtr<TUSupportNet> request = MakeShareable(new TUSupportNet());
 	request->Type = Get;
 	request->URL = TUSupportImpl::Get()->Config.ServerUrl / "/api/2/unread";
-	request->Headers.Add("X-Anonymous-ID", UserID);
+	switch (LoginType)
+	{
+	case ESupportLoginType::None:
+		return;
+	case ESupportLoginType::Anonymous: 
+		request->Headers.Add("X-Anonymous-ID", UserID);
+	break;
+	case ESupportLoginType::Custom: 
+		request->Headers.Add("X-Credential", UserID);
+	break;
+	case ESupportLoginType::TDS: 
+		request->Headers.Add("X-TDS-Credential", UserID);
+	break;
+	default: ;
+	}
 	request->Parameters->SetStringField("product", TUSupportImpl::Get()->Config.ProductID);
 	request->onCompleted.BindLambda([=](TSharedPtr<TUHttpResponse> Response) {
 		if (!Callback) {
 			return;
 		}
-		FTUError Error = FTUError();
-		if (Response->state == TUHttpResponse::clientError) {
-			Error.code = TUHttpResponse::clientError;
-			Error.msg = "request fail";
+		TSharedPtr<FJsonObject> JsonObject;
+		const TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(Response->contentString);
+		if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
+		{
+			FTUError Error = FTUError();
+			JsonObject->TryGetNumberField(TEXT("numCode"), Error.code);
+			JsonObject->TryGetStringField(TEXT("message"), Error.msg);
+			JsonObject->TryGetStringField(TEXT("code"), Error.error_description);
+			Callback(TEXT(""), Error);
 		}
-		else if (Response->state == TUHttpResponse::serverError) {
-			Error.code = TUHttpResponse::serverError;
-			Error.msg = "server error";
-		}
-		else if (Response->state == TUHttpResponse::networkError) {
-			Error.code = TUHttpResponse::networkError;
-			Error.msg = "network connection error";
-		}
-		if (Error.msg.IsEmpty()) {
-			Callback(Response->contentString, Error);
-		} else {
-			Callback("", Error);
+		else
+		{
+			Callback(Response->contentString, FTUError());
 		}
 	});
 	TUHttpManager::Get().request(request);

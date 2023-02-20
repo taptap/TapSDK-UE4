@@ -1,5 +1,8 @@
 #pragma once
+#include "LCError.h"
 #include "LCObject.h"
+#include "Http.h"
+#include "LeanCloudType.h"
 
 struct LEANCLOUD_API FLCUser: public FLCObject {
 public:
@@ -13,6 +16,7 @@ public:
 	bool IsAnonymous() const;
 	bool IsMobilePhoneVerified() const;
 	bool IsAuthenticated() const;
+	virtual void RetrieveShortToken(const FStringSignature& OnSuccess, const FLCError::FDelegate& OnFailed);
 
 protected:
 	static FString KeyUserName;
@@ -25,5 +29,7 @@ protected:
 	static FString KeySessionToken;
 	static FString CLASS_NAME;
 
+	void OnRetrieveShortTokenCallback(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bConnectedSuccessfully, FStringSignature OnSuccess, FLCError::FDelegate OnError);
+	
 	TSharedPtr<FJsonObject> GetAuthData() const;
 };

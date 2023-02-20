@@ -245,3 +245,22 @@ void FTapBootstrapImpliOS::QueryTapFriendsLeaderBoard(const FString& Name, int F
 		}
 	}];
 }
+
+void FTapBootstrapImpliOS::RetrieveShortToken(const FLCUser& InUser, const FStringSignature& OnSuccess,
+	const FLCError::FDelegate& OnFailed) {
+	FStringSignature OnSuccess_UE = OnSuccess;
+	FLCError::FDelegate OnFailed_UE = OnFailed;
+	[TDSUser retrieveShortTokenWithCallback:^(NSString *_Nullable jwt, NSError *_Nullable error) {
+		if (error) {
+			FLCError Error = FLCError(error.code, IOSHelper::Convert(error.localizedDescription));
+			TUHelper::PerformOnGameThread([=]() {
+				OnFailed_UE.ExecuteIfBound(Error);
+			});
+		} else {
+			FString JWT = IOSHelper::Convert(jwt);
+			TUHelper::PerformOnGameThread([=]() {
+				OnSuccess_UE.ExecuteIfBound(JWT);
+			});
+		}
+	}];
+}

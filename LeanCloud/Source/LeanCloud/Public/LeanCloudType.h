@@ -1,4 +1,5 @@
 #pragma once
+#include "LCError.h"
 #include "LeanCloudType.generated.h"
 
 
@@ -15,4 +16,11 @@ struct LEANCLOUD_API FLCConfig {
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ServerURL;
 
+	static FLCConfig& Get();
+
+	TSharedPtr<FLCError> CheckConfig() const;
+protected:
+	static FLCConfig Instance;
 };
+
+DECLARE_DELEGATE_OneParam(FStringSignature, const FString&);

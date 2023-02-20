@@ -29,11 +29,12 @@ void TUSupportImpl::Init(FTapSupportConfig _Config) {
 	UnsupportedPlatformsLog
 }
 
-void TUSupportImpl::SetDefaultMetaData(TSharedPtr<FJsonObject> MetaData) {
+void TUSupportImpl::SetDefaultFieldsData(TSharedPtr<FJsonObject> FieldsData) {
 	UnsupportedPlatformsLog
 }
 
-void TUSupportImpl::SetDefaultFieldsData(TSharedPtr<FJsonObject> FieldsData) {
+void TUSupportImpl::UpdateDefaultField(const FString& Key, const TSharedPtr<FJsonValue>& NewValue)
+{
 	UnsupportedPlatformsLog
 }
 
@@ -45,14 +46,12 @@ void TUSupportImpl::Logout() {
 	UnsupportedPlatformsLog
 }
 
-FString TUSupportImpl::GetSupportWebUrl(const FString& Path, TSharedPtr<FJsonObject> MetaData,
-	TSharedPtr<FJsonObject> FieldsData) {
+FString TUSupportImpl::GetSupportWebUrl(const FString& Path, TSharedPtr<FJsonObject> FieldsData) {
 	UnsupportedPlatformsLog
 	return "";
 }
 
-void TUSupportImpl::OpenSupportView(const FString& Path, TSharedPtr<FJsonObject> MetaData,
-	TSharedPtr<FJsonObject> FieldsData) {
+void TUSupportImpl::OpenSupportView(const FString& Path, TSharedPtr<FJsonObject> FieldsData) {
 	UnsupportedPlatformsLog
 }
 

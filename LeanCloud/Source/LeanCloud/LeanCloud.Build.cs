@@ -41,6 +41,7 @@ public class LeanCloud : ModuleRules
 				"SlateCore",
 				"Json",
 				"JsonUtilities",
+				"HTTP",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

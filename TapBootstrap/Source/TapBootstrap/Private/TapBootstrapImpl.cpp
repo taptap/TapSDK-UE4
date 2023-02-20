@@ -78,3 +78,8 @@ void FTapBootstrapImpl::QueryTapFriendsLeaderBoard(const FString& Name, int From
 	FTDSLeaderBoardRanking::FRankingsDelegate OnSuccess, FTUError::FDelegate OnError) {
 	UnsupportedPlatformsLog
 }
+
+void FTapBootstrapImpl::RetrieveShortToken(const FLCUser& InUser, const FStringSignature& OnSuccess,
+	const FLCError::FDelegate& OnFailed) {
+	UnsupportedPlatformsLog
+}

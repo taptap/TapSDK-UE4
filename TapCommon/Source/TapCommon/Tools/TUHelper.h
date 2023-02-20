@@ -35,7 +35,7 @@ public:
 	template<typename TReturn, typename... TArgs>
 	static TReturn InvokeFunction(FString CLassName, FString FunctionName, TArgs&&... args)
 	{
-		TReturn Value;
+		TReturn Value = TReturn();
 		if (CLassName.IsEmpty() || FunctionName.IsEmpty())
 		{
 			TUDebuger::ErrorLog("类名或者方法名不得为空");

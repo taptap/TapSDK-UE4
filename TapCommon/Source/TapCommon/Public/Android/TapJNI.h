@@ -78,10 +78,17 @@ namespace TapJNI {
 		// Returns the underlying JNI pointer
 		JNIEnv * operator*() const { return Env; }
 
+		template <typename T>
+		ScopedJavaObject<T> MakeJavaObject(const T& InObjRef, bool InNeedDelete = true) {
+			return ScopedJavaObject<T>(Env, InObjRef, InNeedDelete);
+		}
+
 		Class FindClass(const char* name) const;
 		Class GetObjectClass(const Object& object) const;
-		jmethodID GetMethodID(const Class& Class, const char* methodName, const char* methodsig) const;
-		jmethodID GetStaticMethodID(const Class& Class, const char* methodName, const char* methodsig) const;
+		jmethodID GetMethodID(const Class& Class, const char* name, const char* sig) const;
+		jmethodID GetStaticMethodID(const Class& Class, const char* name, const char* sig) const;
+		jfieldID GetFieldID(const Class& Class, const char* name, const char* sig) const;
+		jfieldID GetStaticFieldID(const Class& Class, const char* name, const char* sig) const;
 
 		Object GetActivity() const;
 		Object GetJavaObject(int Value) const;
@@ -109,6 +116,47 @@ namespace TapJNI {
 		float CallStaticFloatMethod(LC_JNIClassCallMethodArgs) const;
 		double CallStaticDoubleMethod(LC_JNIClassCallMethodArgs) const;
 		void CallStaticVoidMethod(LC_JNIClassCallMethodArgs) const;
+
+		void SetObjectField(const Object& object, const char* name, const char* sig, const Object& value) const;
+		void SetBooleanField(const Object& object, const char* name, bool value) const;
+		void SetCharField(const Object& object, const char* name, char value) const;
+		void SetShortField(const Object& object, const char* name, short value) const;
+		void SetIntField(const Object& object, const char* name, int value) const;
+		void SetLongField(const Object& object, const char* name, long value) const;
+		void SetFloatField(const Object& object, const char* name, float value) const;
+		void SetDoubleField(const Object& object, const char* name, double value) const;
+		void SetFStringField(const Object& object, const char* name, const FString& value) const;
+
+		Object GetObjectField(const Object& object, const char* name, const char* sig) const;
+		bool GetBooleanField(const Object& object, const char* name) const;
+		char GetCharField(const Object& object, const char* name) const;
+		short GetShortField(const Object& object, const char* name) const;
+		int GetIntField(const Object& object, const char* name) const;
+		long GetLongField(const Object& object, const char* name) const;
+		float GetFloatField(const Object& object, const char* name) const;
+		double GetDoubleField(const Object& object, const char* name) const;
+		FString GetFStringField(const Object& object, const char* name) const;
+
+		void SetStaticObjectField(const Class& Class, const char* name, const char* sig, const Object& value) const;
+		void SetStaticBooleanField(const Class& Class, const char* name, bool value) const;
+		void SetStaticCharField(const Class& Class, const char* name, char value) const;
+		void SetStaticShortField(const Class& Class, const char* name, short value) const;
+		void SetStaticIntField(const Class& Class, const char* name, int value) const;
+		void SetStaticLongField(const Class& Class, const char* name, long value) const;
+		void SetStaticFloatField(const Class& Class, const char* name, float value) const;
+		void SetStaticDoubleField(const Class& Class, const char* name, double value) const;
+		void SetStaticFStringField(const Class& Class, const char* name, const FString& value) const;
+
+		Object GetStaticObjectField(const Class& Class, const char* name, const char* sig) const;
+		bool GetStaticBooleanField(const Class& Class, const char* name) const;
+		char GetStaticCharField(const Class& Class, const char* name) const;
+		short GetStaticShortField(const Class& Class, const char* name) const;
+		int GetStaticIntField(const Class& Class, const char* name) const;
+		long GetStaticLongField(const Class& Class, const char* name) const;
+		float GetStaticFloatField(const Class& Class, const char* name) const;
+		double GetStaticDoubleField(const Class& Class, const char* name) const;
+		FString GetStaticFStringField(const Class& Class, const char* name) const;
+
           
 		// Converts the java string to FString and calls DeleteLocalRef on the passed-in java string reference
 		FString GetFString(const Object& JavaString) const;

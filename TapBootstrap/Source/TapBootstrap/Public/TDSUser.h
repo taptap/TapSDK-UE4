@@ -86,6 +86,8 @@ public:
 	 */
 	void DisassociateAuthData(const FString& Platform, FDelegate OnSuccess, FTUError::FDelegate OnError);
 	
+	virtual void RetrieveShortToken(const FStringSignature& OnSuccess, const FLCError::FDelegate& OnFailed) override;
+	
 protected:
 
 	static FString KeyAvatar;
