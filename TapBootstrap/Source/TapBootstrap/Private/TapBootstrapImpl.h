@@ -32,6 +32,8 @@ public:
 	virtual void QueryTapFriendsLeaderBoard(const FString& Name, int From, int Limit,
 	FTDSLeaderBoardRanking::FRankingsDelegate OnSuccess, FTUError::FDelegate OnError);
 
+	virtual void RetrieveShortToken(const FLCUser& InUser, const FStringSignature& OnSuccess, const FLCError::FDelegate& OnFailed);
+
 private:
 	static TSharedPtr<FTapBootstrapImpl> Instance;
 };

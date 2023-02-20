@@ -1,10 +1,10 @@
 #pragma once
 
-struct LEANCLOUD_API FLCObject {
+struct LEANCLOUD_API FLCObject : public TSharedFromThis<FLCObject>{
 public:
 	
 	FLCObject(const FString& InClassName, TSharedPtr<FJsonObject> InServerData = nullptr);
-	~FLCObject();
+	virtual ~FLCObject();
 	
 	static FLCObject CreateWithoutData(const FString& InClassName, const FString& ObjectId);
 

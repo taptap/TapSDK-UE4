@@ -1,4 +1,5 @@
 #include "LeanCloudImpl.h"
+
 #include "Tools/LCDebuger.h"
 
 #if PLATFORM_IOS
@@ -12,7 +13,8 @@ typedef FLeanCloud_iOS LeanCloud;
 typedef FLeanCloud_Android LeanCloud;
 
 #else
-typedef FLeanCloudImpl LeanCloud;
+#include "PC/LeanCloud_PC.h"
+typedef FLeanCloud_PC LeanCloud;
 #endif
 
 #define UnsupportedPlatformsLog LCDebuger::ErrorLog(FString::Printf(TEXT("LeanCloud Unsupported Platforms Call %s"), ANSI_TO_TCHAR(__FUNCTION__)));

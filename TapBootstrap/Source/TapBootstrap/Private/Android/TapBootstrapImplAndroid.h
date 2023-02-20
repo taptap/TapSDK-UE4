@@ -21,6 +21,8 @@ public:
 	virtual void SaveUser(const FTDSUser& InUser) override;
 	virtual void QueryTapFriendsLeaderBoard(const FString& Name, int From, int Limit,
 		FTDSLeaderBoardRanking::FRankingsDelegate OnSuccess, FTUError::FDelegate OnError) override;
+	virtual void RetrieveShortToken(const FLCUser& InUser, const FStringSignature& OnSuccess,
+		const FLCError::FDelegate& OnFailed) override;
 private:
 	int CallBackID = 0;
 	int GetCallBackID();

@@ -10,15 +10,30 @@ void TapUESupport::Init(FTapSupportConfig Config) {
 }
 
 void TapUESupport::SetDefaultMetaData(TSharedPtr<FJsonObject> MetaData) {
-	TUSupportImpl::Get()->SetDefaultMetaData(MetaData);
+	ensureMsgf(false, TEXT("'SetDefaultMetaData' is deprecated. Please use 'SetDefaultFieldsData' instead!"));
 }
 
 void TapUESupport::SetDefaultFieldsData(TSharedPtr<FJsonObject> FieldsData) {
 	TUSupportImpl::Get()->SetDefaultFieldsData(FieldsData);
 }
 
+void TapUESupport::UpdateDefaultField(const FString& Key, const TSharedPtr<FJsonValue>& NewValue)
+{
+	TUSupportImpl::Get()->UpdateDefaultField(Key, NewValue);
+}
+
 void TapUESupport::LoginAnonymously(const FString& UserID) {
 	TUSupportImpl::Get()->LoginAnonymously(UserID);
+}
+
+void TapUESupport::LoginWithCustomCredential(const FString& Credential)
+{
+	TUSupportImpl::Get()->LoginWithCustomCredential(Credential);
+}
+
+void TapUESupport::LoginWithTDSCredential(const FString& Credential, const FSimpleDelegate& OnSuccess, const FTapFailed& OnFailed)
+{
+	TUSupportImpl::Get()->LoginWithTDSCredential(Credential, OnSuccess, OnFailed);
 }
 
 void TapUESupport::Logout() {
@@ -27,12 +42,21 @@ void TapUESupport::Logout() {
 
 FString TapUESupport::GetSupportWebUrl(const FString& Path, TSharedPtr<FJsonObject> MetaData,
                                        TSharedPtr<FJsonObject> FieldsData) {
-	return TUSupportImpl::Get()->GetSupportWebUrl(Path, MetaData, FieldsData);
+	return TEXT("");
 }
 
 void TapUESupport::OpenSupportView(const FString& Path, TSharedPtr<FJsonObject> MetaData,
 	TSharedPtr<FJsonObject> FieldsData) {
-	TUSupportImpl::Get()->OpenSupportView(Path, MetaData, FieldsData);
+}
+
+FString TapUESupport::GetSupportWebUrlV2(const FString& Path, TSharedPtr<FJsonObject> Fields)
+{
+	return TUSupportImpl::Get()->GetSupportWebUrl(Path, Fields);
+}
+
+void TapUESupport::OpenSupportViewV2(const FString& Path, TSharedPtr<FJsonObject> Fields)
+{
+	TUSupportImpl::Get()->OpenSupportView(Path, Fields);
 }
 
 void TapUESupport::CloseSupportView() {

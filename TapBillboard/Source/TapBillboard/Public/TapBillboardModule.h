@@ -7,8 +7,8 @@
 struct FTUConfig;
 typedef TSharedPtr<class FTapBillboardCommon, ESPMode::ThreadSafe> FTapBillboardPtr;
 
-#define TapBillboard_VERSION_NUMBER "31700001"
-#define TapBillboard_VERSION "3.17.0"
+#define TapBillboard_VERSION_NUMBER "31800001"
+#define TapBillboard_VERSION "3.18.0"
 
 class TAPBILLBOARD_API FTapBillboardModule : public IModuleInterface
 {

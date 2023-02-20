@@ -60,6 +60,15 @@ void FTDSUser::DisassociateAuthData(const FString& Platform, FDelegate OnSuccess
 	FTapBootstrapImpl::Get()->DisassociateAuthData(*this, Platform, OnSuccess, OnError);
 }
 
+void FTDSUser::RetrieveShortToken(const FStringSignature& OnSuccess, const FLCError::FDelegate& OnFailed) {
+#if PLATFORM_IOS || PLATFORM_ANDROID
+	FTapBootstrapImpl::Get()->RetrieveShortToken(*this, OnSuccess, OnFailed);
+#else
+	FLCUser::RetrieveShortToken(OnSuccess, OnFailed);
+#endif
+	
+}
+
 void FTDSUser::SaveUser() {
 	FTapBootstrapImpl::Get()->SaveUser(*this);
 }

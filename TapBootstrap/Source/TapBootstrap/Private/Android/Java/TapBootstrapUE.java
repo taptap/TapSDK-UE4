@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cn.leancloud.LCUser;
+import cn.leancloud.json.JSONObject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -30,7 +31,7 @@ public class TapBootstrapUE {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(new Runnable() {
             @Override
-            public void run() {                
+            public void run() {
                 TapDBConfig dbConfig = new TapDBConfig();
                 dbConfig.setEnable(dbEnable);
                 dbConfig.setChannel(channel);
@@ -42,24 +43,24 @@ public class TapBootstrapUE {
                         .withClientToken(clientToken)
                         .withRegionType(isCN ? TapRegionType.CN : TapRegionType.IO)
                         .withTapDBConfig(dbConfig);
-                
+
                 if(billboardEnable){
                     Set<Pair<String, String>> dimensionSet = new HashSet<>();
                     for (int i = 0; i < dimensionString.length; i += 2)
                     {
                         dimensionSet.add(Pair.create(dimensionString[i], dimensionString[i+1]));
                     }
-                    
+
                     TapBillboardConfig billboardConfig = new TapBillboardConfig.Builder()
-                            .withDimensionSet(dimensionSet) 
+                            .withDimensionSet(dimensionSet)
                             .withServerUrl(billboardUrl)
                             .build();
-                            
+
                     builder.withBillboardConfig(billboardConfig);
                 }
-                
+
                 TapConfig tapConfig = builder.build();
-                
+
                 TapBootstrap.init(activity, tapConfig);
             }
         });
@@ -217,7 +218,7 @@ public class TapBootstrapUE {
     public static void save(TDSUser user) {
         user.saveInBackground();
     }
-    
+
     public static void queryTapFriendsLeaderBoard(String name, int from, int limit, int callBackID) {
         TDSLeaderBoardRanking.queryTapFriendsLeaderBoard(name, from, limit, new Callback<List<TDSLeaderBoardRanking>>() {
             @Override
@@ -231,13 +232,42 @@ public class TapBootstrapUE {
             }
         });
     }
-    
+
+    public static void retrieveShortToken(String sessionToken, int callBackID) {
+        TDSUser.retrieveShortTokenInBackground(sessionToken).subscribe(new Observer<JSONObject>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(JSONObject jsonObject) {
+                String credential = jsonObject.getString("identityToken");
+                onRetrieveShortTokenSuccess(credential, callBackID);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                onRetrieveShortTokenError(-1, error.toString(), callBackID);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
     public native void onUserError(int code, String Message, int callBackID);
 
     public native void onUserSuccess(TDSUser user, int callBackID);
-    
+
     public native void onRankingsError(int code, String Message, int callBackID);
 
     public native void onRankingsSuccess(List<TDSLeaderBoardRanking> result, int callBackID);
+
+    public native static void onRetrieveShortTokenError(int code, String Message, int callBackID);
+
+    public native static void onRetrieveShortTokenSuccess(String credential, int callBackID);
 
 }
