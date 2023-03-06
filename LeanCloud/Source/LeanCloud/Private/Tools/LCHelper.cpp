@@ -1,4 +1,4 @@
-#include "LCHelper.h"
+#include "Tools/LCHelper.h"
 
 
 void LCHelper::PerformOnGameThread(TFunction<void()> Function) {

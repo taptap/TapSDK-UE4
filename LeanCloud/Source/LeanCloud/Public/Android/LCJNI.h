@@ -9,7 +9,7 @@ namespace LCJNI {
 
 	// Helper class that automatically calls DeleteLocalRef on the passed-in Java object when goes out of scope
 	template <typename T>
-	class ScopedJavaObject
+	class LEANCLOUD_API ScopedJavaObject
 	{
 	public:
 		ScopedJavaObject(JNIEnv* InEnv, const T& InObjRef, bool InNeedDelete = true) :
@@ -70,7 +70,7 @@ namespace LCJNI {
 	typedef ScopedJavaObject<jclass> Class;
 	typedef ScopedJavaObject<jobject> Object;
 	
-	class JNI {
+	class LEANCLOUD_API JNI {
 	public:
 		JNI();
 		JNI(JNIEnv *in_env);
@@ -85,6 +85,7 @@ namespace LCJNI {
 
 		Object GetJavaObject(int Value) const;
 		Object GetJavaObject(double Value) const;
+		Object GetActivity() const;
 
 		Object NewObject(const Class& Class, const char* CtorSig, ...) const;
 		

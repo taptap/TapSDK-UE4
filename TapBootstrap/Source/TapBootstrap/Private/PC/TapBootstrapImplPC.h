@@ -22,6 +22,8 @@ public:
 	virtual void DisassociateAuthData(const FTDSUser& InUser, const FString& Platform, FTDSUser::FDelegate OnSuccess,
 		FTUError::FDelegate OnError) override;
 	virtual void SaveUser(const FTDSUser& InUser) override;
+	virtual TSharedPtr<FTDSUser> CreateCurrentUser(const FString& UserID, const FString& SessionToken) override;
+
 private:
 	void OnUserInfoCallback(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bConnectedSuccessfully, FTDSUser::FDelegate OnSuccess, FTUError::FDelegate OnError);
 

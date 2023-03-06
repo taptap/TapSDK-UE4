@@ -1,4 +1,4 @@
-#include "LCJNI.h"
+#include "Android/LCJNI.h"
 #include "Android/AndroidApplication.h"
 #include "Tools/LCDebuger.h"
 
@@ -68,6 +68,10 @@ namespace LCJNI {
 	Object JNI::GetJavaObject(double Value) const {
 		Class Double = FindClass("java/lang/Double");
 		return CallStaticObjectMethod(Double, "valueOf", "(D)Ljava/lang/Double;", Value);
+	}
+
+	Object JNI::GetActivity() const {
+		return MakeScopedJavaObject(Env, FAndroidApplication::GetGameActivityThis(), false);
 	}
 
 	Object JNI::NewObject(const Class& Class, const char* CtorSig, ...) const {

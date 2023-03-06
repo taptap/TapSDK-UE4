@@ -1,6 +1,6 @@
 #include "LeanCloud_Android.h"
 #include "Engine.h"
-#include "LCJNI.h"
+#include "Android/LCJNI.h"
 #include "Android/AndroidJavaEnv.h"
 #include "Runtime/Launch/Public/Android/AndroidJNI.h"
 #include "Runtime/ApplicationCore/Public/Android/AndroidApplication.h"

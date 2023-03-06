@@ -1,6 +1,6 @@
 #include "LCLeaderboard_Android.h"
 #include "LCJavaHelper.h"
-#include "LCJNI.h"
+#include "Android/LCJNI.h"
 #include "Tools/LCDebuger.h"
 #include "Tools/LCHelper.h"
 
