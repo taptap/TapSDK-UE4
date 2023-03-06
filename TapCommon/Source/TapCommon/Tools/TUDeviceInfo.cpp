@@ -87,7 +87,7 @@ FString TUDeviceInfo::GetPlatform()
 #elif PLATFORM_ANDROID
 	OS = "Android";
 #elif PLATFORM_MAC
-	OS = "Mac";
+	OS = "macOS";
 #elif PLATFORM_WINDOWS
 	OS = "Windows";
 #elif PLATFORM_LINUX

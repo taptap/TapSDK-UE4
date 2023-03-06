@@ -1,0 +1,36 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "LeanCloudPush",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "Tap",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"EnabledByDefault": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "LeanCloudPush",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "LeanCloud",
+			"Enabled": true
+		},
+		{
+			"Name": "AndroidX",
+			"Enabled": true,
+			"WhitelistPlatforms": ["Android"]
+		}
+	]
+}

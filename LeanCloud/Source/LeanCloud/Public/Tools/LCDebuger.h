@@ -1,6 +1,6 @@
 #pragma once
 
-class LCDebuger {
+class LEANCLOUD_API LCDebuger {
 public:
 	static void DisplayLog(const FString& Info);
 	static void WarningLog(const FString& Info);

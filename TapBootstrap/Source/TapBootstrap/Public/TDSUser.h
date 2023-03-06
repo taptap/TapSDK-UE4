@@ -87,6 +87,8 @@ public:
 	void DisassociateAuthData(const FString& Platform, FDelegate OnSuccess, FTUError::FDelegate OnError);
 	
 	virtual void RetrieveShortToken(const FStringSignature& OnSuccess, const FLCError::FDelegate& OnFailed) override;
+
+	static TSharedPtr<FTDSUser> CreateCurrentUser(const FString& UserID, const FString& SessionToken);
 	
 protected:
 

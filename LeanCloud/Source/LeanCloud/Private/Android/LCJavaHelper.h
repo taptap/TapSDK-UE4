@@ -1,5 +1,5 @@
 #pragma once
-#include "LCJNI.h"
+#include "Android/LCJNI.h"
 #include "LCUser.h"
 
 class LCJavaHelper {

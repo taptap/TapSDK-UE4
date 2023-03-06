@@ -114,12 +114,12 @@ void TUHttpManager::request(TSharedPtr<TUHttpRequest> tdsReq)
 				}
 			}
 			TSharedPtr<TUHttpResponse> tdsRes(new TUHttpResponse);
+			tdsRes->httpCode = Response->GetResponseCode();
+			tdsRes->contentString = Response->GetContentAsString();
+			tdsRes->headers = Response->GetAllHeaders();
 			tdsRes->request = tdsReq;
 			if (bWasSuccessful)
 			{
-				tdsRes->httpCode = Response->GetResponseCode();
-				tdsRes->contentString = Response->GetContentAsString();
-				tdsRes->headers = Response->GetAllHeaders();
 				if (EHttpResponseCodes::IsOk(tdsRes->httpCode))
 				{
 					tdsRes->state = TUHttpResponse::success;

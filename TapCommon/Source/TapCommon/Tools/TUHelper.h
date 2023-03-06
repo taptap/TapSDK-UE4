@@ -33,15 +33,22 @@ public:
 	static void JsonObjectAddNotEmptyString(TSharedPtr<FJsonObject>& Object, const FString& Key, const FString& Value);
 
 	template<typename TReturn, typename... TArgs>
-	static TReturn InvokeFunction(FString CLassName, FString FunctionName, TArgs&&... args)
+	static TReturn InvokeFunction(FString ClassName, FString FunctionName, TArgs&&... args)
 	{
 		TReturn Value = TReturn();
-		if (CLassName.IsEmpty() || FunctionName.IsEmpty())
-		{
-			TUDebuger::ErrorLog("类名或者方法名不得为空");
+		if (ClassName.IsEmpty()) {
+			TUDebuger::ErrorLog("InvokeFunction ClassName:" + ClassName + " is Empty");
 			return Value;
 		}
-		UClass* ResultClass = FindObject<UClass>(nullptr, *CLassName);
+		if (FunctionName.IsEmpty()) {
+			TUDebuger::ErrorLog("InvokeFunction FunctionName:" + FunctionName + " is Empty");
+			return Value;
+		}
+#if ENGINE_MAJOR_VERSION > 4
+		UClass* ResultClass = FindObject<UClass>(nullptr, *ClassName);
+#else
+		UClass* ResultClass = FindObject<UClass>(ANY_PACKAGE, *ClassName);
+#endif
 		if (ResultClass)
 		{
 			UFunction* Function = ResultClass->FindFunctionByName(FName(*FunctionName));
@@ -62,19 +69,26 @@ public:
 				return Value;
 			}
 		}
-		TUDebuger::WarningLog("映射调用失败");
+		TUDebuger::ErrorLog("InvokeFunction ClassName:" + ClassName + " FunctionName:" + FunctionName + " Fail");
 		return Value;
 	}
 
 	template<typename... TArgs>
-	static void InvokeNoReturnFunction(FString CLassName, FString FunctionName, TArgs&&... args)
+	static void InvokeNoReturnFunction(FString ClassName, FString FunctionName, TArgs&&... args)
 	{
-		if (CLassName.IsEmpty() || FunctionName.IsEmpty())
-		{
-			TUDebuger::ErrorLog("类名或者方法名不得为空");
+		if (ClassName.IsEmpty()) {
+			TUDebuger::ErrorLog("InvokeFunction ClassName:" + ClassName + " is Empty");
 			return;
 		}
-		UClass* ResultClass = FindObject<UClass>(nullptr, *CLassName);
+		if (FunctionName.IsEmpty()) {
+			TUDebuger::ErrorLog("InvokeFunction FunctionName:" + FunctionName + " is Empty");
+			return;
+		}
+#if ENGINE_MAJOR_VERSION > 4
+		UClass* ResultClass = FindObject<UClass>(nullptr, *ClassName);
+#else
+		UClass* ResultClass = FindObject<UClass>(ANY_PACKAGE, *ClassName);
+#endif
 		if (ResultClass)
 		{
 			UFunction* Function = ResultClass->FindFunctionByName(FName(*FunctionName));
@@ -85,7 +99,7 @@ public:
 				return;
 			}
 		}
-		TUDebuger::WarningLog("映射调用失败");
+		TUDebuger::ErrorLog("InvokeFunction ClassName:" + ClassName + " FunctionName:" + FunctionName + " Fail");
 	}
 
 	static FString CombinParameters(const TSharedPtr<FJsonObject>& parameters, bool isEncode = true);

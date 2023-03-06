@@ -1,5 +1,5 @@
 #include "LeanCloud_iOS.h"
-#include "LCObjcHelper.h"
+#include "iOS/LCObjcHelper.h"
 #pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
 #pragma clang diagnostic ignored "-Wundef"
 #pragma clang diagnostic ignored "-Wnonnull"

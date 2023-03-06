@@ -27,6 +27,8 @@ public:
 
 	virtual void DisassociateAuthData(const FTDSUser& InUser, const FString& Platform, FTDSUser::FDelegate OnSuccess, FTUError::FDelegate OnError);
 
+	virtual TSharedPtr<FTDSUser> CreateCurrentUser(const FString& UserID, const FString& SessionToken);
+
 	virtual void SaveUser(const FTDSUser& InUser);
 
 	virtual void QueryTapFriendsLeaderBoard(const FString& Name, int From, int Limit,

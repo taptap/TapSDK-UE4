@@ -1,5 +1,6 @@
 #include "TapBootstrapImplPC.h"
 #include "HttpModule.h"
+#include "LeanCloud.h"
 #include "TapUELogin.h"
 #include "TUCrypto.h"
 #include "TUHelper.h"
@@ -20,6 +21,12 @@ FTapBootstrapImplPC::~FTapBootstrapImplPC() {
 
 void FTapBootstrapImplPC::Init(const FTUConfig& InConfig) {
 	FTUConfig::Init(InConfig);
+
+	FLCConfig LCConfig;
+	LCConfig.ClientID = InConfig.ClientID;
+	LCConfig.ClientToken = InConfig.ClientToken;
+	LCConfig.ServerURL = InConfig.ServerURL;
+	FLeanCloud::Init(LCConfig);
 	
 	// 初始化 TapLogin
 	FTULoginConfig LoginConfig;
@@ -292,6 +299,17 @@ void FTapBootstrapImplPC::SaveUser(const FTDSUser& InUser) {
 	}
 	TArray<uint8> Data = TUCrypto::AesEncode(TUCrypto::UTF8Encode(JsonStr), TUCrypto::UTF8Encode(Key));
 	FFileHelper::SaveArrayToFile(Data, *FilePath);
+}
+
+TSharedPtr<FTDSUser> FTapBootstrapImplPC::CreateCurrentUser(const FString& UserID, const FString& SessionToken) {
+	TSharedPtr<FJsonObject> JsonObject = MakeShared<FJsonObject>();
+	JsonObject->SetStringField("objectId", UserID);
+	JsonObject->SetStringField("sessionToken", SessionToken);
+	CachedUser = MakeShared<FTDSUser>(JsonObject);
+	auto UserPtr = CachedUser.Get();
+	SaveUser(*UserPtr);
+	BecomeWithSessionToken(SessionToken, nullptr, nullptr);
+	return CachedUser;
 }
 
 void FTapBootstrapImplPC::OnUserInfoCallback(FHttpRequestPtr Request, FHttpResponsePtr Response,

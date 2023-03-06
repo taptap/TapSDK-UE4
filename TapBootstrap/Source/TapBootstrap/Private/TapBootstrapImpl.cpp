@@ -83,3 +83,8 @@ void FTapBootstrapImpl::RetrieveShortToken(const FLCUser& InUser, const FStringS
 	const FLCError::FDelegate& OnFailed) {
 	UnsupportedPlatformsLog
 }
+
+TSharedPtr<FTDSUser> FTapBootstrapImpl::CreateCurrentUser(const FString& UserID, const FString& SessionToken) {
+	UnsupportedPlatformsLog
+	return nullptr;
+}

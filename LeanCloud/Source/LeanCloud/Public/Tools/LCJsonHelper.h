@@ -10,7 +10,7 @@ inline TSharedPtr<FJsonObject>& operator+=(TSharedPtr<FJsonObject> & Object, con
 	return Object;
 }
 
-class LCJsonHelper {
+class LEANCLOUD_API LCJsonHelper {
 public:
 	static FString GetStringField(TSharedPtr<FJsonObject> JsonObject, const FString& Field);
 	static bool GetBoolField(TSharedPtr<FJsonObject> JsonObject, const FString& Field);

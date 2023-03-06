@@ -36,9 +36,7 @@ private:
 	
 	static bool CheckStringParam(const FString& Para, const FString& ParaName);
 
-	TSharedPtr<FDateTime> StartTime;
-	TSharedPtr<FDateTime> PauseTime;
-
+	FDateTime StartTime;
 	void RegisterCoreDelegate();
 
 };

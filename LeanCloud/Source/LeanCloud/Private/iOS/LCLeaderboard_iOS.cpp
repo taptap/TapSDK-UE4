@@ -1,5 +1,5 @@
 #include "LCLeaderboard_iOS.h"
-#include "LCObjcHelper.h"
+#include "iOS/LCObjcHelper.h"
 #include "Tools/LCHelper.h"
 #pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
 #pragma clang diagnostic ignored "-Wundef"

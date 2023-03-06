@@ -4,8 +4,8 @@
 
 #include "Modules/ModuleManager.h"
 
-#define TapUEDB_VERSION_NUMBER "31800001"
-#define TapUEDB_VERSION "3.18.0"
+#define TapUEDB_VERSION_NUMBER "31801001"
+#define TapUEDB_VERSION "3.18.1"
 
 class FTapDBModule : public IModuleInterface
 {

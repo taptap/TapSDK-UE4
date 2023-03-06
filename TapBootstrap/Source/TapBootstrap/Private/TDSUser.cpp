@@ -69,6 +69,10 @@ void FTDSUser::RetrieveShortToken(const FStringSignature& OnSuccess, const FLCEr
 	
 }
 
+TSharedPtr<FTDSUser> FTDSUser::CreateCurrentUser(const FString& UserID, const FString& SessionToken) {
+	return FTapBootstrapImpl::Get()->CreateCurrentUser(UserID, SessionToken);
+}
+
 void FTDSUser::SaveUser() {
 	FTapBootstrapImpl::Get()->SaveUser(*this);
 }

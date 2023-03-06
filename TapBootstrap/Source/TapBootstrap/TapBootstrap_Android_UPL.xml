@@ -19,7 +19,7 @@
 
     <buildGradleAdditions>
         <insert>
-dependencies.implementation(name: 'TapBootstrap_3.18.0', ext:'aar')
+dependencies.implementation(name: 'TapBootstrap_3.18.1', ext:'aar')
 dependencies.implementation('io.reactivex.rxjava2:rxandroid:2.1.1')
         </insert>
     </buildGradleAdditions>

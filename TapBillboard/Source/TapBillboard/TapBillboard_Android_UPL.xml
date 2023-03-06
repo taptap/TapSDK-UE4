@@ -14,7 +14,7 @@
 
     <buildGradleAdditions>
         <insert>
-            dependencies.implementation(name: 'TapBillboard_3.18.0',ext:'aar')
+            dependencies.implementation(name: 'TapBillboard_3.18.1',ext:'aar')
         </insert>
     </buildGradleAdditions>
 
